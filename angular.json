@@ -107,5 +107,7 @@
       }
     }
   },
-  "defaultProject": "app_book"
+  "cli": {
+    "analytics": "e1f80ca8-d0c9-44ad-8c35-eb35b2de9a8f"
+  }
 }

@@ -1,9 +1,16 @@
 import { Component, OnInit } from '@angular/core';
+import {CommonModule} from "@angular/common";
+import {BookCardComponent} from "../book-card/book-card.component";
 
 @Component({
   selector: 'app-books-list',
   templateUrl: './books-list.component.html',
-  styleUrls: ['./books-list.component.scss']
+  styleUrls: ['./books-list.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    BookCardComponent
+  ]
 })
 export class BooksListComponent implements OnInit {
 
