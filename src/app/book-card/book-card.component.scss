@@ -1,5 +1,9 @@
 .example-card {
   max-width: 400px;
+  min-height: 650px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .mat-card-actions {
@@ -17,7 +21,7 @@
 }
 
 img {
-  max-height: 400px;
+  height: 400px;
   max-width: 300px;
 }
 

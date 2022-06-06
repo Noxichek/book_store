@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, HostBinding} from '@angular/core';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +7,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app_book';
+  @HostBinding('class') className = 'defaultMode';
+
+  changeTheme() {
+    const darkClassName = 'darkMode';
+    const defaultName = 'defaultMode'
+
+    this.className = this.className === defaultName ? darkClassName : defaultName
+  }
 }
