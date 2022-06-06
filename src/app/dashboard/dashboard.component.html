@@ -1,4 +1,6 @@
-<mat-tab-group>
-  <mat-tab label="Authors"></mat-tab>
-  <mat-tab label="Books"></mat-tab>
-</mat-tab-group>
+<nav mat-tab-nav-bar>
+  <section>
+    <a mat-tab-link (click)="navigate('authors')" label="Authors">Authors</a>
+    <a mat-tab-link (click)="navigate('books')" label="Books">Books</a>
+  </section>
+</nav>
