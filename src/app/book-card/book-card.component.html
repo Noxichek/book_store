@@ -1,21 +1,22 @@
 <mat-card class="example-card">
   <mat-card-header>
-    <mat-card-title>Lightlark (Book 1)</mat-card-title>
-    <mat-card-subtitle>B&N Exclusive Edition</mat-card-subtitle>
+    <mat-card-title>{{ book.title }}</mat-card-title>
+    <mat-card-subtitle>{{ book.author }}</mat-card-subtitle>
   </mat-card-header>
-  <img mat-card-image src="https://prodimage.images-bn.com/lf?set=key%5Bresolve.pixelRatio%5D,value%5B1%5D&set=key%5Bresolve.width%5D,value%5B300%5D&set=key%5Bresolve.height%5D,value%5B10000%5D&set=key%5Bresolve.imageFit%5D,value%5Bcontainerwidth%5D&set=key%5Bresolve.allowImageUpscaling%5D,value%5B0%5D&product=path%5B/pimages/9781419766671_p0_v1%5D&call=url%5Bfile:common/decodeProduct.chain%5D" alt="Photo of a Shiba Inu">
+  <section class="image">
+    <img mat-card-image src="{{ book.imageUrl }}" alt="Photo of a Shiba Inu">
+  </section>
   <mat-card-content>
     <p>
-      This collectible "romance edition" includes an exclusive bonus chapter told from the POV of the protagonist's love interest and a deluxe case featuring a full-color, alternate cover design.
-      #BookTok phenomenon and award-winning author Alex Aster delivers readers a masterfully written, utterly gripping YA fantasy novel
+      {{book.description}}
     </p>
   </mat-card-content>
   <mat-card-actions>
     <section>
-      <button mat-button>View more info</button>
-      <button mat-button>Buy</button>
+      <button mat-raised-button color="primary">View more info</button>
+      <button mat-raised-button color="primary">Buy</button>
     </section>
-    <p>Price: 16.99$</p>
+    <p>Price: {{ book.price }}</p>
   </mat-card-actions>
 </mat-card>
 
