@@ -11,6 +11,8 @@ import { BookCardComponent } from './book-card/book-card.component';
 import {MatCardModule} from "@angular/material/card";
 import { BooksListComponent } from './books-list/books-list.component';
 import { AuthorsComponent } from './authors/authors.component';
+import {MatTableModule} from "@angular/material/table";
+import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
   declarations: [
@@ -20,14 +22,16 @@ import { AuthorsComponent } from './authors/authors.component';
     BooksListComponent,
     AuthorsComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatSliderModule,
-    MatTabsModule,
-    MatCardModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        MatSliderModule,
+        MatTabsModule,
+        MatCardModule,
+        MatTableModule,
+        MatButtonModule,
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })
