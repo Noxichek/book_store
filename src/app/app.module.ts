@@ -6,6 +6,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {CoreModule} from "./core/core.module";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
 import {MatButtonModule} from "@angular/material/button";
+import {CommonModule} from "@angular/common";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -17,7 +19,9 @@ import {MatButtonModule} from "@angular/material/button";
     BrowserAnimationsModule,
     CoreModule,
     MatButtonToggleModule,
-    MatButtonModule
+    MatButtonModule,
+    CommonModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
