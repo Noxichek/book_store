@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FetchService} from "../../../../services/fetch.service";
 import {Book} from "../../../interfaces/interfaces";
 
@@ -10,12 +10,14 @@ import {Book} from "../../../interfaces/interfaces";
 export class BookListComponent implements OnInit {
   books: Book[] = []
 
-  constructor(private fetchService: FetchService) { }
+  constructor(private fetchService: FetchService) {
+  }
 
 
   ngOnInit(): void {
-    this.fetchService.getAllBooks().subscribe( response => {
+    this.fetchService.getAllBooks().subscribe(response => {
       this.books = response['books']
+      console.log(this.books)
     })
   }
 

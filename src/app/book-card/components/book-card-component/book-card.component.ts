@@ -34,7 +34,7 @@ export class BookCardComponent implements OnInit {
 
   constructor(private fetchService: FetchService,
               private router: Router
-              ) {
+  ) {
   }
 
   ngOnInit(): void {
@@ -55,7 +55,7 @@ export class BookCardComponent implements OnInit {
     return Math.floor(Math.random() * (max - min)) + min;
   }
 
-  goToInfo(id:number) {
+  goToInfo(id: number) {
     this.router.navigate([`books/${id}`])
   }
 }
