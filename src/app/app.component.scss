@@ -3,3 +3,10 @@ section {
   align-items: center;
   justify-content: center;
 }
+
+button  {
+  position: absolute;
+  top: 0.5vh;
+  right: 1vh;
+  z-index: 2;
+}
