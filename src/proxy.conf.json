@@ -1,0 +1,7 @@
+{
+  "/api": {
+    "target": "http://dachkovski.kubesh.ru",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

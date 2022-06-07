@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {AuthorsComponent} from "./authors.component";
+import {AuthorsComponent} from "./components/authors-component/authors.component";
 import {MatTableModule} from "@angular/material/table";
 
 
