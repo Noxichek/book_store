@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {mergeMap, Subscription} from "rxjs";
-import {BookFetchService} from "../../../book/services/book-fetch.service";
-import {IBook} from "../../../book";
+import {BookService} from "../../../services/book.service";
+import {BookInterface} from "../../../index";
 
 @Component({
   selector: 'app-book-info',
@@ -10,10 +10,10 @@ import {IBook} from "../../../book";
   styleUrls: ['./book-info.component.scss']
 })
 export class BookInfoComponent implements OnInit {
-  book!: IBook;
+  book!: BookInterface;
   bookSub: Subscription
 
-  constructor(private bookFetchService: BookFetchService,
+  constructor(private bookFetchService: BookService,
               private route: ActivatedRoute
               ) { }
 

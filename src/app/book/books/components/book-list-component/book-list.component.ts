@@ -1,16 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {IBook} from "../../../book";
-import {BookFetchService} from "../../../book/services/book-fetch.service";
+import {BookInterface} from "../../../index";
+import {BookService} from "../../../services/book.service";
 
 @Component({
-  selector: 'app-book-list',
+  selector: 'app-books',
   templateUrl: './book-list.component.html',
   styleUrls: ['./book-list.component.scss'],
 })
 export class BookListComponent implements OnInit {
-  books: IBook[] = [];
+  books: BookInterface[] = [];
 
-  constructor(private bookFetchService: BookFetchService) {
+  constructor(private bookFetchService: BookService) {
   }
 
 
