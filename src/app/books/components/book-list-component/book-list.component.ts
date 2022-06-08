@@ -1,7 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {IBook} from "../../../index";
-import {BookService} from "../../../services/book.service";
+import {IBook} from "../../../book";
+import {BookService} from "../../../book/services/book.service";
 import {Subject, takeUntil} from "rxjs";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-books',
@@ -12,16 +13,17 @@ export class BookListComponent implements OnInit, OnDestroy {
   books: IBook[] = [];
   private unsubscribeOnDestroy$ = new Subject<boolean>();
 
-  constructor(private bookFetchService: BookService) {
-  }
+  constructor(
+    private bookFetchService: BookService,
+    private route: ActivatedRoute
+  ) { }
 
 
   ngOnInit(): void {
-    this.bookFetchService.getAllBooks()
+    this.route.data
       .pipe(takeUntil(this.unsubscribeOnDestroy$))
-      .subscribe(response => {
-      this.books = response['books'];
-      console.log(this.books);
+      .subscribe(({resolveData}) => {
+      this.books = resolveData.books
     })
   }
 
