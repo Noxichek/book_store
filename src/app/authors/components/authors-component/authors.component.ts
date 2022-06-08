@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthorService} from "../../services/author.service";
-import {BookService} from "../../../book/services/book.service";
 import {IAuthor} from "../../interfaces/author.interface";
-import {Subject, takeUntil} from "rxjs";
+import {forkJoin, map, pluck, Subject, switchMap, takeUntil, tap} from "rxjs";
+import {PageEvent} from "@angular/material/paginator";
 
 
 @Component({
@@ -15,51 +15,50 @@ export class AuthorsComponent implements OnInit, OnDestroy {
 
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource: IAuthor[] = [];
-  booksThisAuthor: any[] = [];
   private unsubscribeOnDestroy$ = new Subject<boolean>();
 
 
   constructor(private authorFetchService: AuthorService,
-              private bookFetchService: BookService
   ) {
   }
 
   ngOnInit(): void {
-    this.authorFetchService.getAllAuthors().pipe(takeUntil(this.unsubscribeOnDestroy$))
-      .subscribe(response => {
-      this.dataSource = response['authors']
-      console.log(this.dataSource)
-
-      // this.getBooksOfCurrentAuthor(2)
-    })
-
-    this.authorFetchService.getAllBooksOfCurrentAuthor(2).pipe(takeUntil(this.unsubscribeOnDestroy$))
-      .subscribe(response => {
-      console.log(response['books'])
-    })
+    this.loadData(1)
   }
 
-  getBooksOfCurrentAuthor(authorID: number) {
-    let books = []
-    let booksOfCurrentAuthor = []
-
-    this.bookFetchService.getAllBooks()
-      .pipe(takeUntil(this.unsubscribeOnDestroy$))
+  loadData(page: number) {
+    this.authorFetchService.getAuthorsFromPageNumber(page)
+      .pipe(
+        takeUntil(this.unsubscribeOnDestroy$),
+        pluck('authors'),
+        tap((x: IAuthor[]) => {
+          this.dataSource = x
+        }),
+        switchMap(response => {
+          const authorBookRequest = response.map(el => {
+            return this.authorFetchService.getAllBooksOfCurrentAuthor(el.id)
+          })
+          return forkJoin(authorBookRequest)
+        }),
+        map(response => {
+          return response.map(el => {
+            return el['books']
+          })
+        })
+      )
       .subscribe(response => {
-      books = response['books']
-      booksOfCurrentAuthor = books.filter(el => el.author_id === authorID)
-      booksOfCurrentAuthor.forEach(el => {
-        this.booksThisAuthor.push(el.title)
+        this.dataSource = this.dataSource.map((el, index) => {
+          return {...el, books: response[index]}
+        })
+        console.log(this.dataSource)
       })
-      console.log(this.booksThisAuthor)
-      this.dataSource.find(el => {
-        el.id === authorID;
-      }).books = this.booksThisAuthor
-    })
+  }
+
+  changePage(pageNumber: PageEvent) {
+    this.loadData(++pageNumber.pageIndex)
   }
 
   ngOnDestroy(): void {
     this.unsubscribeOnDestroy$.next(true)
   }
-
 }
