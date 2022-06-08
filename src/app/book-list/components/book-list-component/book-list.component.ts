@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {FetchService} from "../../../../services/fetch.service";
-import {Book} from "../../../interfaces/interfaces";
+import {IBook} from "../../../book";
+import {BookFetchService} from "../../../book/services/book-fetch.service";
 
 @Component({
   selector: 'app-book-list',
@@ -8,16 +8,16 @@ import {Book} from "../../../interfaces/interfaces";
   styleUrls: ['./book-list.component.scss'],
 })
 export class BookListComponent implements OnInit {
-  books: Book[] = []
+  books: IBook[] = [];
 
-  constructor(private fetchService: FetchService) {
+  constructor(private bookFetchService: BookFetchService) {
   }
 
 
   ngOnInit(): void {
-    this.fetchService.getAllBooks().subscribe(response => {
-      this.books = response['books']
-      console.log(this.books)
+    this.bookFetchService.getAllBooks().subscribe(response => {
+      this.books = response['books'];
+      console.log(this.books);
     })
   }
 
