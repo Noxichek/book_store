@@ -1,11 +1,18 @@
-export interface BookInterface {
+export interface IBook extends IBookData {
   author_id: number;
+  release_date: Date;
+  writing_date: Date;
+  genres?: any;
+}
+
+export interface IBookModel extends IBookData {
+  authorId: number;
+}
+
+export interface IBookData {
+  title: string;
   description: string;
   id: number;
-  price: number;
-  release_date: Date;
-  title: string;
-  writing_date: Date;
   imageUrl?: string;
-  genres?: any;
+  price: number;
 }
