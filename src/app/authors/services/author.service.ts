@@ -6,7 +6,7 @@ import {IAuthor} from "../interfaces/i-author";
 @Injectable({
   providedIn: 'root'
 })
-export class AuthorFetchService {
+export class AuthorService {
 
   constructor(private httpClient: HttpClient) { }
 
