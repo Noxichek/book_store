@@ -1,8 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {AuthorService} from "../../../authors/services/author.service";
-import {IAuthor} from "../../../authors/interfaces/i-author";
-import {BookInterface} from "../../../book";
+import {IAuthor} from "../../../authors/interfaces/author.interface";
+import {IBook} from "../../../book";
 import {BookModel} from "../../../book/models/book.model";
 
 @Component({
@@ -12,7 +12,7 @@ import {BookModel} from "../../../book/models/book.model";
 })
 
 export class BookCardComponent implements OnInit {
-  @Input() set book(value: BookInterface | null) {
+  @Input() set book(value: IBook | null) {
     this.currentBook = new BookModel(value);
     this.getAuthorFullName();
   }
