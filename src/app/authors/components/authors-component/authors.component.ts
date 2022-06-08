@@ -48,9 +48,13 @@ export class AuthorsComponent implements OnInit, OnDestroy {
       .subscribe(response => {
       books = response['books']
       booksOfCurrentAuthor = books.filter(el => el.author_id === authorID)
-      booksOfCurrentAuthor.forEach(el => this.booksThisAuthor.push(el.title))
+      booksOfCurrentAuthor.forEach(el => {
+        this.booksThisAuthor.push(el.title)
+      })
       console.log(this.booksThisAuthor)
-      this.dataSource.find(el => el.id === authorID).books = this.booksThisAuthor
+      this.dataSource.find(el => {
+        el.id === authorID;
+      }).books = this.booksThisAuthor
     })
   }
 

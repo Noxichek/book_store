@@ -41,10 +41,6 @@ export class BookCardComponent implements OnInit, OnDestroy {
       });
   }
 
-  goToInfo(id: number) {
-    this.router.navigate([`books/${id}`]);
-  }
-
   ngOnDestroy(): void {
     this.unsubscribeOnDestroy$.next(true)
   }
