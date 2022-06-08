@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {DashboardComponent} from "./components/dashboard-component/dashboard.component";
 import {MatTabsModule} from "@angular/material/tabs";
+import {RouterModule} from "@angular/router";
 
 
 
@@ -9,10 +10,11 @@ import {MatTabsModule} from "@angular/material/tabs";
   declarations: [
     DashboardComponent
   ],
-  imports: [
-    CommonModule,
-    MatTabsModule
-  ],
+    imports: [
+        CommonModule,
+        MatTabsModule,
+        RouterModule
+    ],
   exports: [
     DashboardComponent
   ]
