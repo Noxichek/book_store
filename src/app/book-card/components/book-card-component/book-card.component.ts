@@ -1,9 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {AuthorFetchService} from "../../../authors/services/author-fetch.service";
+import {AuthorService} from "../../../authors/services/author.service";
 import {IAuthor} from "../../../authors/interfaces/i-author";
-import {IBook} from "../../../book";
-import {BookModel} from "../../../book/models/book-model";
+import {BookInterface} from "../../../book";
+import {BookModel} from "../../../book/models/book.model";
 
 @Component({
   selector: 'app-book-card',
@@ -12,7 +12,7 @@ import {BookModel} from "../../../book/models/book-model";
 })
 
 export class BookCardComponent implements OnInit {
-  @Input() set book(value: IBook | null) {
+  @Input() set book(value: BookInterface | null) {
     this.currentBook = new BookModel(value);
     this.getAuthorFullName();
   }
@@ -21,7 +21,7 @@ export class BookCardComponent implements OnInit {
 
   public author: IAuthor = {} as IAuthor;
 
-  constructor(private authorFetchService: AuthorFetchService,
+  constructor(private authorFetchService: AuthorService,
               private router: Router
   ) {
   }
@@ -35,7 +35,7 @@ export class BookCardComponent implements OnInit {
 
     this.authorFetchService.getAuthorById(authorId).subscribe(response => {
       this.author = response;
-    })
+    });
   }
 
   goToInfo(id: number) {

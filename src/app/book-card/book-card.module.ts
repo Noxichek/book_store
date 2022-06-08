@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {BookCardComponent} from "./components/book-card-component/book-card.component";
 import {MatCardModule} from "@angular/material/card";
 import {MatButtonModule} from "@angular/material/button";
-import { BookInfoComponent } from './components/book-info/book-info.component';
+import { BookInfoComponent } from '../book/books/components/book-info/book-info.component';
 
 
 

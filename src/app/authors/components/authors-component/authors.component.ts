@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthorFetchService} from "../../services/author-fetch.service";
-import {BookFetchService} from "../../../book/services/book-fetch.service";
+import {AuthorService} from "../../services/author.service";
+import {BookService} from "../../../book/services/book.service";
 import {IAuthor} from "../../interfaces/i-author";
 
 
@@ -17,8 +17,8 @@ export class AuthorsComponent implements OnInit {
   booksThisAuthor: any[] = []
 
 
-  constructor(private authorFetchService: AuthorFetchService,
-              private bookFetchService: BookFetchService
+  constructor(private authorFetchService: AuthorService,
+              private bookFetchService: BookService
               ) {
   }
 

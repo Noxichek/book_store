@@ -1,3 +1,3 @@
-import {IBook} from "./interfaces/i-book";
+import {BookInterface} from "./interfaces/book.interface";
 
-export * from "./interfaces/i-book";
+export * from "./interfaces/book.interface";
