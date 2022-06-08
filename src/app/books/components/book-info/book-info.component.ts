@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {mergeMap, Subject, Subscription, takeUntil} from "rxjs";
-import {BookService} from "../../../services/book.service";
-import {IBook} from "../../../index";
+import {BookService} from "../../../book/services/book.service";
+import {IBook} from "../../../book";
 
 @Component({
   selector: 'app-book-info',
