@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 import {AuthorsComponent} from "./components/authors-component/authors.component";
 import {MatTableModule} from "@angular/material/table";
 import {AuthorsRoutingModule} from "./authors-routing.module";
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 
 @NgModule({
@@ -10,7 +11,8 @@ import {AuthorsRoutingModule} from "./authors-routing.module";
   imports: [
     CommonModule,
     MatTableModule,
-    AuthorsRoutingModule
+    AuthorsRoutingModule,
+    MatPaginatorModule
   ],
   exports: [AuthorsComponent]
 })

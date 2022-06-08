@@ -31,19 +31,19 @@ export class AuthorsComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.unsubscribeOnDestroy$),
         pluck('authors'),
-        tap((x: IAuthor[]) => {
-          this.dataSource = x
+        tap((authors: IAuthor[]) => {
+          this.dataSource = authors;
         }),
         switchMap(response => {
           const authorBookRequest = response.map(el => {
-            return this.authorFetchService.getAllBooksOfCurrentAuthor(el.id)
+            return this.authorFetchService.getAllBooksOfCurrentAuthor(el.id);
           })
-          return forkJoin(authorBookRequest)
+          return forkJoin(authorBookRequest);
         }),
         map(response => {
           return response.map(el => {
-            return el['books']
-          })
+            return el['books'];
+          });
         })
       )
       .subscribe(response => {

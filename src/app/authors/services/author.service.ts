@@ -21,4 +21,8 @@ export class AuthorService {
   getAllBooksOfCurrentAuthor(authorId: number) {
     return this.httpClient.get(`api/authors/${authorId}/books`)
   }
+
+  getAuthorsFromPageNumber(pageNumber: number, elementsPerPage: number = 4) {
+    return this.httpClient.get(`api/authors?page=${pageNumber}&limit=${elementsPerPage}`)
+  }
 }
