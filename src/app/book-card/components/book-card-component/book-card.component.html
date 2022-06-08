@@ -1,4 +1,4 @@
-<mat-card class="example-card" *ngIf="author.first_name">
+<mat-card class="example-card" *ngIf="currentBook.imageUrl">
   <mat-card-header>
     <mat-card-title>{{ currentBook.title }}</mat-card-title>
     <mat-card-subtitle>{{ author.first_name }} {{ author.last_name }}</mat-card-subtitle>
@@ -13,7 +13,7 @@
   </mat-card-content>
   <mat-card-actions>
     <section>
-      <button mat-raised-button color="primary" (click)="goToInfo(currentBook.id)">View more info</button>
+      <button mat-raised-button color="primary" routerLink="{{currentBook.id}}">View more info</button>
       <button mat-raised-button color="primary">Buy</button>
     </section>
     <p>Price: {{ currentBook.price }}</p>
