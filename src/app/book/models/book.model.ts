@@ -1,8 +1,8 @@
-import {BookInterface} from "../interfaces/book.interface";
+import {IBook, IBookModel} from "../interfaces/book.interface";
 import {IMAGES} from "../mocks/book-images";
 
-export class BookModel {
-  constructor(private data: BookInterface) {
+export class BookModel implements IBookModel {
+  constructor(private data: IBook) {
     this.setBookImage();
   }
 
