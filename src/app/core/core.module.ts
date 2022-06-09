@@ -1,7 +1,8 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {BookCardModule} from "../book-card/book-card.module";
-import {LayoutModule} from "../layout/layout.module";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { BookCardModule } from '../book-card/book-card.module';
+import { LayoutModule } from '../layout/layout.module';
 
 
 @NgModule({
@@ -9,12 +10,11 @@ import {LayoutModule} from "../layout/layout.module";
   imports: [
     CommonModule,
     BookCardModule,
-    LayoutModule
+    LayoutModule,
   ],
   exports: [
     BookCardModule,
     LayoutModule,
-  ]
+  ],
 })
-export class CoreModule {
-}
+export class CoreModule {}

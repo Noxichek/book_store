@@ -1,9 +1,12 @@
-import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {AuthorsComponent} from "./components/authors-component/authors.component";
-import {MatTableModule} from "@angular/material/table";
-import {AuthorsRoutingModule} from "./authors-routing.module";
-import {MatPaginatorModule} from "@angular/material/paginator";
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatTableModule } from '@angular/material/table';
+
+import { AuthorsComponent } from './components/authors-component/authors.component';
+import { AuthorsRoutingModule } from './authors-routing.module';
+
 
 
 @NgModule({
@@ -12,9 +15,8 @@ import {MatPaginatorModule} from "@angular/material/paginator";
     CommonModule,
     MatTableModule,
     AuthorsRoutingModule,
-    MatPaginatorModule
+    MatPaginatorModule,
   ],
-  exports: [AuthorsComponent]
+  exports: [AuthorsComponent],
 })
-export class AuthorsModule {
-}
+export class AuthorsModule {}

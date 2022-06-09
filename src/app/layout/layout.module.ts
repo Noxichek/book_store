@@ -1,22 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {DashboardComponent} from "./components/dashboard-component/dashboard.component";
-import {MatTabsModule} from "@angular/material/tabs";
-import {RouterModule} from "@angular/router";
+import { RouterModule } from '@angular/router';
 
+import { MatTabsModule } from '@angular/material/tabs';
+
+import { DashboardComponent } from './components/dashboard-component/dashboard.component';
 
 
 @NgModule({
   declarations: [
-    DashboardComponent
+    DashboardComponent,
   ],
-    imports: [
-        CommonModule,
-        MatTabsModule,
-        RouterModule
-    ],
+  imports: [
+    CommonModule,
+    MatTabsModule,
+    RouterModule,
+  ],
   exports: [
-    DashboardComponent
-  ]
+    DashboardComponent,
+  ],
 })
-export class LayoutModule { }
+export class LayoutModule {}

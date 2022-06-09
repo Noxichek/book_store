@@ -1,18 +1,18 @@
-import {Component, HostBinding} from '@angular/core';
+import { Component, HostBinding } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'app_book';
-  @HostBinding('class') className = 'defaultMode';
+  public title = 'app_book';
+  @HostBinding('class') public className = 'defaultMode';
 
-  changeTheme() {
+  public changeTheme(): void {
     const darkClassName = 'darkMode';
-    const defaultName = 'defaultMode'
+    const defaultName = 'defaultMode';
 
-    this.className = this.className === defaultName ? darkClassName : defaultName
+    this.className = this.className === defaultName ? darkClassName : defaultName;
   }
 }

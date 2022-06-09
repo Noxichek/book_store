@@ -8,5 +8,5 @@ export const IMAGES = [
   'https://img3.labirint.ru/rc/e278c77780621038ff169223052efc99/363x561q80/books85/843211/cover.png?1649424308',
   'https://img4.labirint.ru/rc/606bf5d4ed35901661be848c35f04009/363x561q80/books84/838050/cover.png?1652340314',
   'https://img3.labirint.ru/rc/d794c05724829c34e3a130e8d579ad7f/363x561q80/books86/854875/cover.jpg?1650277510',
-  'https://img4.labirint.ru/rc/b36c001949f85c14def125c176a6cfe4/363x561q80/books80/794042/cover.jpg?1615357513'
+  'https://img4.labirint.ru/rc/b36c001949f85c14def125c176a6cfe4/363x561q80/books80/794042/cover.jpg?1615357513',
 ];

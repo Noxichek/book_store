@@ -1,14 +1,15 @@
 import { Injectable } from '@angular/core';
-import {BookService} from "./book.service";
+
+import { BookService } from './book.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BookResolveService {
 
-  constructor(private bookService: BookService) { }
+  constructor(private _bookService: BookService) {}
 
-  resolve() {
-      return this.bookService.getAllBooks()
+  public resolve() {
+    return this._bookService.getAllBooks();
   }
 }

@@ -1,47 +1,49 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
-import {AuthorService} from "../../../authors/services/author.service";
-import {IAuthor} from "../../../authors/interfaces/author.interface";
-import {IBook} from "../../../book";
-import {BookModel} from "../../../book/models/book.model";
-import {Subject, takeUntil} from "rxjs";
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { Subject, takeUntil } from 'rxjs';
+
+import { AuthorService } from '../../../authors/services/author.service';
+import { IAuthor } from '../../../authors/interfaces/author.interface';
+import { IBook } from '../../../book';
+import { BookModel } from '../../../book/models/book.model';
+
 
 @Component({
   selector: 'app-book-card',
   templateUrl: './book-card.component.html',
-  styleUrls: ['./book-card.component.scss']
+  styleUrls: ['./book-card.component.scss'],
 })
 
 export class BookCardComponent implements OnInit, OnDestroy {
-  @Input() set book(value: IBook | null) {
+  @Input() public set book(value: IBook | null) {
     this.currentBook = new BookModel(value);
-    this.getAuthorFullName();
+    this._getAuthorFullName();
   }
 
-  currentBook: BookModel = {} as BookModel;
+  public currentBook: BookModel = {} as BookModel;
   public author: IAuthor = {} as IAuthor;
-  private unsubscribeOnDestroy$ = new Subject<boolean>();
+  private _unsubscribeOnDestroy$ = new Subject<boolean>();
 
-  constructor(private authorFetchService: AuthorService,
-              private router: Router
-  ) {
-  }
+  constructor(private _authorFetchService: AuthorService,
+              private _router: Router,
+  ) {}
 
   ngOnInit(): void {
-    this.getAuthorFullName();
-  }
-
-  getAuthorFullName() {
-    const {authorId} = this.currentBook;
-
-    this.authorFetchService.getAuthorById(authorId)
-      .pipe(takeUntil(this.unsubscribeOnDestroy$))
-      .subscribe(response => {
-        this.author = response;
-      });
+    this._getAuthorFullName();
   }
 
   ngOnDestroy(): void {
-    this.unsubscribeOnDestroy$.next(true)
+    this._unsubscribeOnDestroy$.next(true);
+  }
+
+  private _getAuthorFullName(): void {
+    const { authorId } = this.currentBook;
+
+    this._authorFetchService.getAuthorById(authorId)
+      .pipe(takeUntil(this._unsubscribeOnDestroy$))
+      .subscribe((response: IAuthor) => {
+        this.author = response;
+      });
   }
 }

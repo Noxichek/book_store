@@ -1,21 +1,25 @@
 import { Injectable } from '@angular/core';
-import {Observable} from "rxjs";
-import {IBook} from "../interfaces/book.interface";
-import {HttpClient} from "@angular/common/http";
+
+import { Observable } from 'rxjs';
+
+import { HttpClient } from '@angular/common/http';
+
+import { IBook } from '../interfaces/book.interface';
+
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BookService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private _httpClient: HttpClient) {}
 
-  getAllBooks(): Observable<IBook[]> {
-    return this.httpClient.get<IBook[]>('api/books')
+  public getAllBooks(): Observable<IBook[]> {
+    return this._httpClient.get<IBook[]>('api/books');
   }
 
-  getBookById(id: number): Observable<IBook> {
-    return this.httpClient.get<IBook>(`api/books/${id}`)
+  public getBookById(id: number): Observable<IBook> {
+    return this._httpClient.get<IBook>(`api/books/${id}`);
   }
 }
 

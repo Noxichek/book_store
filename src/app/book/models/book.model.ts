@@ -1,45 +1,45 @@
-import {IBook, IBookModel} from "../interfaces/book.interface";
-import {IMAGES} from "../mocks/book-images";
+import { IBook, IBookModel } from '../interfaces/book.interface';
+import { IMAGES } from '../mocks/book-images';
 
 export class BookModel implements IBookModel {
-  constructor(private data: IBook) {
-    this.setBookImage();
+  constructor(private _data: IBook) {
+    this._setBookImage();
   }
 
-  get title(): string {
-    return this.data.title;
+  public get title(): string {
+    return this._data.title;
   }
 
-  get imageUrl(): string {
-    return this.data.imageUrl;
+  public get imageUrl(): string {
+    return this._data.imageUrl;
   }
 
-  get description(): string {
-    return this.data.description;
+  public get description(): string {
+    return this._data.description;
   }
 
-  get id(): number {
-    return this.data.id;
+  public get id(): number {
+    return this._data.id;
   }
 
-  get price(): number {
-    return this.data.price;
+  public get price(): number {
+    return this._data.price;
   }
 
-  get authorId(): number {
-    return this.data.author_id;
+  public get authorId(): number {
+    return this._data.author_id;
   }
 
-  private getRandomImageIndex(): number {
+  private _getRandomImageIndex(): number {
     const min = Math.ceil(0);
     const max = Math.floor(11);
 
     return Math.floor(Math.random() * (max - min)) + min;
   }
 
-  private setBookImage(): void {
-    const randomImage = IMAGES[this.getRandomImageIndex()];
+  private _setBookImage(): void {
+    const randomImage = IMAGES[this._getRandomImageIndex()];
 
-    this.data = {...this.data, imageUrl: randomImage};
+    this._data = { ...this._data, imageUrl: randomImage };
   }
 }

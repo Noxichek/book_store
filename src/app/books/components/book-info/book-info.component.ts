@@ -1,37 +1,38 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {mergeMap, Subject, Subscription, takeUntil} from "rxjs";
-import {BookService} from "../../../book/services/book.service";
-import {IBook} from "../../../book";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
+
+import { mergeMap, Subject, Subscription, takeUntil } from 'rxjs';
+
+import { BookService } from '../../../book/services/book.service';
+import { IBook } from '../../../book';
 
 @Component({
   selector: 'app-book-info',
   templateUrl: './book-info.component.html',
-  styleUrls: ['./book-info.component.scss']
+  styleUrls: ['./book-info.component.scss'],
 })
 export class BookInfoComponent implements OnInit, OnDestroy {
-  book!: IBook;
-  bookSub: Subscription;
-  private unsubscribeOnDestroy$ = new Subject<boolean>();
+  public book!: IBook;
+  private _bookSub: Subscription;
+  private _unsubscribeOnDestroy$ = new Subject<boolean>();
 
-  constructor(private bookFetchService: BookService,
-              private route: ActivatedRoute
-  ) {
-  }
+  constructor(private _bookFetchService: BookService,
+              private _route: ActivatedRoute,
+  ) {}
 
   ngOnInit(): void {
-    this.bookSub = this.route.params.pipe(
-      takeUntil(this.unsubscribeOnDestroy$),
-      mergeMap(params => {
-        return this.bookFetchService.getBookById(params['id']);
-      })
-    ).subscribe(response => {
-      this.book = response
-      console.log(this.book)
-    })
+    this._bookSub = this._route.params.pipe(
+      mergeMap((parameters: Params) => {
+        return this._bookFetchService.getBookById(parameters['id']);
+      }),
+      takeUntil(this._unsubscribeOnDestroy$),
+    ).subscribe((response: IBook) => {
+      this.book = response;
+      console.log(this.book);
+    });
   }
 
   ngOnDestroy(): void {
-    this.unsubscribeOnDestroy$.next(true)
+    this._unsubscribeOnDestroy$.next(true);
   }
 }

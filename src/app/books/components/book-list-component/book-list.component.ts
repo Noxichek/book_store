@@ -1,8 +1,11 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {IBook} from "../../../book";
-import {BookService} from "../../../book/services/book.service";
-import {Subject, takeUntil} from "rxjs";
-import {ActivatedRoute} from "@angular/router";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+
+import { Subject, takeUntil } from 'rxjs';
+
+import { IBook } from '../../../book';
+import { BookService } from '../../../book/services/book.service';
+
 
 @Component({
   selector: 'app-books',
@@ -10,24 +13,24 @@ import {ActivatedRoute} from "@angular/router";
   styleUrls: ['./book-list.component.scss'],
 })
 export class BookListComponent implements OnInit, OnDestroy {
-  books: IBook[] = [];
-  private unsubscribeOnDestroy$ = new Subject<boolean>();
+  public books: IBook[] = [];
+  private _unsubscribeOnDestroy$ = new Subject<boolean>();
 
   constructor(
-    private bookFetchService: BookService,
-    private route: ActivatedRoute
-  ) { }
+    private _bookFetchService: BookService,
+    private _route: ActivatedRoute,
+  ) {}
 
 
   ngOnInit(): void {
-    this.route.data
-      .pipe(takeUntil(this.unsubscribeOnDestroy$))
-      .subscribe(({resolveData}) => {
-      this.books = resolveData.books
-    })
+    this._route.data
+      .pipe(takeUntil(this._unsubscribeOnDestroy$))
+      .subscribe(({ resolveData }) => {
+        this.books = resolveData.books;
+      });
   }
 
   ngOnDestroy(): void {
-    this.unsubscribeOnDestroy$.next(true)
+    this._unsubscribeOnDestroy$.next(true);
   }
 }
