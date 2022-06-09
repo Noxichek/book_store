@@ -26,6 +26,7 @@ import { AuthorFullNamePipe } from './pipes/author.full.name.pipe';
   exports: [
     BookCardComponent,
     BookInfoComponent,
+    AuthorFullNamePipe,
   ],
 })
 export class BookCardModule {}

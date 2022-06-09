@@ -12,6 +12,7 @@ import { IBook } from '../../../book';
   styleUrls: ['./book-info.component.scss'],
 })
 export class BookInfoComponent implements OnInit, OnDestroy {
+
   public book!: IBook;
   private _destroy$ = new Subject<boolean>();
 

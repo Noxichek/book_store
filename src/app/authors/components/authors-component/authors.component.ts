@@ -64,8 +64,6 @@ export class AuthorsComponent implements OnInit, OnDestroy {
           return forkJoin(authorBookRequest);
         }),
         map((response: IAuthorBooksResponse[]): IBook[][] => {
-          console.log(response);
-
           return response.map((element: IAuthorBooksResponse) => {
             return element['books'];
           });

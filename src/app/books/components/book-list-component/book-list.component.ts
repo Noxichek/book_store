@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute }               from '@angular/router';
 
 import { pluck, Subject, takeUntil } from 'rxjs';
 
-import { IBook } from '../../../book';
+import { IBook }       from '../../../book';
 import { BookService } from '../../../book/services/book.service';
 
 
