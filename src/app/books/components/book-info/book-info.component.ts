@@ -20,7 +20,7 @@ export class BookInfoComponent implements OnInit, OnDestroy {
               private _route: ActivatedRoute,
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this._bookSub = this._route.params.pipe(
       mergeMap((parameters: Params) => {
         return this._bookFetchService.getBookById(parameters['id']);
@@ -32,7 +32,7 @@ export class BookInfoComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this._unsubscribeOnDestroy$.next(true);
   }
 }

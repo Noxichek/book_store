@@ -29,11 +29,11 @@ export class BookCardComponent implements OnInit, OnDestroy {
               private _router: Router,
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this._getAuthorFullName();
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this._unsubscribeOnDestroy$.next(true);
   }
 

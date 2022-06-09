@@ -24,11 +24,11 @@ export class AuthorsComponent implements OnInit, OnDestroy {
   constructor(private _authorFetchService: AuthorService,
   ) {}
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this._loadData(1);
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this._unsubscribeOnDestroy$.next(true);
   }
 

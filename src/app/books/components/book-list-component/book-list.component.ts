@@ -22,7 +22,7 @@ export class BookListComponent implements OnInit, OnDestroy {
   ) {}
 
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this._route.data
       .pipe(takeUntil(this._unsubscribeOnDestroy$))
       .subscribe(({ resolveData }) => {
@@ -30,7 +30,7 @@ export class BookListComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this._unsubscribeOnDestroy$.next(true);
   }
 }
