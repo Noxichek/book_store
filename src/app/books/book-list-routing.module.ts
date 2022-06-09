@@ -9,7 +9,7 @@ import { BookInfoComponent } from './components/book-info/book-info.component';
 
 
 const routes = [
-  { path: '', component: BookListComponent, resolve: {resolveData: BookResolveService }},
+  { path: '', component: BookListComponent, resolve: { resolveData: BookResolveService }},
   { path: ':id', component: BookInfoComponent },
 ];
 

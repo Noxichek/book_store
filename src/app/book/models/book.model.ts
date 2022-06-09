@@ -1,36 +1,36 @@
 import { IBook, IBookModel } from '../interfaces/book.interface';
-import { IMAGES } from '../mocks/book-images';
+import { IMAGES }            from '../mocks/book-images';
+import { IAuthor }           from '../../authors/interfaces/author.interface';
 
 export class BookModel implements IBookModel {
-  constructor(private _data: IBook) {
+
+  public title: string;
+  public description: string;
+  public id: number;
+  public imageUrl?: string;
+  public price?: number;
+  public authorId: number;
+  public release_date?: Date;
+  public writing_date?: Date;
+  public genres?: any;
+  public author?: IAuthor;
+
+  constructor(
+    private _data: IBook,
+  ) {
     this._setBookImage();
+    this.title = _data.title;
+    this.description = _data.description;
+    this.id = _data.id;
+    this.price = _data.price;
+    this.authorId = _data.author_id;
+    this.release_date = _data.release_date;
+    this.writing_date = _data.writing_date;
+    this.genres = _data.genres;
+    this.author = _data.author;
   }
 
-  public get title(): string {
-    return this._data.title;
-  }
-
-  public get imageUrl(): string {
-    return this._data.imageUrl;
-  }
-
-  public get description(): string {
-    return this._data.description;
-  }
-
-  public get id(): number {
-    return this._data.id;
-  }
-
-  public get price(): number {
-    return this._data.price;
-  }
-
-  public get authorId(): number {
-    return this._data.author_id;
-  }
-
-  private _getRandomImageIndex(): number {
+  private static _getRandomImageIndex(): number {
     const min = Math.ceil(0);
     const max = Math.floor(11);
 
@@ -38,8 +38,6 @@ export class BookModel implements IBookModel {
   }
 
   private _setBookImage(): void {
-    const randomImage = IMAGES[this._getRandomImageIndex()];
-
-    this._data = { ...this._data, imageUrl: randomImage };
+    this.imageUrl = IMAGES[BookModel._getRandomImageIndex()];
   }
 }

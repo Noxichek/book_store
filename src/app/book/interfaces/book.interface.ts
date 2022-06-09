@@ -1,8 +1,11 @@
+import { IAuthor } from '../../authors/interfaces/author.interface';
+
 export interface IBook extends IBookData {
   author_id: number;
   release_date: Date;
   writing_date: Date;
   genres?: any;
+  author: IAuthor
 }
 
 export interface IBookModel extends IBookData {
@@ -14,5 +17,5 @@ export interface IBookData {
   description: string;
   id: number;
   imageUrl?: string;
-  price: number;
+  price?: number;
 }

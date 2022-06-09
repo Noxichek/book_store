@@ -1,21 +1,23 @@
-<mat-card class="example-card" *ngIf="currentBook.imageUrl">
+<mat-card class="example-card" *ngIf="currentBook?.imageUrl">
   <mat-card-header>
-    <mat-card-title>{{ currentBook.title }}</mat-card-title>
-    <mat-card-subtitle>{{ author.first_name }} {{ author.last_name }}</mat-card-subtitle>
+    <mat-card-title>{{ currentBook?.title }}</mat-card-title>
+    <mat-card-subtitle>{{author | authorFullName}}</mat-card-subtitle>
   </mat-card-header>
   <section class="image">
-    <img mat-card-image src="{{currentBook.imageUrl}}" alt="Photo of a Shiba Inu">
+    <img mat-card-image src="{{currentBook?.imageUrl}}" alt="Photo of a Shiba Inu">
   </section>
   <mat-card-content>
     <p>
-      {{currentBook.description}}
+      {{currentBook?.description}}
     </p>
   </mat-card-content>
   <mat-card-actions>
     <section>
-      <button mat-raised-button color="primary" routerLink="{{currentBook.id}}">View more info</button>
+      <button mat-raised-button color="primary" routerLink="{{currentBook?.id}}">View more info</button>
       <button mat-raised-button color="primary">Buy</button>
     </section>
-    <p>Price: {{ currentBook.price }}</p>
+    <p>Price: {{ currentBook?.price }}</p>
   </mat-card-actions>
 </mat-card>
+
+

@@ -5,14 +5,15 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 import { IAuthor } from '../interfaces/author.interface';
-import { IBook } from '../../book';
+import { IPaginatedAuthor } from '../../core/interfaces/paginated.interface';
+import { IAuthorBooksResponse } from '../../core/interfaces/author.books';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthorService {
 
-  constructor(private _httpClient: HttpClient) { }
+  constructor(private _httpClient: HttpClient) {}
 
   public getAuthorById(id: number): Observable<IAuthor> {
     return this._httpClient.get<IAuthor>(`api/authors/${id}`);
@@ -22,11 +23,20 @@ export class AuthorService {
     return this._httpClient.get<IAuthor[]>('api/authors');
   }
 
-  public getAllBooksOfCurrentAuthor(authorId: number): Observable<IBook[]> {
-    return this._httpClient.get<IBook[]>(`api/authors/${authorId}/books`);
+  public getAllBooksOfCurrentAuthor(authorId: number): Observable<IAuthorBooksResponse> {
+    return this._httpClient.get<IAuthorBooksResponse>(`api/authors/${authorId}/books`);
   }
 
-  public getAuthorsFromPageNumber(pageNumber: number, elementsPerPage: number = 4): Observable<IAuthor[]> {
-    return this._httpClient.get<IAuthor[]>(`api/authors?page=${pageNumber}&limit=${elementsPerPage}`);
+  public getAuthorsFromPageNumber(
+    pageNumber: number,
+    elementsPerPage: number): Observable<IPaginatedAuthor> {
+    const parameters = {
+      limit: elementsPerPage,
+      page: pageNumber,
+    };
+
+    return this._httpClient.get<IPaginatedAuthor>('api/authors', {
+      params: parameters,
+    });
   }
 }

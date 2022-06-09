@@ -8,13 +8,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { BookInfoComponent } from '../books/components/book-info/book-info.component';
 
 import { BookCardComponent } from './components/book-card-component/book-card.component';
-
+import { AuthorFullNamePipe } from './pipes/author.full.name.pipe';
 
 
 @NgModule({
   declarations: [
     BookCardComponent,
     BookInfoComponent,
+    AuthorFullNamePipe,
   ],
   imports: [
     CommonModule,

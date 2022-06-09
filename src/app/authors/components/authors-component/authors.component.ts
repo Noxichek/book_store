@@ -2,63 +2,78 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { PageEvent } from '@angular/material/paginator';
 
-import { forkJoin, map, pluck, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { forkJoin, map, Observable, pluck, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
 import { AuthorService } from '../../services/author.service';
 import { IAuthor } from '../../interfaces/author.interface';
+import { IPaginatedAuthor } from '../../../core/interfaces/paginated.interface';
+import { IAuthorBooksResponse } from '../../../core/interfaces/author.books';
+import { IBook } from '../../../book';
 
 
 @Component({
   selector: 'app-authors',
   templateUrl: './authors.component.html',
-  styleUrls: ['./authors.component.scss']
+  styleUrls: ['./authors.component.scss'],
 })
 
 export class AuthorsComponent implements OnInit, OnDestroy {
 
-  public displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
+  public readonly displayedColumns = ['position', 'name', 'weight', 'symbol'];
   public dataSource: IAuthor[] = [];
-  private _unsubscribeOnDestroy$ = new Subject<boolean>();
+  public page = 1;
+  public pageSize = 5;
+  public length!: number;
 
+  private readonly _destroy$ = new Subject<boolean>();
 
-  constructor(private _authorFetchService: AuthorService,
+  constructor(
+    private readonly _authorFetchService: AuthorService,
   ) {}
 
   public ngOnInit(): void {
-    this._loadData(1);
+    this._loadData(this.page, this.pageSize);
   }
 
   public ngOnDestroy(): void {
-    this._unsubscribeOnDestroy$.next(true);
+    this._destroy$.next(true);
   }
 
-  public _changePage(pageNumber: PageEvent): void {
-    this._loadData(++pageNumber.pageIndex);
+  public _changePage($event: PageEvent): void {
+    this.page = ++$event.pageIndex;
+    this.pageSize = $event.pageSize;
+
+    this._loadData(this.page, this.pageSize);
   }
 
-  private _loadData(page: number): void {
-    this._authorFetchService.getAuthorsFromPageNumber(page)
+  private _loadData(page: number, pageSize: number): void {
+    this._authorFetchService.getAuthorsFromPageNumber(page, pageSize)
       .pipe(
+        tap((paginatedAuthor: IPaginatedAuthor) => {
+          this.length = paginatedAuthor.meta.records;
+        }),
         pluck('authors'),
         tap((authors: IAuthor[]) => {
           this.dataSource = authors;
         }),
-        switchMap((response:IAuthor[]) => {
+        switchMap((response:IAuthor[]): Observable<IAuthorBooksResponse[]> => {
           const authorBookRequest = response.map((element: IAuthor) => {
             return this._authorFetchService.getAllBooksOfCurrentAuthor(element.id);
           });
 
           return forkJoin(authorBookRequest);
         }),
-        map((response) => {
-          return response.map((element) => {
+        map((response: IAuthorBooksResponse[]): IBook[][] => {
+          console.log(response);
+
+          return response.map((element: IAuthorBooksResponse) => {
             return element['books'];
           });
         }),
-        takeUntil(this._unsubscribeOnDestroy$),
+        takeUntil(this._destroy$),
       )
-      .subscribe((response) => {
-        this.dataSource = this.dataSource.map((element: IAuthor, index: number) => {
+      .subscribe((response: IBook[][]) => {
+        this.dataSource = this.dataSource.map((element: IAuthor, index: number): IAuthor => {
           return { ...element, books: response[index] };
         });
       });

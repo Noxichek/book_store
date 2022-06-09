@@ -4,9 +4,10 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 import { AuthorService } from '../../../authors/services/author.service';
-import { IAuthor } from '../../../authors/interfaces/author.interface';
-import { IBook } from '../../../book';
-import { BookModel } from '../../../book/models/book.model';
+import { IAuthor }       from '../../../authors/interfaces/author.interface';
+import { IBook }         from '../../../book';
+import { BookModel }     from '../../../book/models/book.model';
+import { BookService }   from '../../../book/services/book.service';
 
 
 @Component({
@@ -16,17 +17,23 @@ import { BookModel } from '../../../book/models/book.model';
 })
 
 export class BookCardComponent implements OnInit, OnDestroy {
-  @Input() public set book(value: IBook | null) {
-    this.currentBook = new BookModel(value);
-    this._getAuthorFullName();
+
+  @Input()
+  public set book(value: IBook | null) {
+    if (value) {
+      this.currentBook = new BookModel(value);
+      this._getAuthorFullName();
+    }
   }
 
-  public currentBook: BookModel = {} as BookModel;
-  public author: IAuthor = {} as IAuthor;
-  private _unsubscribeOnDestroy$ = new Subject<boolean>();
+  public currentBook!: BookModel;
+  public author!: IAuthor;
+  private _destroy$ = new Subject<boolean>();
 
-  constructor(private _authorFetchService: AuthorService,
-              private _router: Router,
+  constructor(
+    private _authorFetchService: AuthorService,
+    private _bookService: BookService,
+    private _router: Router,
   ) {}
 
   public ngOnInit(): void {
@@ -34,14 +41,14 @@ export class BookCardComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this._unsubscribeOnDestroy$.next(true);
+    this._destroy$.next(true);
   }
 
   private _getAuthorFullName(): void {
     const { authorId } = this.currentBook;
 
     this._authorFetchService.getAuthorById(authorId)
-      .pipe(takeUntil(this._unsubscribeOnDestroy$))
+      .pipe(takeUntil(this._destroy$))
       .subscribe((response: IAuthor) => {
         this.author = response;
       });
