@@ -6,6 +6,7 @@ import { Component, HostBinding } from '@angular/core';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
+  // FIXME Add new line
   public title = 'app_book';
   @HostBinding('class') public className = 'defaultMode';
 
@@ -15,4 +16,5 @@ export class AppComponent {
 
     this.className = this.className === defaultName ? darkClassName : defaultName;
   }
+  // FIXME Add new line
 }

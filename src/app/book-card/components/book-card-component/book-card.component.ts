@@ -1,9 +1,11 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+// FIXME Incorrect import format
 import { Router }                              from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
 import { AuthorService } from '../../../authors/services/author.service';
+// FIXME Incorrect import format
 import { IAuthor }       from '../../../authors/interfaces/author.interface';
 import { IBook }         from '../../../book';
 import { BookModel }     from '../../../book/models/book.model';
@@ -33,6 +35,7 @@ export class BookCardComponent implements OnInit, OnDestroy {
   constructor(
     private _authorFetchService: AuthorService,
     private _bookService: BookService,
+    // FIXME Unused Router
     private _router: Router,
   ) {}
 
@@ -44,8 +47,9 @@ export class BookCardComponent implements OnInit, OnDestroy {
     this._destroy$.next(true);
   }
 
+  // FIXME Getting author should be in angular pipe
   private _getAuthorFullName(): void {
-    const { authorId } = this.currentBook;
+    const {authorId} = this.currentBook;
 
     this._authorFetchService.getAuthorById(authorId)
       .pipe(takeUntil(this._destroy$))

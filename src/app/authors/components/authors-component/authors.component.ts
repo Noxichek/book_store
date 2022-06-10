@@ -39,6 +39,7 @@ export class AuthorsComponent implements OnInit, OnDestroy {
     this._destroy$.next(true);
   }
 
+  // FIXME Should be without _
   public _changePage($event: PageEvent): void {
     this.page = ++$event.pageIndex;
     this.pageSize = $event.pageSize;
@@ -56,6 +57,7 @@ export class AuthorsComponent implements OnInit, OnDestroy {
         tap((authors: IAuthor[]) => {
           this.dataSource = authors;
         }),
+        // FIXME Remove these 2 operators
         switchMap((response:IAuthor[]): Observable<IAuthorBooksResponse[]> => {
           const authorBookRequest = response.map((element: IAuthor) => {
             return this._authorFetchService.getAllBooksOfCurrentAuthor(element.id);
@@ -71,6 +73,7 @@ export class AuthorsComponent implements OnInit, OnDestroy {
         takeUntil(this._destroy$),
       )
       .subscribe((response: IBook[][]) => {
+        // FIXME Empty subscribe
         this.dataSource = this.dataSource.map((element: IAuthor, index: number): IAuthor => {
           return { ...element, books: response[index] };
         });

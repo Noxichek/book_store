@@ -18,13 +18,17 @@ import { CoreModule } from './core/core.module';
     AppComponent,
   ],
   imports: [
+    // FIXME Transfer to Core
     BrowserModule,
     AppRoutingModule,
+    // FIXME Transfer to Core
     BrowserAnimationsModule,
     CoreModule,
+    // FIXME Isn't used
     MatButtonToggleModule,
     MatButtonModule,
     CommonModule,
+    // FIXME Transfer to Core
     HttpClientModule,
   ],
   providers: [],

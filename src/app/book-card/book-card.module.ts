@@ -14,6 +14,7 @@ import { AuthorFullNamePipe } from './pipes/author.full.name.pipe';
 @NgModule({
   declarations: [
     BookCardComponent,
+    // FIXME BookInfo should be declared in books
     BookInfoComponent,
     AuthorFullNamePipe,
   ],
@@ -21,11 +22,13 @@ import { AuthorFullNamePipe } from './pipes/author.full.name.pipe';
     CommonModule,
     MatCardModule,
     MatButtonModule,
+    // FIXME There isn't necessary to export RouterModule
     RouterModule,
   ],
   exports: [
     BookCardComponent,
     BookInfoComponent,
+    // FIXME There isn't necessary to export AuthorFullNamePipe
     AuthorFullNamePipe,
   ],
 })

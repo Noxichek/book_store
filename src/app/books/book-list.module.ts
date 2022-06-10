@@ -15,7 +15,9 @@ import { BookListComponent } from './components/book-list-component/book-list.co
     BookListRoutingModule,
   ],
   exports: [
+    // FIXME export isn't necessary here
     BookListComponent,
   ],
 })
+// FIXME The name of module and folder name don't match
 export class BookListModule {}
