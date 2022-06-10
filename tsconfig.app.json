@@ -3,7 +3,12 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": []
+    "types": [],
+    "paths": {
+      "@lib/book": [ "src/libs/book/index.ts" ],
+      "@lib/layout": [ "src/libs/layout/index.ts" ],
+      "@lib/pagination": [ "src/libs/pagination/index.ts" ]
+    }
   },
   "files": [
     "src/main.ts",

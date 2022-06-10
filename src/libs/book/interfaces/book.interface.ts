@@ -1,4 +1,4 @@
-import { IAuthor } from '../../authors/interfaces/author.interface';
+import { IAuthor } from '../../../app/authors/interfaces/author.interface';
 
 export interface IBook extends IBookData {
   author_id: number;

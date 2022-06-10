@@ -1,13 +1,11 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-// FIXME Incorrect import format
-import { ActivatedRoute }     from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { pluck, Subject, takeUntil } from 'rxjs';
 
 import { AuthorService } from '../../services/author.service';
-// FIXME Incorrect import format
-import { IAuthor }       from '../../interfaces/author.interface';
-import { IBook }         from '../../../book';
+import { IAuthor } from '../../interfaces/author.interface';
+import { IBook } from '../../../../libs/book';
 
 
 @Component({
@@ -19,9 +17,8 @@ export class AuthorInfoComponent implements OnInit, OnDestroy {
 
   public author!: IAuthor;
   public books!: IBook[];
-  // FIXME Add empty line
-  // FIXME Should b e Subject<void>
-  private _destroy$ = new Subject<boolean>();
+
+  private _destroy$ = new Subject<void>();
 
   constructor(
     private _authorService: AuthorService,
@@ -29,7 +26,16 @@ export class AuthorInfoComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
-    // FIXME Move to personal method
+    this._getAuthorById();
+    this._getBooksByCurrentAuthor();
+  }
+
+  public ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
+  }
+
+  private _getAuthorById(): void {
     const id = Number(this._activatedRoute.snapshot.paramMap.get('id'));
 
     this._authorService.getAuthorById(id).pipe(
@@ -38,12 +44,9 @@ export class AuthorInfoComponent implements OnInit, OnDestroy {
       .subscribe((response: IAuthor) => {
         this.author = response;
       });
-
-    this.getBooksByCurrentAuthor();
   }
 
-  // FIXME Should be private
-  public getBooksByCurrentAuthor(): void {
+  private _getBooksByCurrentAuthor(): void {
     this._authorService.getAllBooksOfCurrentAuthor
     (Number(this._activatedRoute.snapshot.paramMap.get('id')))
       .pipe(
@@ -55,9 +58,4 @@ export class AuthorInfoComponent implements OnInit, OnDestroy {
       });
   }
 
-  // FIXME Should be after ngOnInit
-  public ngOnDestroy(): void {
-    // FIXME change next ot complete
-    this._destroy$.next(true);
-  }
 }

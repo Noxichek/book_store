@@ -3,8 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { IBook } from '../interfaces/book.interface';
-
-import { BookService } from '../services/book.service';
+import { BookService } from '../../../app/books/services/book.service';
 
 
 @Injectable({

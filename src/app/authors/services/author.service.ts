@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
-// FIXME fix order
+
 import { HttpClient } from '@angular/common/http';
 
 import { IAuthor } from '../interfaces/author.interface';
-import { IPaginatedAuthor } from '../../core/interfaces/paginated.interface';
-import { IAuthorBooksResponse } from '../../core/interfaces/author.books';
+import { IPaginatedAuthor, IPaginatedBooks } from '../../../libs/pagination';
 
 @Injectable({
   providedIn: 'root',
@@ -23,8 +22,8 @@ export class AuthorService {
     return this._httpClient.get<IAuthor[]>('api/authors');
   }
 
-  public getAllBooksOfCurrentAuthor(authorId: number): Observable<IAuthorBooksResponse> {
-    return this._httpClient.get<IAuthorBooksResponse>(`api/authors/${authorId}/books`);
+  public getAllBooksOfCurrentAuthor(authorId: number): Observable<IPaginatedBooks> {
+    return this._httpClient.get<IPaginatedBooks>(`api/authors/${authorId}/books`);
   }
 
   public getAuthorsFromPageNumber(

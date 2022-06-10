@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 
 import { Subject, takeUntil } from 'rxjs';
 
-import { BookService } from '../../../book/services/book.service';
-import { IBook } from '../../../book';
+import { BookService } from '../../services/book.service';
+import { IBook } from '../../../../libs/book';
 
 
 @Component({
@@ -18,7 +18,6 @@ export class BookInfoComponent implements OnInit, OnDestroy {
   private _destroy$ = new Subject<boolean>();
 
   constructor(
-    // FIXME Start with new line
     private _bookFetchService: BookService,
     private _activatedRoute: ActivatedRoute,
   ) {}
@@ -27,15 +26,11 @@ export class BookInfoComponent implements OnInit, OnDestroy {
     const id = Number(this._activatedRoute.snapshot.paramMap.get('id'));
 
     this._bookFetchService.getBookById(id)
-      // FIXME Start with new line
       .pipe(
         takeUntil(this._destroy$),
       )
-      // FIXME Start with new line
       .subscribe((response: IBook) => {
         this.book = response;
-        // FIXME Should delete
-        console.log(this.book);
       });
   }
 

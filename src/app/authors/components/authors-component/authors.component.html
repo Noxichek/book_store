@@ -28,10 +28,10 @@
 <!--</table>-->
 
 <mat-list role="list" *ngFor="let author of dataSource">
-  <mat-list-item routerLink="{{author.id}}" role="listitem"><span>{{author | authorFullName}}</span></mat-list-item>
+  <mat-list-item routerLink="{{author.id}}" role="listitem"><span>{{author.first_name + author.last_name}}</span></mat-list-item>
 </mat-list>
 
-<mat-paginator (page)="_changePage($event)"
+<mat-paginator (page)="changePage($event)"
                [length]="length"
                [pageSize]="pageSize"
                aria-label="Select page">
