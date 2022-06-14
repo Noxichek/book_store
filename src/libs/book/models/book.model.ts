@@ -1,6 +1,6 @@
 import { IBook, IBookModel } from '../interfaces/book.interface';
-import { IMAGES }            from '../mocks/book-images';
-import { IAuthor }           from '../../authors/interfaces/author.interface';
+import { IAuthor } from '../../../app/authors/interfaces/author.interface';
+import { IMAGES } from '../mocks/book-images';
 
 export class BookModel implements IBookModel {
 

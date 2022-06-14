@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { HttpClient } from '@angular/common/http';
 
-import { IBook } from '../interfaces/book.interface';
+import { IBook } from '../../../libs/book';
 
 
 @Injectable({

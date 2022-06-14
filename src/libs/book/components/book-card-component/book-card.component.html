@@ -1,19 +1,19 @@
 <mat-card class="example-card">
   <mat-card-header>
     <mat-card-title>{{ currentBook?.title }}</mat-card-title>
-    <mat-card-subtitle>{{author | authorFullName}}</mat-card-subtitle>
+    <mat-card-subtitle>{{ currentBook.authorId | authorFullName }}</mat-card-subtitle>
   </mat-card-header>
   <section class="image">
-    <img mat-card-image src="{{currentBook?.imageUrl}}" alt="Book image">
+    <img mat-card-image src="{{ currentBook?.imageUrl }}" alt="Book image">
   </section>
   <mat-card-content>
     <p>
-      {{currentBook?.description}}
+      {{ currentBook?.description }}
     </p>
   </mat-card-content>
   <mat-card-actions>
     <section>
-      <button mat-raised-button color="primary" routerLink="{{currentBook?.id}}">View more info</button>
+      <button mat-raised-button color="primary" routerLink="{{ currentBook?.id }}">View more info</button>
       <button mat-raised-button color="primary">Buy</button>
     </section>
     <p>Price: {{ currentBook?.price }}</p>

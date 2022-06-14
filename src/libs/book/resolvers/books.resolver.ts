@@ -3,14 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { IBook } from '../interfaces/book.interface';
-
-import { BookService } from './book.service';
+import { BookService } from '../../../app/books/services/book.service';
 
 
 @Injectable({
   providedIn: 'root',
 })
-export class BookResolveService {
+export class BooksResolver {
 
   constructor(private _bookService: BookService) {}
 

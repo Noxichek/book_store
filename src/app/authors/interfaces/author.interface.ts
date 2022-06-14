@@ -1,4 +1,4 @@
-import { IBook } from '../../book';
+import { IBook } from '../../../libs/book';
 
 export interface IAuthor {
   id: number;

@@ -1,8 +1,8 @@
-import { NgModule }             from '@angular/core';
-import { CommonModule }         from '@angular/common';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
-import { AuthorsComponent }    from './components/authors-component/authors.component';
+import { AuthorsComponent } from './components/authors-component/authors.component';
 import { AuthorInfoComponent } from './components/author-info-component/author.info.component';
 
 const routes: Routes = [
