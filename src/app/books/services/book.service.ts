@@ -21,5 +21,9 @@ export class BookService {
   public getBookById(id: number): Observable<IBook> {
     return this._httpClient.get<IBook>(`api/books/${id}`);
   }
+
+  public createBook(id: number, book: IBook) {
+    this._httpClient.post(`api/authors/${id}/books`, book);
+  }
 }
 

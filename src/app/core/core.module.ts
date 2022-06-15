@@ -4,8 +4,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 
-import { LayoutModule } from '../../libs/layout/layout.module';
-
 
 @NgModule({
   declarations: [],
@@ -15,7 +13,6 @@ import { LayoutModule } from '../../libs/layout/layout.module';
     HttpClientModule,
     BrowserAnimationsModule,
     BrowserModule,
-    LayoutModule,
   ],
 })
 export class CoreModule {}

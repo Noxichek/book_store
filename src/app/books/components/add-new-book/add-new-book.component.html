@@ -1,0 +1,67 @@
+<form [formGroup]="form" (ngSubmit)="addNewBook()">
+  <mat-form-field appearance="fill">
+    <mat-label>Title</mat-label>
+    <input matInput formControlName="title">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Author</mat-label>
+    <mat-select
+      formControlName="author"
+      (selectionChange)="getAuthorId($event)"
+    >
+      <mat-option value="{{author.first_name}} {{author.last_name}}"
+                  *ngFor="let author of authors">{{author.first_name}} {{author.last_name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="description" appearance="fill">
+    <mat-label>Description</mat-label>
+    <textarea matInput formControlName="description"></textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" floatLabel="always">
+    <mat-label>Price</mat-label>
+    <input matInput type="number" class="example-right-align" placeholder="0" formControlName="price">
+    <span matPrefix>₽&nbsp;</span>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Writing date</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="writingDate">
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Release date</mat-label>
+    <input matInput [matDatepicker]="picker1" formControlName="releaseDate">
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field class="example-chip-list" appearance="fill">
+    <mat-label>Genres</mat-label>
+    <mat-chip-list #chipList aria-label="Fruit selection">
+      <mat-chip *ngFor="let genre of genres" (removed)="remove(genre)">
+        {{genre.name}}
+        <button matChipRemove>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip>
+      <input placeholder="New genre..."
+             [matChipInputFor]="chipList"
+             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+             [matChipInputAddOnBlur]="addOnBlur"
+             (matChipInputTokenEnd)="add($event)"
+             formControlName="genres"
+             type="text"
+      >
+    </mat-chip-list>
+  </mat-form-field>
+
+  <button type="submit" mat-raised-button color="primary">Add new book</button>
+</form>
+
