@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
+import { MatSelectChange } from '@angular/material/select';
 
 import { pluck, Subject, takeUntil } from 'rxjs';
 
@@ -30,10 +31,9 @@ export class AddNewBookComponent implements OnInit, OnDestroy {
 
   public authors: IAuthor[] = [];
   public newBook!: IBook;
-  public currentAuthor!: any;
+  public currentAuthor!: IAuthor;
   public form!: FormGroup;
-  public authorId!: any;
-  public bookId!: any;
+  public authorId!: number;
 
   private readonly _destroy$ = new Subject<boolean>();
 
@@ -106,17 +106,8 @@ export class AddNewBookComponent implements OnInit, OnDestroy {
   }
 
   public addNewBook() {
-    this._bookService.getAllBooks()
-      .pipe(
-        pluck('meta', 'records'),
-        takeUntil(this._destroy$),
-      )
-      .subscribe((response) => {
-        this.bookId = Number(response) + 1;
-      });
 
     this.newBook = {
-      id: this.bookId,
       description: this.form.get('description')?.value,
       author_id: this.authorId,
       title: this.form.get('title')?.value,
@@ -126,22 +117,25 @@ export class AddNewBookComponent implements OnInit, OnDestroy {
       release_date: this.form.get('releaseDate')?.value,
       author: {
         id: this.authorId,
-        first_name: this.currentAuthor?.first_name,
-        last_name: this.currentAuthor?.last_name,
+        first_name: this.currentAuthor.first_name,
+        last_name: this.currentAuthor.last_name,
       },
     };
     console.log(this.newBook);
-    this._bookService.createBook(this.authorId, this.newBook);
+    this._bookService.createBook(this.authorId, this.newBook)
+      .pipe(
+        takeUntil(this._destroy$),
+      )
+      .subscribe();
   }
 
 
-  public getAuthorId($event: any): number {
-    const authorLastName = this.form.controls['author'].value.split(' ')[1];
-    console.log(this);
+  public getAuthorId({ value }: MatSelectChange): number {
+    const [,authorLastName] = value.split(' ');
 
     this.currentAuthor = this.authors.find((element: IAuthor) => {
       return element.last_name === authorLastName;
-    });
+    }) || {} as IAuthor;
 
     return this.authorId = this.currentAuthor!.id;
   }

@@ -23,7 +23,7 @@ export class BookService {
   }
 
   public createBook(id: number, book: IBook) {
-    this._httpClient.post(`api/authors/${id}/books`, book);
+    return this._httpClient.post(`api/authors/${id}/books`, book);
   }
 }
 
