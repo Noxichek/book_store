@@ -21,7 +21,7 @@ export class BookListComponent implements OnInit, OnDestroy {
   public pageSize = 3;
   public length!: number;
 
-  private _destroy$ = new Subject<void>();
+  private readonly _destroy$ = new Subject<void>();
 
   @ViewChild(CdkVirtualScrollViewport, { static: true })
   private _scroll!: CdkVirtualScrollViewport;

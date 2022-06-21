@@ -15,7 +15,7 @@ import { IBook } from '../../../../libs/book';
 export class BookInfoComponent implements OnInit, OnDestroy {
 
   public book!: IBook;
-  private _destroy$ = new Subject<boolean>();
+  private readonly _destroy$ = new Subject<boolean>();
 
   constructor(
     private _bookFetchService: BookService,
