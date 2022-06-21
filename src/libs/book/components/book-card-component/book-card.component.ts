@@ -24,7 +24,8 @@ export class BookCardComponent implements OnDestroy {
   }
 
   public currentBook!: BookModel;
-  private _destroy$ = new Subject<boolean>();
+
+  private readonly _destroy$ = new Subject<boolean>();
 
   constructor(
     private _authorFetchService: AuthorService,

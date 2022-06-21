@@ -15,10 +15,11 @@ export class AuthorInfoContainerComponent implements OnInit, OnDestroy {
 
   @Input()
   public id!: number;
+
   public author!: IAuthor;
   public books!: IBook[];
 
-  private _destroy$ = new Subject<void>();
+  private readonly _destroy$ = new Subject<void>();
 
   constructor(private _authorService: AuthorService) {}
 

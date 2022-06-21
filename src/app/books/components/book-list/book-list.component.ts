@@ -15,7 +15,7 @@ export class BookListComponent implements OnInit, OnDestroy {
 
   public books: IBook[] = [];
 
-  private _destroy$ = new Subject<void>();
+  private readonly _destroy$ = new Subject<void>();
 
   constructor(
     private _bookFetchService: BookService,
