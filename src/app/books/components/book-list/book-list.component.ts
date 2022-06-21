@@ -1,5 +1,4 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 
 import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
 
@@ -28,7 +27,6 @@ export class BookListComponent implements OnInit, OnDestroy {
 
   constructor(
     private _bookFetchService: BookService,
-    private _activatedRoute: ActivatedRoute,
     private _changeDetectorRef: ChangeDetectorRef,
   ) {}
 

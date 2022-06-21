@@ -5,12 +5,12 @@ import { RouterModule } from '@angular/router';
 import { BooksResolver } from '../../libs/book/resolvers/books.resolver';
 
 import { BookListComponent } from './components/book-list/book-list.component';
-import { BookInfoComponent } from './components/book-info/book-info.component';
+import { BookInfoViewComponent } from './views/book-info-view/book-info-view.component';
 
 
 const routes = [
   { path: '', component: BookListComponent, resolve: { resolveData: BooksResolver }},
-  { path: ':id', component: BookInfoComponent },
+  { path: ':id', component: BookInfoViewComponent },
 ];
 
 @NgModule({
