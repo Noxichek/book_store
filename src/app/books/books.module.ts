@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { ScrollingModule } from '@angular/cdk/scrolling';
+
 import { BookModule } from '../../libs/book';
 
 import { BooksRoutingModule } from './books-routing.module';
@@ -17,6 +19,7 @@ import { BookInfoComponent } from './components/book-info/book-info.component';
     CommonModule,
     BooksRoutingModule,
     BookModule,
+    ScrollingModule,
   ],
 })
 export class BooksModule {}
