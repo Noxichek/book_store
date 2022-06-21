@@ -1,0 +1,7 @@
+<app-authors [authors]="dataSource"></app-authors>
+
+<mat-paginator (page)="changePage($event)"
+               [length]="length"
+               [pageSize]="pageSize"
+               aria-label="Select page">
+</mat-paginator>

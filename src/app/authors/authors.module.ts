@@ -11,10 +11,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { AuthorsComponent } from './components/authors-component/authors.component';
 import { AuthorsRoutingModule } from './authors-routing.module';
 import { AuthorInfoComponent } from './components/author-info-component/author.info.component';
+import { AuthorsContainerComponent } from './containers/authors-container/authors-container.component';
 
 
 @NgModule({
-  declarations: [AuthorsComponent, AuthorInfoComponent],
+  declarations: [AuthorsComponent, AuthorInfoComponent, AuthorsContainerComponent],
   imports: [
     CommonModule,
     RouterModule,
