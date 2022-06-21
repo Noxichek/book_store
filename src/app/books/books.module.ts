@@ -10,7 +10,6 @@ import { BookListComponent } from './components/book-list/book-list.component';
 import { BookInfoComponent } from './components/book-info/book-info.component';
 import { BookInfoContainerComponent } from './containers/book-info-container/book-info-container.component';
 import { BookInfoViewComponent } from './views/book-info-view/book-info-view.component';
-import { BookListContainerComponent } from './containers/book-list-container/book-list-container.component';
 
 
 @NgModule({
@@ -19,7 +18,6 @@ import { BookListContainerComponent } from './containers/book-list-container/boo
     BookInfoComponent,
     BookInfoContainerComponent,
     BookInfoViewComponent,
-    BookListContainerComponent,
   ],
   imports: [
     CommonModule,
