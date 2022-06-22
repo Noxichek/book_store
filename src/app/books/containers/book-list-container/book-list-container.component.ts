@@ -34,7 +34,7 @@ export class BookListContainerComponent implements OnInit, OnDestroy {
     this._destroy$.complete();
   }
 
-  public paginatedLoadData() {
+  public paginatedLoadData(): void {
     this._loadData(++this.page, this.pageSize);
   }
 

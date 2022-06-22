@@ -17,7 +17,7 @@ export class BookInfoContainerComponent implements OnInit, OnDestroy {
 
   public book!: IBook;
 
-  private readonly _destroy$ = new Subject<boolean>();
+  private readonly _destroy$ = new Subject<void>();
 
   constructor(private _bookService: BookService) {}
 
@@ -26,7 +26,8 @@ export class BookInfoContainerComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this._destroy$.next(true);
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   private _getBook(id: number) {

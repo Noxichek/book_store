@@ -21,11 +21,11 @@ import { IBook } from '../../../../libs/book';
 })
 export class BookListComponent implements OnInit, OnDestroy {
 
-  @Output()
-  public scrolledToBottom = new EventEmitter();
-
   @Input()
   public books: IBook[] = [];
+
+  @Output()
+  public scrolledToBottom = new EventEmitter();
 
   private readonly _destroy$ = new Subject<void>();
 
