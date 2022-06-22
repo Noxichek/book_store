@@ -1,11 +1,7 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
-import { Subject } from 'rxjs';
-
-import { AuthorService } from '../../../../app/authors/services/author.service';
 import { IBook } from '../../index';
 import { BookModel } from '../../models/book.model';
-import { BookService } from '../../../../app/books/services/book.service';
 
 
 @Component({
@@ -14,7 +10,7 @@ import { BookService } from '../../../../app/books/services/book.service';
   styleUrls: ['./book-card.component.scss'],
 })
 
-export class BookCardComponent implements OnDestroy {
+export class BookCardComponent {
 
   @Input()
   public set book(value: IBook | null) {
@@ -25,15 +21,4 @@ export class BookCardComponent implements OnDestroy {
 
   public currentBook!: BookModel;
 
-  private readonly _destroy$ = new Subject<boolean>();
-
-  constructor(
-    private _authorFetchService: AuthorService,
-    private _bookService: BookService,
-  ) {}
-
-
-  public ngOnDestroy(): void {
-    this._destroy$.next(true);
-  }
 }
