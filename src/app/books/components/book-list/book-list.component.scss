@@ -1,12 +1,20 @@
 section {
-  display: inline-grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
-  justify-items: center;
-  align-items: center;
-  justify-content: space-between;
-  align-content: center;
-  width: 80vw;
+  //display: inline-grid;
+  //grid-template-columns: 1fr 1fr 1fr;
+  //grid-template-rows: 1fr 1fr 1fr;
+  //justify-items: center;
+  //align-items: center;
+  //justify-content: space-between;
+  //align-content: center;
+  //width: 80vw;
+
+  display: flex;
+
+  button {
+    width: 112px;
+    height: 35px;
+  }
+
 }
 
 .scroll-viewport {
