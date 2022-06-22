@@ -1,0 +1,16 @@
+<section>
+  <i (click)="onRemove()" class="material-icons">exposure_minus_1</i>
+    <mat-form-field appearance="fill" floatLabel="always">
+      <mat-label>Price</mat-label>
+      <input
+        matInput
+        type="number"
+        class="example-right-align"
+        placeholder="0"
+        [formControl]="inputPrice"
+      >
+      <mat-error>Wrong price</mat-error>
+      <span matSuffix>₽&nbsp;</span>
+    </mat-form-field>
+  <i (click)="onAdd()" class="material-icons">exposure_plus_1</i>
+</section>

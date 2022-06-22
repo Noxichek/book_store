@@ -1,0 +1,99 @@
+<form [formGroup]="form" (ngSubmit)="addNewBook()">
+  <mat-form-field appearance="fill">
+    <mat-label>Title</mat-label>
+    <input matInput formControlName="title">
+  </mat-form-field>
+
+  <form class="example-form">
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Author</mat-label>
+      <input type="text"
+             placeholder="Pick one"
+             aria-label="Author"
+             matInput
+             formControlName="author"
+             [matAutocomplete]="auto"
+      >
+      <mat-autocomplete
+        autoActiveFirstOption
+        #auto="matAutocomplete"
+        [displayWith]="displayAuthorFn">
+          <mat-option [value]="author" *ngFor="let author of filteredAuthors | async">
+            {{author.first_name}} {{author.last_name}}
+          </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </form>
+
+  <mat-form-field class="description" appearance="fill">
+    <mat-label>Description</mat-label>
+    <textarea matInput formControlName="description"></textarea>
+  </mat-form-field>
+
+
+  <app-price formControlName="price"></app-price>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Writing date</mat-label>
+    <input
+      matInput
+      [matDatepicker]="picker"
+      formControlName="writingDate"
+      [errorStateMatcher]="matchersMap.comparedDate"
+    >
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error>Wrong date</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Release date</mat-label>
+    <input
+      matInput
+      [matDatepicker]="picker1"
+      formControlName="releaseDate"
+      [errorStateMatcher]="matchersMap.comparedDate"
+    >
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+    <mat-error>Wrong date</mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="example-chip-list" appearance="fill">
+    <mat-label>Genres</mat-label>
+    <mat-chip-list #chipList aria-label="Fruit selection">
+      <mat-chip *ngFor="let genre of selectedGenres" (removed)="remove(genre)">
+        {{genre.name}}
+        <button matChipRemove>
+          <mat-icon>cancel</mat-icon>
+        </button>
+      </mat-chip>
+      <input placeholder="New genre..."
+             #genreInput
+             [matAutocomplete]="chips"
+             [matChipInputFor]="chipList"
+             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+             matChipInputAddOnBlur="true"
+             matInput
+             formControlName="genres"
+             type="text"
+      >
+    </mat-chip-list>
+    <mat-autocomplete #chips="matAutocomplete" (optionSelected)="selected($event)">
+      <mat-option *ngFor="let genre of filteredGenres | async" [value]="genre">
+        {{genre.name}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
+  <button
+    type="submit"
+    mat-raised-button color="primary"
+    [disabled]="form.invalid"
+    routerLink="/books"
+  >Add new book
+  </button>
+</form>
+

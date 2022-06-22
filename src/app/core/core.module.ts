@@ -3,19 +3,19 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-
-import { LayoutModule } from '../../libs/layout/layout.module';
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
   declarations: [],
   imports: [
+    ToastrModule.forRoot(),
   ],
   exports: [
     HttpClientModule,
     BrowserAnimationsModule,
     BrowserModule,
-    LayoutModule,
+    ToastrModule,
   ],
 })
 export class CoreModule {}
