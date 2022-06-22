@@ -18,8 +18,8 @@ export class AuthorService {
     return this._httpClient.get<IAuthor>(`api/authors/${id}`);
   }
 
-  public getAllAuthors(): Observable<IAuthor[]> {
-    return this._httpClient.get<IAuthor[]>('api/authors');
+  public getAllAuthors(): Observable<IPaginatedAuthor> {
+    return this._httpClient.get<IPaginatedAuthor>('api/authors');
   }
 
   public getAllBooksOfCurrentAuthor(authorId: number): Observable<IPaginatedBooks> {

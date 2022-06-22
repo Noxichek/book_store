@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 import { IBook } from '../../../libs/book';
+import { ICreateBookData } from '../interfaces/create-book-data-interface';
 import { IPaginatedBooks } from '../../../libs/pagination';
 
 
@@ -33,6 +34,10 @@ export class BookService {
     };
 
     return this._httpClient.get<IPaginatedBooks>('api/books', { params: parameters });
+  }
+
+  public createBook(id: number, data: ICreateBookData): Observable<IBook> {
+    return this._httpClient.post<IBook>(`api/authors/${id}/books`, data);
   }
 }
 

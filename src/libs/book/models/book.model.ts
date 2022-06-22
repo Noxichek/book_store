@@ -6,7 +6,7 @@ export class BookModel implements IBookModel {
 
   public title: string;
   public description: string;
-  public id: number;
+  public id?: number;
   public imageUrl?: string;
   public price?: number;
   public authorId: number;
