@@ -1,7 +1,7 @@
 import { IAuthor } from '../../../app/authors/interfaces/author.interface';
 
 export interface IBook extends IBookData {
-  author_id: number;
+  authorId: number;
   release_date: Date;
   writing_date: Date;
   genres?: any;

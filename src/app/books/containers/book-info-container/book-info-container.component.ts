@@ -1,6 +1,6 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 
-import { Subject, takeUntil } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { BookService } from '../../services/book.service';
 import { IBook } from '../../../../libs/book';
@@ -9,15 +9,14 @@ import { IBook } from '../../../../libs/book';
   selector: 'app-book-info-container',
   templateUrl: './book-info-container.component.html',
   styleUrls: ['./book-info-container.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BookInfoContainerComponent implements OnInit, OnDestroy {
+export class BookInfoContainerComponent implements OnInit {
 
   @Input()
   public id!: number;
 
-  public book!: IBook;
-
-  private readonly _destroy$ = new Subject<void>();
+  public book$!: Observable<IBook>;
 
   constructor(private _bookService: BookService) {}
 
@@ -25,19 +24,8 @@ export class BookInfoContainerComponent implements OnInit, OnDestroy {
     this._getBook(this.id);
   }
 
-  public ngOnDestroy(): void {
-    this._destroy$.next();
-    this._destroy$.complete();
-  }
-
   private _getBook(id: number) {
-    this._bookService.getBookById(id)
-      .pipe(
-        takeUntil(this._destroy$),
-      )
-      .subscribe((response: IBook) => {
-        this.book = response;
-      });
+    this.book$ = this._bookService.getBookById(id);
   }
 
 }

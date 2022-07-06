@@ -1,6 +1,6 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 
-import { pluck, Subject, takeUntil } from 'rxjs';
+import { Observable, pluck, Subject } from 'rxjs';
 
 import { AuthorService } from '../../services/author.service';
 import { IAuthor } from '../../interfaces/author.interface';
@@ -10,14 +10,15 @@ import { IBook } from '../../../../libs/book';
   selector: 'app-author-info-container',
   templateUrl: './author-info-container.component.html',
   styleUrls: ['./author-info-container.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthorInfoContainerComponent implements OnInit, OnDestroy {
 
   @Input()
   public id!: number;
 
-  public author!: IAuthor;
-  public books!: IBook[];
+  public author$!: Observable<IAuthor>;
+  public books$!: Observable<IBook[]>;
 
   private readonly _destroy$ = new Subject<void>();
 
@@ -34,23 +35,14 @@ export class AuthorInfoContainerComponent implements OnInit, OnDestroy {
   }
 
   private _getAuthorById(): void {
-    this._authorService.getAuthorById(this.id).pipe(
-      takeUntil(this._destroy$),
-    )
-      .subscribe((response: IAuthor) => {
-        this.author = response;
-      });
+    this.author$ = this._authorService.getAuthorById(this.id);
   }
 
   private _getBooksByCurrentAuthor(): void {
-    this._authorService.getAllBooksOfCurrentAuthor(this.id)
+    this.books$ = this._authorService.getAllBooksOfCurrentAuthor(this.id)
       .pipe(
         pluck('books'),
-        takeUntil(this._destroy$),
-      )
-      .subscribe((response: IBook[]) => {
-        this.books = response;
-      });
+      );
   }
 
 }

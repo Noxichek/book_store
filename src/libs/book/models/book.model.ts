@@ -23,7 +23,7 @@ export class BookModel implements IBookModel {
     this.description = _data.description;
     this.id = _data.id;
     this.price = _data.price;
-    this.authorId = _data.author_id;
+    this.authorId = _data.authorId;
     this.release_date = _data.release_date;
     this.writing_date = _data.writing_date;
     this.genres = _data.genres;

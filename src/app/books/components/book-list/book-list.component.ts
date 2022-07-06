@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -18,6 +19,7 @@ import { IBook } from '../../../../libs/book';
   selector: 'app-books',
   templateUrl: './book-list.component.html',
   styleUrls: ['./book-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookListComponent implements OnInit, OnDestroy {
 
@@ -25,7 +27,7 @@ export class BookListComponent implements OnInit, OnDestroy {
   public books: IBook[] = [];
 
   @Output()
-  public scrolledToBottom = new EventEmitter();
+  public scrolledToBottom = new EventEmitter<void>();
 
   private readonly _destroy$ = new Subject<void>();
 
@@ -41,8 +43,8 @@ export class BookListComponent implements OnInit, OnDestroy {
     this._destroy$.complete();
   }
 
-  public trackBy(index: number, book: IBook) {
-    return book.id;
+  public trackBy(index: number, book: IBook): number {
+    return book.id!;
   }
 
   private _initScrollListener(): void {

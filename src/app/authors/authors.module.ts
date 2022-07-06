@@ -8,6 +8,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 
+import { BookModule } from '../../libs/book';
+
 import { AuthorsComponent } from './components/authors-component/authors.component';
 import { AuthorsRoutingModule } from './authors-routing.module';
 import { AuthorInfoComponent } from './components/author-info-component/author.info.component';
@@ -35,6 +37,7 @@ import { AuthorInfoViewComponent } from './views/author-info-view/author-info-vi
     MatButtonModule,
 
     AuthorsRoutingModule,
+    BookModule,
   ],
 })
 export class AuthorsModule {}

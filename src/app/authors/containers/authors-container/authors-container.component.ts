@@ -1,57 +1,48 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 
 import { PageEvent } from '@angular/material/paginator';
 
-import { pluck, Subject, takeUntil, tap } from 'rxjs';
+import { Observable, startWith, Subject, switchMap } from 'rxjs';
 
 import { AuthorService } from '../../services/author.service';
 import { IPaginatedAuthor } from '../../../../libs/pagination';
-import { IAuthor } from '../../interfaces/author.interface';
+import { IPagination } from '../../interfaces/pagination.interface';
 
 
 @Component({
   selector: 'app-authors-container',
   templateUrl: './authors-container.component.html',
   styleUrls: ['./authors-container.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuthorsContainerComponent implements OnInit, OnDestroy {
+export class AuthorsContainerComponent implements OnDestroy {
 
-  public dataSource: IAuthor[] = [];
-  public page = 1;
-  public pageSize = 5;
-  public length!: number;
+  public readonly paginatedAuthors$!: Observable<IPaginatedAuthor>;
 
-  private readonly _destroy$ = new Subject<boolean>();
+  private readonly _paginationChange$ = new Subject<IPagination>();
 
-  constructor(private readonly _authorService: AuthorService) {}
-
-  public ngOnInit(): void {
-    this._loadData(this.page, this.pageSize);
+  constructor(private readonly _authorService: AuthorService) {
+    this.paginatedAuthors$ = this._getPaginatedAuthors();
   }
 
   public ngOnDestroy(): void {
-    this._destroy$.next(true);
+    this._paginationChange$.complete();
   }
 
   public changePage($event: PageEvent): void {
-    this.page = ++$event.pageIndex;
-    this.pageSize = $event.pageSize;
-
-    this._loadData(this.page, this.pageSize);
+    const page = ++$event.pageIndex;
+    const pageSize = $event.pageSize;
+    this._paginationChange$.next({ page, pageSize });
   }
 
-  private _loadData(page: number, pageSize: number): void {
-    this._authorService.getAuthorsFromPageNumber(page, pageSize)
+  private _getPaginatedAuthors(): Observable<IPaginatedAuthor> {
+    return this._paginationChange$
       .pipe(
-        tap((paginatedAuthor: IPaginatedAuthor) => {
-          this.length = paginatedAuthor.meta.records;
+        startWith({ page: 1, pageSize: 5 }),
+        switchMap(({ page, pageSize }: IPagination) => {
+          return this._authorService.getAuthorsFromPageNumber(page, pageSize);
         }),
-        pluck('authors'),
-        takeUntil(this._destroy$),
-      )
-      .subscribe((response: IAuthor[]) => {
-        this.dataSource = response;
-      });
+      );
   }
 
 }
