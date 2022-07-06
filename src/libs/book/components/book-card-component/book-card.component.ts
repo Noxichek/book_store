@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { IBook } from '../../index';
 import { BookModel } from '../../models/book.model';
@@ -8,6 +8,7 @@ import { BookModel } from '../../models/book.model';
   selector: 'app-book-card',
   templateUrl: './book-card.component.html',
   styleUrls: ['./book-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
 export class BookCardComponent {

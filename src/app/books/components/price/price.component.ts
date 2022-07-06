@@ -45,12 +45,12 @@ export class PriceComponent implements ControlValueAccessor, OnInit, Validator, 
   }
 
   public onAdd() {
-    this.inputPrice.setValue(this.inputPrice.value! + 1);
+    this.inputPrice.setValue(Number(this.inputPrice.value!) + 1);
     this.inputPrice.markAsTouched();
   }
 
   public onRemove() {
-    this.inputPrice.setValue(this.inputPrice.value! - 1);
+    this.inputPrice.setValue(Number(this.inputPrice.value!) - 1);
     this.inputPrice.markAsTouched();
   }
 

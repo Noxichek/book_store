@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-book-info-view',
   templateUrl: './book-info-view.component.html',
   styleUrls: ['./book-info-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookInfoViewComponent implements OnInit {
 

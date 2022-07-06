@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 
 import { pluck, Subject, takeUntil, tap } from 'rxjs';
 
@@ -10,6 +16,7 @@ import { IPaginatedBooks } from '../../../../libs/pagination';
   selector: 'app-book-list-container',
   templateUrl: './book-list-container.component.html',
   styleUrls: ['./book-list-container.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BookListContainerComponent implements OnInit, OnDestroy {
 
@@ -52,6 +59,5 @@ export class BookListContainerComponent implements OnInit, OnDestroy {
         this._changeDetectorRef.detectChanges();
       });
   }
-
 
 }

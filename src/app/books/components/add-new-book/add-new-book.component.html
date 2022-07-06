@@ -18,8 +18,8 @@
         autoActiveFirstOption
         #auto="matAutocomplete"
         [displayWith]="displayAuthorFn">
-          <mat-option [value]="author" *ngFor="let author of filteredAuthors | async">
-            {{author.first_name}} {{author.last_name}}
+          <mat-option [value]="author" *ngFor="let author of filteredAuthors | async; trackBy: trackByFn">
+            {{author | authorFullName}}
           </mat-option>
       </mat-autocomplete>
     </mat-form-field>

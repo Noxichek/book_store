@@ -99,6 +99,10 @@ export class AddNewBookComponent implements OnInit, OnDestroy {
       .subscribe(() => this._toastrService.success('Successful added'));
   }
 
+  public trackByFn(index: number, author: IAuthor) {
+    return author.id;
+  }
+
   private _getFormData(): ICreateBookData {
     return {
       description: this.form.value.description,
