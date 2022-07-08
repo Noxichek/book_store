@@ -15,7 +15,7 @@ import { Utils } from '../../../core/utils/utils';
 import { IGenre } from '../../../genres/interfaces/genre-interface';
 import { IAuthor } from '../../../authors/interfaces/author.interface';
 import { ICreateBookData } from '../../interfaces/create-book-data-interface';
-import { compareDate } from '../../validators/compare-date-validator';
+import { compareDateValidator } from '../../validators/compare-date-validator';
 import { MyErrorStateMatcher } from '../../validators/error-state-matcher';
 
 
@@ -35,8 +35,8 @@ export class AddNewBookComponent implements OnInit, OnDestroy {
   public matchersMap: { comparedDate: MyErrorStateMatcher } = {
     comparedDate: new MyErrorStateMatcher('comparedDate'),
   };
-  public filteredAuthors!: Observable<IAuthor[]> | undefined;
-  public filteredGenres!: Observable<IGenre[]> | undefined;
+  public filteredAuthors!: Observable<IAuthor[]>;
+  public filteredGenres!: Observable<IGenre[]>;
   public selectedGenres: IGenre[] = [];
 
   private readonly _destroy$ = new Subject<boolean>();
@@ -44,11 +44,11 @@ export class AddNewBookComponent implements OnInit, OnDestroy {
   private _authors: IAuthor[] = [];
 
   constructor(
-    private _authorService: AuthorService,
-    private _bookService: BookService,
-    private _formBuilder: FormBuilder,
-    private _genreService: GenreService,
-    private _toastrService: ToastrService,
+    private readonly _authorService: AuthorService,
+    private readonly _bookService: BookService,
+    private readonly _formBuilder: FormBuilder,
+    private readonly _genreService: GenreService,
+    private readonly _toastrService: ToastrService,
   ) {
     this.form = this._initForm();
   }
@@ -99,7 +99,7 @@ export class AddNewBookComponent implements OnInit, OnDestroy {
       .subscribe(() => this._toastrService.success('Successful added'));
   }
 
-  public trackByFn(index: number, author: IAuthor) {
+  public trackByFn(index: number, author: IAuthor): number {
     return author.id;
   }
 
@@ -122,7 +122,7 @@ export class AddNewBookComponent implements OnInit, OnDestroy {
       genres: [''],
       writingDate: [''],
       releaseDate: [''],
-    }, { validators: compareDate('writingDate', 'releaseDate') });
+    }, { validators: compareDateValidator('writingDate', 'releaseDate') });
   }
 
   private _getAllAuthors(): void {
@@ -153,8 +153,8 @@ export class AddNewBookComponent implements OnInit, OnDestroy {
     });
   }
 
-  private _getFilteredAuthors() {
-    return this.filteredAuthors = this.form.get('author')?.valueChanges.pipe(
+  private _getFilteredAuthors(): Observable<IAuthor[]> {
+    return this.filteredAuthors = this.form.get('author')!.valueChanges.pipe(
       startWith(''),
       map((value: string | IAuthor) => {
         return typeof value === 'string' ? value : Utils.getAuthorFullName(value);
@@ -163,18 +163,19 @@ export class AddNewBookComponent implements OnInit, OnDestroy {
     );
   }
 
-  private _getFilteredGenres() {
-    return this.filteredGenres = this.form.get('genres')?.valueChanges.pipe(
-      startWith(''),
-      map((value: string | IGenre) => typeof value === 'string' ? value : value.name),
-      map((name: string) => {
-        const unselectedGenres = this.filterGenres();
+  private _getFilteredGenres(): Observable<IGenre[]> {
+    return this.filteredGenres = this.form.get('genres')!.valueChanges
+      .pipe(
+        startWith(''),
+        map((value: string | IGenre) => typeof value === 'string' ? value : value.name),
+        map((name: string) => {
+          const unselectedGenres = this.filterGenres();
 
-        return unselectedGenres.filter((element: IGenre) => {
-          return element.name.toLowerCase().includes(name.toLowerCase());
-        });
-      }),
-    );
+          return unselectedGenres.filter((genre: IGenre) => {
+            return genre.name.toLowerCase().includes(name.toLowerCase());
+          });
+        }),
+      );
   }
 
 }

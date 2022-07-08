@@ -1,1 +1,5 @@
+<app-filters
+  (searchByAuthor)="searchByAuthorName($event)"
+  (clearFilters)="clearFilters()"
+></app-filters>
 <app-books (scrolledToBottom)="paginatedLoadData()" [books]="books"></app-books>

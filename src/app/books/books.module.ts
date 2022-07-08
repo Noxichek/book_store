@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 import { MatInputModule } from '@angular/material/input';
@@ -12,7 +12,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-
 import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { BookModule } from '../../libs/book';
@@ -25,6 +24,7 @@ import { BookListContainerComponent } from './containers/book-list-container/boo
 import { AddNewBookComponent } from './components/add-new-book/add-new-book.component';
 import { PriceComponent } from './components/price/price.component';
 import { BooksRoutingModule } from './books-routing.module';
+import { FiltersComponent } from './components/filters/filters.component';
 
 
 @NgModule({
@@ -36,6 +36,7 @@ import { BooksRoutingModule } from './books-routing.module';
     BookListContainerComponent,
     AddNewBookComponent,
     PriceComponent,
+    FiltersComponent,
   ],
   imports: [
     CommonModule,
@@ -55,6 +56,7 @@ import { BooksRoutingModule } from './books-routing.module';
     BooksRoutingModule,
     BookModule,
     ScrollingModule,
+    FormsModule,
   ],
 })
 export class BooksModule {}
