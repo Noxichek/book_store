@@ -34,22 +34,23 @@ export class PriceComponent implements ControlValueAccessor, OnInit, Validator, 
 
   public inputPrice = new FormControl(0, [Validators.required, PriceValidator]);
 
-  private readonly _destroy$ = new Subject<boolean>();
+  private readonly _destroy$ = new Subject<void>();
 
   public ngOnInit(): void {
     this._listenOnPriceValueChanges();
   }
 
-  public ngOnDestroy() {
-    this._destroy$.next(true);
+  public ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
-  public onAdd() {
+  public onAdd(): void {
     this.inputPrice.setValue(Number(this.inputPrice.value!) + 1);
     this.inputPrice.markAsTouched();
   }
 
-  public onRemove() {
+  public onRemove(): void {
     this.inputPrice.setValue(Number(this.inputPrice.value!) - 1);
     this.inputPrice.markAsTouched();
   }
@@ -75,13 +76,15 @@ export class PriceComponent implements ControlValueAccessor, OnInit, Validator, 
   // eslint-disable-next-line no-empty-function
   private _touchFn = (): void => {};
 
-  private _listenOnPriceValueChanges() {
+  private _listenOnPriceValueChanges(): void {
     this.inputPrice.valueChanges
       .pipe(
         takeUntil(this._destroy$),
       )
       .subscribe((value: number | null) => {
-        this._onChange(value!);
+        if (value) {
+          this._onChange(value);
+        }
       });
   }
 
