@@ -12,8 +12,6 @@ import { pluck, Subject, takeUntil } from 'rxjs';
 
 import { AuthorService } from '../../../authors/services/author.service';
 import { IAuthor } from '../../../authors/interfaces/author.interface';
-import { compareDateValidator } from '../../validators/compare-date-validator';
-import { releaseDateValidator } from '../../validators/release-date-validator';
 import { MyErrorStateMatcher } from '../../validators/error-state-matcher';
 import { disabledDateValidator } from '../../validators/disabled-date-validator';
 import { ISearchBookData } from '../../interfaces/search-book-data-interface';
@@ -40,10 +38,6 @@ export class FiltersComponent implements OnInit, OnDestroy {
     releaseDate: new MyErrorStateMatcher('releaseDate', 'date'),
   };
 
-  public matchersMapCompareDate: { comparedDate: MyErrorStateMatcher } = {
-    comparedDate: new MyErrorStateMatcher('comparedDate', 'date'),
-  };
-
   public matchersMapPriceFilter: { minPriceGreaterMaxPrice: MyErrorStateMatcher } = {
     minPriceGreaterMaxPrice: new MyErrorStateMatcher('minPriceGreaterMaxPrice', 'price'),
   };
@@ -59,6 +53,14 @@ export class FiltersComponent implements OnInit, OnDestroy {
 
   public get minControl(): FormControl {
     return this.formFilter.get('price')?.get('minPriceFilter') as FormControl;
+  }
+
+  public get maxPriceControl(): FormControl {
+    return this.formFilter.get('price')?.get('maxPriceFilter') as FormControl;
+  }
+
+  public get priceControl(): FormControl {
+    return this.formFilter.get('price') as FormControl;
   }
 
   public ngOnInit(): void {
@@ -90,8 +92,8 @@ export class FiltersComponent implements OnInit, OnDestroy {
       author: authorLastName,
       minPrice: this.formFilter.get('price')?.get('minPriceFilter')?.value,
       maxPrice: this.formFilter.get('price')?.get('maxPriceFilter')?.value,
-      writingDate: this.formFilter.value.writingDateFilter,
-      releaseDate: this.formFilter.value.releaseDateFilter,
+      writingDate: this.formFilter.get('date')?.value.writingDateFilter,
+      releaseDate: this.formFilter.get('date')?.value.releaseDateFilter,
       title: this.formFilter.value.titleFilter,
     };
   }
@@ -118,15 +120,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
           filterPriceValidator('minPriceFilter', 'maxPriceFilter'),
         ],
       }),
-      date: this._formBuilder.group({
-        writingDateFilter: [null],
-        releaseDateFilter: [null],
-      }, {
-        validators: [
-          releaseDateValidator('releaseDateFilter'),
-          compareDateValidator('writingDateFilter', 'releaseDateFilter'),
-        ],
-      }),
+      date: [null],
       titleFilter: [null],
     });
   }

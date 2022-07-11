@@ -1,0 +1,25 @@
+<form [formGroup]="dateFilterForm">
+  <mat-form-field appearance="fill">
+    <mat-label>Writing date</mat-label>
+    <input
+      matInput
+      [matDatepicker]="picker"
+      formControlName="writingDate"
+    >
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Release date</mat-label>
+    <input
+      matInput
+      [matDatepicker]="picker1"
+      formControlName="releaseDate"
+    >
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+  </mat-form-field>
+</form>
