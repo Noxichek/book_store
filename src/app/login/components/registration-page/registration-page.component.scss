@@ -1,0 +1,41 @@
+.example-form {
+  display: flex;
+  flex-direction: column;
+  width: 30vw;
+  margin-top: 20vh;
+
+  .buttons {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+}
+
+.modal {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: hsla(241, 10%, 31%, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .container {
+    border: solid 1px gray;
+    background-color: white;
+    top: 0;
+    right: 0;
+    opacity: 1;
+    width: 400px;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      margin: 5px;
+    }
+  }
+
+}

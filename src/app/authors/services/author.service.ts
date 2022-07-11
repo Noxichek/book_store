@@ -12,7 +12,7 @@ import { IPaginatedAuthor, IPaginatedBooks } from '../../../libs/pagination';
 })
 export class AuthorService {
 
-  constructor(private _httpClient: HttpClient) {}
+  constructor(private readonly _httpClient: HttpClient) {}
 
   public getAuthorById(id: number): Observable<IAuthor> {
     return this._httpClient.get<IAuthor>(`api/authors/${id}`);

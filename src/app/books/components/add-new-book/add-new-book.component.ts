@@ -39,7 +39,7 @@ export class AddNewBookComponent implements OnInit, OnDestroy {
   public filteredGenres!: Observable<IGenre[]>;
   public selectedGenres: IGenre[] = [];
 
-  private readonly _destroy$ = new Subject<boolean>();
+  private readonly _destroy$ = new Subject<void>();
   private _genres: IGenre[] = [];
   private _authors: IAuthor[] = [];
 
@@ -61,7 +61,8 @@ export class AddNewBookComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this._destroy$.next(true);
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   public filterGenres(): IGenre[] {

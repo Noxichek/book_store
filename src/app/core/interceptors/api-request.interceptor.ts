@@ -41,7 +41,7 @@ export class ApiRequestInterceptor implements HttpInterceptor {
     });
   }
 
-  private _convertObjectToCamelCase(value: {}) {
+  private _convertObjectToCamelCase(value: {}): Record<string, unknown> {
     return mapKeys(value, (v: unknown, key: string) => camelCase(key));
   }
 

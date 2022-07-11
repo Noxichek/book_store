@@ -79,7 +79,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
     this.searchByAuthor.emit(this._getFormData());
   }
 
-  private _getFormData() {
+  private _getFormData(): ISearchBookData {
     let authorLastName;
 
     if (this.formFilter.value.authorFilter !== '' && this.formFilter.value.authorFilter !== null) {

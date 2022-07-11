@@ -11,7 +11,7 @@ export class AuthorInfoViewComponent implements OnInit {
 
   public id!: number;
 
-  constructor(private _activatedRoute: ActivatedRoute) {}
+  constructor(private readonly _activatedRoute: ActivatedRoute) {}
 
   public ngOnInit(): void {
     this.id = Number(this._activatedRoute.snapshot.paramMap.get('id'));
