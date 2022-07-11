@@ -14,67 +14,42 @@
     </mat-autocomplete>
   </mat-form-field>
 
-<ng-container formGroupName="price">
-  <mat-form-field appearance="fill" floatLabel="always">
-    <mat-label>Price min</mat-label>
-    <input
-      matInput
-      type="number"
-      class="example-right-align"
-      placeholder="0"
-      formControlName="minPriceFilter"
-    >
-    <mat-error *ngIf="minControl.invalid && (minControl.touched || minControl.dirty)">Wrong price</mat-error>
-    <span matSuffix>₽&nbsp;</span>
-  </mat-form-field>
+  <ng-container formGroupName="price">
+    <mat-form-field appearance="fill" floatLabel="always">
+      <mat-label>Price min</mat-label>
+      <input
+        matInput
+        type="number"
+        class="example-right-align"
+        placeholder="0"
+        formControlName="minPriceFilter"
+      >
+      <mat-error *ngIf="minControl.invalid && (minControl.touched || minControl.dirty)">Wrong price</mat-error>
+      <span matSuffix>₽&nbsp;</span>
+    </mat-form-field>
 
-  <mat-form-field appearance="fill" floatLabel="always">
-    <mat-label>Price max</mat-label>
-    <input
-      matInput
-      type="number"
-      class="example-right-align"
-      placeholder="0"
-      formControlName="maxPriceFilter"
-      [errorStateMatcher]="matchersMapPriceFilter.minPriceGreaterMaxPrice"
-    >
-    <mat-error>Wrong price</mat-error>
-    <span matSuffix>₽&nbsp;</span>
-  </mat-form-field>
-</ng-container>
-
-
-  <ng-container formGroupName="date">
-  <mat-form-field appearance="fill">
-    <mat-label>Writing date</mat-label>
-    <input
-      matInput
-      [matDatepicker]="picker"
-      formControlName="writingDateFilter"
-      [errorStateMatcher]="matchersMapCompareDate.comparedDate"
-      [disabled]="formFilter.get('price')!.hasError('disableDate')"
-    >
-    <mat-hint>MM/DD/YYYY</mat-hint>
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-    <mat-error>Writing date cannot be greater than release date</mat-error>
-  </mat-form-field>
-
-  <mat-form-field appearance="fill">
-    <mat-label>Release date</mat-label>
-    <input
-      matInput
-      [matDatepicker]="picker1"
-      formControlName="releaseDateFilter"
-      [errorStateMatcher]="matchersMap.releaseDate"
-      [disabled]="formFilter.get('price')!.hasError('disableDate')"
-    >
-    <mat-hint>MM/DD/YYYY</mat-hint>
-    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-    <mat-datepicker #picker1></mat-datepicker>
-    <mat-error>Release date cannot be greater than now</mat-error>
-  </mat-form-field>
+    <mat-form-field appearance="fill" floatLabel="always">
+      <mat-label>Price max</mat-label>
+      <input
+        matInput
+        type="number"
+        class="example-right-align"
+        placeholder="0"
+        formControlName="maxPriceFilter"
+        [errorStateMatcher]="matchersMapPriceFilter.minPriceGreaterMaxPrice"
+      >
+      <mat-error>Wrong price</mat-error>
+      <span matSuffix>₽&nbsp;</span>
+    </mat-form-field>
+    <mat-error
+      *ngIf="priceControl.hasError('minPriceGreaterMaxPrice') && (minControl.touched && maxPriceControl.touched)">Min
+      greater max
+    </mat-error>
   </ng-container>
+
+    <app-date-filters formControlName="date"></app-date-filters>
+    <mat-error *ngIf="formFilter.get('date')?.hasError('comparedDate')">Writing date cannot be greater than release date</mat-error>
+    <mat-error *ngIf="formFilter.get('date')?.hasError('releaseDate')">Release date cannot be greater than now</mat-error>
 
   <mat-form-field class="example-full-width" appearance="fill">
     <mat-label>Title</mat-label>

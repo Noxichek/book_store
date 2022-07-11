@@ -25,6 +25,7 @@ import { AddNewBookComponent } from './components/add-new-book/add-new-book.comp
 import { PriceComponent } from './components/price/price.component';
 import { BooksRoutingModule } from './books-routing.module';
 import { FiltersComponent } from './components/filters/filters.component';
+import { DateFiltersComponent } from './components/date-filters/date-filters.component';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { FiltersComponent } from './components/filters/filters.component';
     AddNewBookComponent,
     PriceComponent,
     FiltersComponent,
+    DateFiltersComponent,
   ],
   imports: [
     CommonModule,
