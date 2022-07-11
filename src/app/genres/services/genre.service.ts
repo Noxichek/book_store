@@ -11,7 +11,7 @@ import { IPaginatedGenres } from '../../../libs/pagination/interfaces/paginated.
 })
 export class GenreService {
 
-  constructor(private _httpClient: HttpClient) {}
+  constructor(private readonly _httpClient: HttpClient) {}
 
   public getAllGenres(): Observable<IPaginatedGenres> {
     return this._httpClient.get<IPaginatedGenres>('api/genres');

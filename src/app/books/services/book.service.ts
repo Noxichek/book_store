@@ -15,7 +15,7 @@ import { ISearchBookData } from '../interfaces/search-book-data-interface';
 })
 export class BookService {
 
-  constructor(private _httpClient: HttpClient) {}
+  constructor(private readonly _httpClient: HttpClient) {}
 
   public getAllBooks(): Observable<IBook[]> {
     return this._httpClient.get<IBook[]>('api/books');

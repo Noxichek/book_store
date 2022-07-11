@@ -41,6 +41,7 @@ import { FiltersComponent } from './components/filters/filters.component';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    FormsModule,
     RouterModule,
 
     MatFormFieldModule,

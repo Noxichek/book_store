@@ -1,0 +1,46 @@
+<form class="example-form" [formGroup]="loginForm">
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Email</mat-label>
+    <input type="email" matInput formControlName="email" [errorStateMatcher]="matcher"
+           placeholder="Ex. pat@example.com">
+    <mat-hint>Errors appear instantly!</mat-hint>
+    <mat-error *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.touched || loginForm.get('email')?.dirty)">
+      Please enter a valid email address
+    </mat-error>
+    <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+      Email is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Password</mat-label>
+    <input type="password"
+           matInput
+           placeholder="Ex. pat@example.com"
+           formControlName="password"
+    >
+    <mat-hint>Errors appear instantly!</mat-hint>
+    <mat-error *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.touched || loginForm.get('password')?.dirty)">
+      Please enter a valid password
+    </mat-error>
+    <mat-error>
+      Password is <strong>required</strong>
+    </mat-error>
+  </mat-form-field>
+
+  <section class="buttons">
+    <button
+      (click)="signIn()"
+      type="submit"
+      mat-raised-button color="primary"
+      [disabled]="loginForm.invalid"
+    >Sign In
+    </button>
+
+    <button
+      mat-raised-button color="primary"
+      routerLink="/login/registration"
+    >Create New Account
+    </button>
+  </section>
+</form>

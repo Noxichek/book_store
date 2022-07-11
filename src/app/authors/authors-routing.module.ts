@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthorsContainerComponent } from './containers/authors-container/authors-container.component';
 import { AuthorInfoViewComponent } from './views/author-info-view/author-info-view.component';
 
+
 const routes: Routes = [
   { path: '', component: AuthorsContainerComponent },
   { path: ':id', component: AuthorInfoViewComponent },

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatButtonModule } from '@angular/material/button';
 
 import { DashboardComponent } from './components/dashboard-component/dashboard.component';
 
@@ -15,6 +16,7 @@ import { DashboardComponent } from './components/dashboard-component/dashboard.c
     CommonModule,
     MatTabsModule,
     RouterModule,
+    MatButtonModule,
   ],
   exports: [
     DashboardComponent,

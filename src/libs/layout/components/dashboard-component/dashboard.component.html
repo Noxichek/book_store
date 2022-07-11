@@ -3,4 +3,18 @@
     <a mat-tab-link routerLink="/authors" label="Authors">Authors</a>
     <a mat-tab-link routerLink="/books" label="Books">Books</a>
   </section>
+  <button
+    *ngIf="isSessionActive()"
+    (click)="logout()"
+    mat-raised-button
+    color="primary"
+  >Logout
+  </button>
+  <button
+    *ngIf="!isSessionActive()"
+    mat-raised-button
+    color="primary"
+    routerLink="/login"
+  >Login
+  </button>
 </nav>

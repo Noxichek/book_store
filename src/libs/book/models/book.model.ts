@@ -24,8 +24,8 @@ export class BookModel implements IBookModel {
     this.id = _data.id;
     this.price = _data.price;
     this.authorId = _data.authorId;
-    this.release_date = _data.release_date;
-    this.writing_date = _data.writing_date;
+    this.release_date = _data.releaseDate;
+    this.writing_date = _data.writingDate;
     this.genres = _data.genres;
     this.author = _data.author;
   }

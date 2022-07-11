@@ -18,13 +18,13 @@ export class BookInfoContainerComponent implements OnInit {
 
   public book$!: Observable<IBook>;
 
-  constructor(private _bookService: BookService) {}
+  constructor(private readonly _bookService: BookService) {}
 
   public ngOnInit(): void {
     this._getBook(this.id);
   }
 
-  private _getBook(id: number) {
+  private _getBook(id: number): void {
     this.book$ = this._bookService.getBookById(id);
   }
 

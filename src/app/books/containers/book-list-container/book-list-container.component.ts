@@ -30,8 +30,8 @@ export class BookListContainerComponent implements OnInit, OnDestroy {
   private _isFiltersClear = false;
 
   constructor(
-    private _bookService: BookService,
-    private _changeDetectorRef: ChangeDetectorRef,
+    private readonly _bookService: BookService,
+    private readonly _changeDetectorRef: ChangeDetectorRef,
   ) {}
 
   public ngOnInit(): void {
@@ -71,7 +71,7 @@ export class BookListContainerComponent implements OnInit, OnDestroy {
       });
   }
 
-  public clearFilters() {
+  public clearFilters(): void {
     this._isFiltersClear = false;
 
     this._bookService.getBooks(1, 3)

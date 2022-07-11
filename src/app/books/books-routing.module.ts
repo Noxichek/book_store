@@ -10,9 +10,16 @@ import { AddNewBookComponent } from './components/add-new-book/add-new-book.comp
 
 
 const routes = [
-  { path: '', component: BookListContainerComponent, resolve: { resolveData: BooksResolver }},
-  { path: ':id', component: BookInfoViewComponent },
-  { path: 'add/new-book', component: AddNewBookComponent },
+  { path: '',
+    component: BookListContainerComponent,
+    resolve: { resolveData: BooksResolver },
+  },
+  { path: ':id',
+    component: BookInfoViewComponent,
+  },
+  { path: 'add/new-book',
+    component: AddNewBookComponent,
+  },
 ];
 
 @NgModule({
