@@ -5,6 +5,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 import { pluck, Subject, takeUntil, tap } from 'rxjs';
 
@@ -32,6 +33,7 @@ export class BookListContainerComponent implements OnInit, OnDestroy {
   constructor(
     private readonly _bookService: BookService,
     private readonly _changeDetectorRef: ChangeDetectorRef,
+    private readonly _route: ActivatedRoute,
   ) {}
 
   public ngOnInit(): void {
