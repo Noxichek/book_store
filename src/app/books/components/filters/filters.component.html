@@ -24,7 +24,7 @@
         placeholder="0"
         formControlName="minPriceFilter"
       >
-      <mat-error *ngIf="minControl.invalid && (minControl.touched || minControl.dirty)">Wrong price</mat-error>
+      <mat-error *ngIf="minPriceControl.invalid && (minPriceControl.touched || minPriceControl.dirty)">Wrong price</mat-error>
       <span matSuffix>₽&nbsp;</span>
     </mat-form-field>
 
@@ -42,7 +42,7 @@
       <span matSuffix>₽&nbsp;</span>
     </mat-form-field>
     <mat-error
-      *ngIf="priceControl.hasError('minPriceGreaterMaxPrice') && (minControl.touched && maxPriceControl.touched)">Min
+      *ngIf="priceControl.hasError('minPriceGreaterMaxPrice') && (minPriceControl.touched && maxPriceControl.touched)">Min
       greater max
     </mat-error>
   </ng-container>

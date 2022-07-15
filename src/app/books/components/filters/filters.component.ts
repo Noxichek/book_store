@@ -7,8 +7,9 @@ import {
   Output,
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
-import { pluck, Subject, takeUntil } from 'rxjs';
+import { pluck, Subject, switchMap, takeUntil, tap } from 'rxjs';
 
 import { AuthorService } from '../../../authors/services/author.service';
 import { IAuthor } from '../../../authors/interfaces/author.interface';
@@ -16,7 +17,8 @@ import { MyErrorStateMatcher } from '../../validators/error-state-matcher';
 import { disabledDateValidator } from '../../validators/disabled-date-validator';
 import { ISearchBookData } from '../../interfaces/search-book-data-interface';
 import { filterPriceValidator } from '../../validators/filter-price-validator';
-
+import { Utils } from '../../../core/utils/utils';
+import { IQueryParameters } from '../../interfaces/query-parameters-interface';
 
 @Component({
   selector: 'app-filters',
@@ -47,11 +49,13 @@ export class FiltersComponent implements OnInit, OnDestroy {
   constructor(
     private readonly _authorService: AuthorService,
     private readonly _formBuilder: FormBuilder,
+    private readonly _activatedRoute: ActivatedRoute,
+    private readonly _router: Router,
   ) {
     this.formFilter = this._initFilterForm();
   }
 
-  public get minControl(): FormControl {
+  public get minPriceControl(): FormControl {
     return this.formFilter.get('price')?.get('minPriceFilter') as FormControl;
   }
 
@@ -63,8 +67,17 @@ export class FiltersComponent implements OnInit, OnDestroy {
     return this.formFilter.get('price') as FormControl;
   }
 
+  public get titleControl(): FormControl {
+    return this.formFilter.get('titleFilter') as FormControl;
+  }
+
+  public get authorControl(): FormControl {
+    return this.formFilter.get('authorFilter') as FormControl;
+  }
+
   public ngOnInit(): void {
     this._getAllAuthors();
+    this._getQueryParams();
   }
 
   public ngOnDestroy(): void {
@@ -78,33 +91,73 @@ export class FiltersComponent implements OnInit, OnDestroy {
   }
 
   public filterSearch(): void {
+    const queryParameters = this._buildQueryParameters();
+
+    this._router.navigate(
+      [],
+      {
+        queryParams: queryParameters,
+      });
     this.searchByAuthor.emit(this._getFormData());
+  }
+
+  private _getQueryParams(): void {
+    const queryParameters = this._activatedRoute.snapshot.queryParams;
+    this._setDataIntoForm(queryParameters);
+  }
+
+  private _buildQueryParameters(): IQueryParameters {
+    return {
+      author: this.authorControl?.value.split(' ')[1],
+      minPrice: this.minPriceControl?.value,
+      maxPrice: this.maxPriceControl?.value,
+      writingDate: this.formFilter.get('date')?.value?.writingDate,
+      releaseDate: this.formFilter.get('date')?.value?.releaseDate,
+      title: this.titleControl?.value,
+    };
+  }
+
+  private _setDataIntoForm(parameters: Params): void {
+    this.minPriceControl?.setValue(parameters['minPrice']);
+    this.maxPriceControl?.setValue(parameters['maxPrice']);
+    this.titleControl?.setValue(parameters['title']);
   }
 
   private _getFormData(): ISearchBookData {
     let authorLastName;
 
     if (this.formFilter.value.authorFilter !== '' && this.formFilter.value.authorFilter !== null) {
-      authorLastName = this.formFilter.value.authorFilter.split(' ')[1];
+      [,authorLastName] = this.formFilter.value.authorFilter.split(' ');
     }
 
     return {
       author: authorLastName,
-      minPrice: this.formFilter.get('price')?.get('minPriceFilter')?.value,
-      maxPrice: this.formFilter.get('price')?.get('maxPriceFilter')?.value,
-      writingDate: this.formFilter.get('date')?.value.writingDateFilter,
-      releaseDate: this.formFilter.get('date')?.value.releaseDateFilter,
-      title: this.formFilter.value.titleFilter,
+      minPrice: this.minPriceControl?.value,
+      maxPrice: this.maxPriceControl?.value,
+      writingDate: this.formFilter.get('date')?.value?.writingDate,
+      releaseDate: this.formFilter.get('date')?.value?.releaseDate,
+      title: this.titleControl?.value,
     };
   }
 
   private _getAllAuthors(): void {
     this._authorService.getAllAuthors().pipe(
       pluck('authors'),
+      tap((authors: IAuthor[]) => this.authors = authors),
+      switchMap(() => this._activatedRoute.queryParams),
+      pluck('author'),
       takeUntil(this._destroy$),
     )
-      .subscribe((authors: IAuthor[]) => {
-        this.authors = authors;
+      .subscribe((authorLastName: string) => {
+        const currentAuthor = this.authors.find((author: IAuthor) => {
+          return author.lastName === authorLastName;
+        });
+        if (currentAuthor) {
+          this.formFilter.get('authorFilter')?.setValue(Utils.getAuthorFullName(currentAuthor));
+        }
+        if(this.formFilter.valid) {
+          this.searchByAuthor.emit(this._getFormData());
+        }
       });
   }
 

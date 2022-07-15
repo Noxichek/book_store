@@ -25,7 +25,7 @@ export class DashboardComponent {
   }
 
   public isSessionActive(): boolean {
-    return !!this._localStorageService.getData<IUserSession>('currentSession').user.email;
+    return !!this._localStorageService.getData<IUserSession>('currentSession').user?.email;
   }
 
 }

@@ -12,6 +12,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { releaseDateValidator } from '../../validators/release-date-validator';
 import { compareDateValidator } from '../../validators/compare-date-validator';
+import { IDateFilter } from '../../interfaces/date-filter-interface';
 
 @Component({
   selector: 'app-date-filters',
@@ -56,9 +57,11 @@ export class DateFiltersComponent implements OnInit, OnDestroy, ControlValueAcce
     this._touchFn = onTouched;
   }
 
-  public writeValue(dates: {writingDate: Date, releaseDate: Date}): void {
-    this.dateFilterForm.get('writingDate')?.setValue(dates.writingDate);
-    this.dateFilterForm.get('releaseDate')?.setValue(dates.releaseDate);
+  public writeValue(dates: IDateFilter): void {
+    if(dates) {
+      this.dateFilterForm.get('writingDate')?.setValue(dates.writingDate);
+      this.dateFilterForm.get('releaseDate')?.setValue(dates.releaseDate);
+    }
   }
 
   public validate(control: AbstractControl): ValidationErrors | null {
