@@ -20,6 +20,7 @@ import { CoreModule } from './core/core.module';
     LayoutModule,
     AppRoutingModule,
     CoreModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent],

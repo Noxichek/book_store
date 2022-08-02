@@ -86,6 +86,10 @@
     </mat-autocomplete>
   </mat-form-field>
 
+  <app-load-file formControlName="downloadImage"></app-load-file>
+  <span class="error-message" *ngIf="form.get('downloadImage')?.hasError('incorrectFormat')">File format must be JPG or PNG</span>
+  <span class="error-message" *ngIf="form.get('downloadImage')?.hasError('incorrectImageSize')">File size cannot be greater 2.0MB</span>
+
   <button
     type="submit"
     mat-raised-button color="primary"
