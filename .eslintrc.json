@@ -292,7 +292,7 @@
             "pathGroupsExcludedImportTypes": [],
             "pathGroups": [
               {
-                "pattern": "@angular/!(material|cdk)",
+                "pattern": "@angular/**",
                 "group": "builtin",
                 "position": "before"
               },

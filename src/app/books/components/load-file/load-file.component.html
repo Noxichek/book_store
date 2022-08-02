@@ -1,0 +1,30 @@
+<input
+  type="file"
+  class="file-input"
+  [formControl]="downloadImage"
+  (change)="readURL($event)"
+  #fileUpload
+>
+
+<section class="image-box" *ngIf="fileName !== ''">
+  <img id="image" [src]="imageSrc || ''" alt="Your image">
+  <fa-icon
+    *ngIf="fileName!== ''"
+    (click)="deleteImage()"
+    [icon]="faTimes"
+    class="delete-image-icon"
+  >
+  </fa-icon>
+</section>
+
+<section class="file-upload">
+  {{fileName || "No file uploaded yet."}}
+  <button
+    type="button"
+    mat-mini-fab color="primary"
+    class="upload-btn"
+    (click)="fileUpload.click()"
+  >
+    <mat-icon class="add-file-icon">attach_file</mat-icon>
+  </button>
+</section>
