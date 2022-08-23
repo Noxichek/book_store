@@ -1,17 +1,24 @@
 <form [formGroup]="formFilter" class="example-form">
+<!--  <mat-form-field class="example-full-width" appearance="fill">-->
+<!--    <mat-label>Author</mat-label>-->
+<!--    <input type="text"-->
+<!--           placeholder="Pick one"-->
+<!--           aria-label="Author"-->
+<!--           matInput-->
+<!--           formControlName="authorFilter"-->
+<!--           [matAutocomplete]="auto">-->
+<!--    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">-->
+<!--      <mat-option *ngFor="let author of authors" [value]="author | authorFullName">-->
+<!--        {{author | authorFullName}}-->
+<!--      </mat-option>-->
+<!--    </mat-autocomplete>-->
+<!--  </mat-form-field>-->
+
   <mat-form-field class="example-full-width" appearance="fill">
-    <mat-label>Author</mat-label>
-    <input type="text"
-           placeholder="Pick one"
-           aria-label="Author"
-           matInput
-           formControlName="authorFilter"
-           [matAutocomplete]="auto">
-    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-      <mat-option *ngFor="let author of authors" [value]="author | authorFullName">
-        {{author | authorFullName}}
-      </mat-option>
-    </mat-autocomplete>
+    <app-authors-filter
+      [value]="authors"
+      placeholder="Pick one..."
+    ></app-authors-filter>
   </mat-form-field>
 
   <ng-container formGroupName="price">

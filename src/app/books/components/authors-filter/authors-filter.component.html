@@ -1,0 +1,12 @@
+    <input type="text"
+           [placeholder]="placeholder"
+           aria-label="Author"
+           matInput
+           formControlName="authorFilter"
+           [matAutocomplete]="auto">
+<mat-autocomplete #auto="matAutocomplete">
+  <mat-option
+    [value]="author | authorFullName"
+    *ngFor="let author of value"
+  >{{ author | authorFullName }}</mat-option>
+</mat-autocomplete>

@@ -29,6 +29,8 @@ import { BooksRoutingModule } from './books-routing.module';
 import { FiltersComponent } from './components/filters/filters.component';
 import { DateFiltersComponent } from './components/date-filters/date-filters.component';
 import { LoadFileComponent } from './components/load-file/load-file.component';
+import { AuthorsFilterComponent } from './components/authors-filter/authors-filter.component';
+
 
 @NgModule({
   declarations: [
@@ -42,6 +44,7 @@ import { LoadFileComponent } from './components/load-file/load-file.component';
     FiltersComponent,
     DateFiltersComponent,
     LoadFileComponent,
+    AuthorsFilterComponent,
   ],
   imports: [
     CommonModule,
