@@ -26,6 +26,7 @@ import { PriceComponent } from './components/price/price.component';
 import { BooksRoutingModule } from './books-routing.module';
 import { FiltersComponent } from './components/filters/filters.component';
 import { DateFiltersComponent } from './components/date-filters/date-filters.component';
+import { AuthorsFilterComponent } from './components/authors-filter/authors-filter.component';
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import { DateFiltersComponent } from './components/date-filters/date-filters.com
     PriceComponent,
     FiltersComponent,
     DateFiltersComponent,
+    AuthorsFilterComponent,
   ],
   imports: [
     CommonModule,
