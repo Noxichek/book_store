@@ -15,9 +15,13 @@
 <!--  </mat-form-field>-->
 
   <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Author</mat-label>
     <app-authors-filter
       [value]="authors"
+      [required]="true"
+      [disabled]="false"
       placeholder="Pick one..."
+      formControlName="authorFilter"
     ></app-authors-filter>
   </mat-form-field>
 
