@@ -1,13 +1,29 @@
-    <input type="text"
-           [placeholder]="placeholder"
-           aria-label="Author"
-           matInput
-           [matAutocomplete]="auto"
-           [formControl]="authorFilter"
-    >
-<mat-autocomplete #auto="matAutocomplete">
-  <mat-option
-    [value]="author | authorFullName"
+<input type="text"
+       [placeholder]="placeholder"
+       aria-label="Author"
+       matInput
+       [formControl]="authorFilter"
+       (focus)="onFocus()"
+       #input
+>
+<!--<mat-autocomplete #auto="matAutocomplete">-->
+<!--  <mat-option-->
+<!--    [value]="author | authorFullName"-->
+<!--    *ngFor="let author of value"-->
+<!--  >{{ author | authorFullName }}</mat-option>-->
+<!--</mat-autocomplete>-->
+
+<ng-container
+  class="options"
+  *ngIf="isDropDownOpen">
+  <section
     *ngFor="let author of value"
-  >{{ author | authorFullName }}</mat-option>
-</mat-autocomplete>
+  >
+    <mat-option
+      #options
+      (click)="setValueIntoInput(author)"
+    >
+      {{author | authorFullName}}
+    </mat-option>
+  </section>
+</ng-container>

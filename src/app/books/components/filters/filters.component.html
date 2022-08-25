@@ -22,6 +22,8 @@
       [disabled]="false"
       placeholder="Pick one..."
       formControlName="authorFilter"
+      (filterData)="filterData($event)"
+      [filteredData]="filteredAuthors"
     ></app-authors-filter>
   </mat-form-field>
 
