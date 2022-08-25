@@ -36,6 +36,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
 
   public readonly formFilter!: FormGroup;
   public authors: IAuthor[] = [];
+  public filteredAuthors: IAuthor[] = [];
   public matchersMap: { releaseDate: MyErrorStateMatcher } = {
     releaseDate: new MyErrorStateMatcher('releaseDate', 'date'),
   };
@@ -99,6 +100,16 @@ export class FiltersComponent implements OnInit, OnDestroy {
         queryParams: queryParameters,
       });
     this.searchByAuthor.emit(this._getFormData());
+  }
+
+  public filterData(value: string) {
+    const authors = [...this.authors];
+
+    this.filteredAuthors = authors.filter((author: IAuthor) => {
+      return Utils.getAuthorFullName(author).toLowerCase().includes(value.toLowerCase());
+    });
+
+    // console.log(this.filteredAuthors);
   }
 
   private _getQueryParams(): void {
