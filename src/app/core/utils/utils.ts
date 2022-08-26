@@ -1,7 +1,7 @@
-import { IAuthor } from '../../authors/interfaces/author.interface';
+import { IFullName } from '../interfaces/full-name-interface';
 
 export class Utils {
-  public static getAuthorFullName(author: IAuthor): string {
-    return `${author.firstName} ${author.lastName}`;
+  public static getFullName<T extends IFullName>(value: T): string {
+    return `${value.firstName} ${value.lastName}`;
   }
 }

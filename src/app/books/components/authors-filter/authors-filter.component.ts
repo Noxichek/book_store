@@ -1,21 +1,23 @@
 import {
-  ChangeDetectorRef,
   Component,
-  ElementRef, EventEmitter,
+  ElementRef,
+  EventEmitter,
   HostBinding,
-  Input, OnChanges,
+  Input,
+  OnDestroy,
   OnInit,
-  Optional, Output,
-  Self, SimpleChanges, ViewChild,
+  Optional,
+  Output,
+  Self,
 } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormControl, NgControl } from '@angular/forms';
 
 import { MatFormFieldControl } from '@angular/material/form-field';
 
-import { Subject, takeUntil } from 'rxjs';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 
-import { IAuthor } from '../../../authors/interfaces/author.interface';
 import { Utils } from '../../../core/utils/utils';
+import { IFullName } from '../../../core/interfaces/full-name-interface';
 
 
 @Component({
@@ -32,13 +34,49 @@ import { Utils } from '../../../core/utils/utils';
     '(document:click)': 'onClick($event)',
   },
 })
-export class AuthorsFilterComponent implements
+export class AuthorsFilterComponent<T extends IFullName> implements
   OnInit,
-  OnChanges,
+  OnDestroy,
   ControlValueAccessor,
-  MatFormFieldControl<IAuthor[]> {
+  MatFormFieldControl<T[]> {
 
   private static _nextId = 0;
+
+  @Input()
+  public options: T[] = [];
+  @Input()
+  public displayWith!: (option: T) => string;
+  @Input()
+  public required!: boolean;
+  @Input()
+  public disabled!: boolean;
+  @Input()
+  public set value(value: T[]) {
+    this._value = value;
+    this.stateChanges.next();
+  }
+  public get value(): T[] {
+    return this._value;
+  }
+  @Input()
+  public set placeholder(value: string) {
+    this._placeholder = value;
+    this.stateChanges.next();
+  }
+  public get placeholder(): string {
+    return this._placeholder;
+  }
+  @Output()
+  public filterData = new EventEmitter<string | null>;
+  public get empty(): boolean {
+    return false;
+  }
+  @HostBinding()
+  public id = `authors-filter-id-${AuthorsFilterComponent._nextId++}`;
+  @HostBinding('class.floated')
+  public get shouldLabelFloat(): boolean {
+    return true;
+  }
 
   public stateChanges = new Subject<void>();
   public errorState = false;
@@ -47,87 +85,46 @@ export class AuthorsFilterComponent implements
   public authorFilter = new FormControl('');
   public isDropDownOpen = false;
 
-  @Input()
-  public set filteredData(value: IAuthor[]) {
-    this._filteredData = value;
-  }
-
-  public get filteredData(): IAuthor[] {
-    return this._filteredData;
-  }
-
-  @Input()
-  public required!: boolean;
-
-  @Input()
-  public disabled!: boolean;
-
-  @HostBinding()
-  public id = `authors-filter-id-${AuthorsFilterComponent._nextId++}`;
-
-  @Input()
-  public set value(value: IAuthor[]) {
-    this._value = value;
-    this.stateChanges.next();
-  }
-
-  public get value(): IAuthor[] {
-    return this._value;
-  }
-
-  @Output()
-  public filterData = new EventEmitter<string>;
-
-  @ViewChild('input')
-  public input!: ElementRef;
-
-  @ViewChild('options')
-  public options!: ElementRef;
-
-  private _value!: IAuthor[];
-  private _allAuthors!: IAuthor[];
-  private _filteredData!: IAuthor[];
+  private _value!: T[];
   private _placeholder!: string;
   private _destroy = new Subject<void>();
 
   constructor(
     @Optional() @Self() public ngControl: NgControl,
-    private _formBuilder: FormBuilder,
-    private _eref: ElementRef,
-    private _changeDetectorRef: ChangeDetectorRef,
+    private readonly _formBuilder: FormBuilder,
+    private readonly _elementRef: ElementRef,
   ) {
     if(this.ngControl !== null) {
       this.ngControl.valueAccessor = this;
     }
   }
 
-  public writeValue(value: IAuthor[]): void {
+  public ngOnInit(): void {
+    this.authorFilter.valueChanges
+      .pipe(
+        debounceTime(300),
+        takeUntil(this._destroy),
+      )
+      .subscribe((value: string | null) => {
+        this.filterData.emit(value);
+      });
+  }
+
+  public ngOnDestroy(): void {
+    this.stateChanges.next();
+    this.stateChanges.complete();
+    this._destroy.next();
+    this._destroy.complete();
+  }
+
+  public writeValue(value: T[]): void {
     this._value = value;
   }
-  public registerOnChange(onChange: (value: IAuthor[]) => void): void {
+  public registerOnChange(onChange: (value: T[]) => void): void {
     this._onChange = onChange;
   }
   public registerOnTouched(onTouched: () => void): void {
     this._touchFn = onTouched;
-  }
-
-  @Input()
-  public set placeholder(value: string) {
-    this._placeholder = value;
-    this.stateChanges.next();
-  }
-
-  public get placeholder() {
-    return this._placeholder;
-  }
-
-  public get empty(): boolean {
-    return false;
-  }
-
-  @HostBinding('class.floated')
-  public get shouldLabelFloat(): boolean {
-    return true;
   }
 
   public setDescribedByIds(ids: string[]): void {
@@ -138,27 +135,6 @@ export class AuthorsFilterComponent implements
     // throw new Error('Method not implemented.');
   }
 
-  public ngOnInit(): void {
-    this.authorFilter.valueChanges
-      .pipe(takeUntil(this._destroy))
-      .subscribe((value) => {
-        if (value) {
-          this.filterData.emit(value);
-        }
-      });
-  }
-
-  public ngOnChanges(changes: SimpleChanges) {
-    this._value = this._filteredData;
-  }
-
-  public ngOnDestroy(): void {
-    this.stateChanges.next();
-    this.stateChanges.complete();
-    this._destroy.next();
-    this._destroy.complete();
-  }
-
   public onFocus(): void {
     this.isDropDownOpen = true;
   }
@@ -167,19 +143,19 @@ export class AuthorsFilterComponent implements
     this.isDropDownOpen = false;
   }
 
-  public onClick(event: any) {
-    if (!this._eref.nativeElement.contains(event.target)) {
+  public onClick(event: any): void {
+    if (!this._elementRef.nativeElement.contains(event.target)) {
       this.onBlur();
     }
   }
 
-  public setValueIntoInput(value: IAuthor): void {
-    this.authorFilter.setValue(Utils.getAuthorFullName(value));
+  public setValueIntoInput(value: T): void {
+    this.authorFilter.setValue(Utils.getFullName(value));
     this.isDropDownOpen = false;
   }
 
   // eslint-disable-next-line no-empty-function
-  private _onChange = (value: IAuthor[]): void => {};
+  private _onChange = (value: T[]): void => {};
   // eslint-disable-next-line no-empty-function
   private _touchFn = (): void => {};
 
