@@ -72,7 +72,7 @@ export class AddNewBookComponent implements OnInit, OnDestroy {
   }
 
   public displayAuthorFn(author: IAuthor): string {
-    return author ? Utils.getAuthorFullName(author) : '';
+    return author ? Utils.getFullName(author) : '';
   }
 
   public selected({ option: { value }}: MatAutocompleteSelectedEvent): void {
@@ -150,7 +150,7 @@ export class AddNewBookComponent implements OnInit, OnDestroy {
 
   private _filterAuthors(author: string): IAuthor[] {
     return this._authors.filter((element: IAuthor) => {
-      return (Utils.getAuthorFullName(element).toLowerCase()).includes(author.toLowerCase());
+      return (Utils.getFullName(element).toLowerCase()).includes(author.toLowerCase());
     });
   }
 
@@ -158,7 +158,7 @@ export class AddNewBookComponent implements OnInit, OnDestroy {
     return this.filteredAuthors = this.form.get('author')!.valueChanges.pipe(
       startWith(''),
       map((value: string | IAuthor) => {
-        return typeof value === 'string' ? value : Utils.getAuthorFullName(value);
+        return typeof value === 'string' ? value : Utils.getFullName(value);
       }),
       map((name: string) => name ? this._filterAuthors(name) : [...this._authors]),
     );

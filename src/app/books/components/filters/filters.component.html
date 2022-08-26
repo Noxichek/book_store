@@ -17,13 +17,13 @@
   <mat-form-field class="example-full-width" appearance="fill">
     <mat-label>Author</mat-label>
     <app-authors-filter
-      [value]="authors"
+      [displayWith]="displayWithFn"
+      [options]="filteredAuthors"
       [required]="true"
       [disabled]="false"
       placeholder="Pick one..."
       formControlName="authorFilter"
       (filterData)="filterData($event)"
-      [filteredData]="filteredAuthors"
     ></app-authors-filter>
   </mat-form-field>
 
@@ -36,6 +36,7 @@
         class="example-right-align"
         placeholder="0"
         formControlName="minPriceFilter"
+        autocomplete="off"
       >
       <mat-error *ngIf="minPriceControl.invalid && (minPriceControl.touched || minPriceControl.dirty)">Wrong price</mat-error>
       <span matSuffix>₽&nbsp;</span>
@@ -49,6 +50,7 @@
         class="example-right-align"
         placeholder="0"
         formControlName="maxPriceFilter"
+        autocomplete="off"
         [errorStateMatcher]="matchersMapPriceFilter.minPriceGreaterMaxPrice"
       >
       <mat-error>Wrong price</mat-error>
@@ -71,6 +73,7 @@
       matInput
       placeholder="Title..."
       formControlName="titleFilter"
+      autocomplete="off"
     >
   </mat-form-field>
 </form>

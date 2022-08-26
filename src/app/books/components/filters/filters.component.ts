@@ -37,9 +37,6 @@ export class FiltersComponent implements OnInit, OnDestroy {
   public readonly formFilter!: FormGroup;
   public authors: IAuthor[] = [];
   public filteredAuthors: IAuthor[] = [];
-  public matchersMap: { releaseDate: MyErrorStateMatcher } = {
-    releaseDate: new MyErrorStateMatcher('releaseDate', 'date'),
-  };
 
   public matchersMapPriceFilter: { minPriceGreaterMaxPrice: MyErrorStateMatcher } = {
     minPriceGreaterMaxPrice: new MyErrorStateMatcher('minPriceGreaterMaxPrice', 'price'),
@@ -102,14 +99,16 @@ export class FiltersComponent implements OnInit, OnDestroy {
     this.searchByAuthor.emit(this._getFormData());
   }
 
-  public filterData(value: string) {
-    const authors = [...this.authors];
+  public filterData(value: string | null) {
+    this.filteredAuthors = !!value
+      ? this.authors.filter((author: IAuthor) => {
+        return Utils.getFullName(author).toLowerCase().includes(value.toLowerCase());
+      })
+      : [...this.authors];
+  }
 
-    this.filteredAuthors = authors.filter((author: IAuthor) => {
-      return Utils.getAuthorFullName(author).toLowerCase().includes(value.toLowerCase());
-    });
-
-    // console.log(this.filteredAuthors);
+  public displayWithFn(option: IAuthor): string {
+    return Utils.getFullName(option);
   }
 
   private _getQueryParams(): void {
@@ -154,7 +153,10 @@ export class FiltersComponent implements OnInit, OnDestroy {
   private _getAllAuthors(): void {
     this._authorService.getAllAuthors().pipe(
       pluck('authors'),
-      tap((authors: IAuthor[]) => this.authors = authors),
+      tap((authors: IAuthor[]) => {
+        this.authors = authors;
+        this.filteredAuthors = [...authors];
+      }),
       switchMap(() => this._activatedRoute.queryParams),
       pluck('author'),
       takeUntil(this._destroy$),
@@ -164,7 +166,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
           return author.lastName === authorLastName;
         });
         if (currentAuthor) {
-          this.formFilter.get('authorFilter')?.setValue(Utils.getAuthorFullName(currentAuthor));
+          this.formFilter.get('authorFilter')?.setValue(Utils.getFullName(currentAuthor));
         }
         if(this.formFilter.valid) {
           this.searchByAuthor.emit(this._getFormData());
