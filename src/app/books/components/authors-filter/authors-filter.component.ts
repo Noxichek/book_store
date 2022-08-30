@@ -1,5 +1,5 @@
 import {
-  Component,
+  Component, ContentChild,
   ElementRef,
   EventEmitter,
   HostBinding,
@@ -8,7 +8,7 @@ import {
   OnInit,
   Optional,
   Output,
-  Self,
+  Self, TemplateRef,
 } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormControl, NgControl } from '@angular/forms';
 
@@ -16,8 +16,7 @@ import { MatFormFieldControl } from '@angular/material/form-field';
 
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 
-import { Utils } from '../../../core/utils/utils';
-import { IFullName } from '../../../core/interfaces/full-name-interface';
+import { AutocompleteOptionDirective } from '../../directives/autocomplete-option.directive';
 
 
 @Component({
@@ -34,7 +33,7 @@ import { IFullName } from '../../../core/interfaces/full-name-interface';
     '(document:click)': 'onClick($event)',
   },
 })
-export class AuthorsFilterComponent<T extends IFullName> implements
+export class AuthorsFilterComponent<T = any> implements
   OnInit,
   OnDestroy,
   ControlValueAccessor,
@@ -42,6 +41,11 @@ export class AuthorsFilterComponent<T extends IFullName> implements
 
   private static _nextId = 0;
 
+  @ContentChild(AutocompleteOptionDirective, { static: true, read: TemplateRef })
+  public autocompleteOptions?: TemplateRef<AutocompleteOptionDirective>;
+
+  @Input()
+  public key?: string;
   @Input()
   public options: T[] = [];
   @Input()
@@ -68,21 +72,15 @@ export class AuthorsFilterComponent<T extends IFullName> implements
   }
   @Output()
   public filterData = new EventEmitter<string | null>;
-  public get empty(): boolean {
-    return false;
-  }
   @HostBinding()
-  public id = `authors-filter-id-${AuthorsFilterComponent._nextId++}`;
+  public id = `filter-id-${AuthorsFilterComponent._nextId++}`;
   @HostBinding('class.floated')
-  public get shouldLabelFloat(): boolean {
-    return true;
-  }
 
   public stateChanges = new Subject<void>();
   public errorState = false;
-  public controlType = 'authorFilter';
+  public controlType = 'autocomplete';
   public focused: boolean = false;
-  public authorFilter = new FormControl('');
+  public autocomplete = new FormControl('');
   public isDropDownOpen = false;
 
   private _value!: T[];
@@ -99,15 +97,16 @@ export class AuthorsFilterComponent<T extends IFullName> implements
     }
   }
 
+  public get empty(): boolean {
+    return false;
+  }
+
+  public get shouldLabelFloat(): boolean {
+    return true;
+  }
+
   public ngOnInit(): void {
-    this.authorFilter.valueChanges
-      .pipe(
-        debounceTime(300),
-        takeUntil(this._destroy),
-      )
-      .subscribe((value: string | null) => {
-        this.filterData.emit(value);
-      });
+    this._listenInputAutocomplete();
   }
 
   public ngOnDestroy(): void {
@@ -120,7 +119,7 @@ export class AuthorsFilterComponent<T extends IFullName> implements
   public writeValue(value: T[]): void {
     this._value = value;
   }
-  public registerOnChange(onChange: (value: T[]) => void): void {
+  public registerOnChange(onChange: (value: T | string| boolean | number) => void): void {
     this._onChange = onChange;
   }
   public registerOnTouched(onTouched: () => void): void {
@@ -149,14 +148,32 @@ export class AuthorsFilterComponent<T extends IFullName> implements
     }
   }
 
-  public setValueIntoInput(value: T): void {
-    this.authorFilter.setValue(Utils.getFullName(value));
+  public setValueIntoInput(option: T): void {
+    const displayedValue = this.displayWith(option);
+    const value: T | string| boolean | number = !!this.key
+      // @ts-ignore
+      ? option[this.key]
+      : option;
+
+    this.autocomplete.setValue(displayedValue);
+    this._onChange(value);
     this.isDropDownOpen = false;
   }
 
   // eslint-disable-next-line no-empty-function
-  private _onChange = (value: T[]): void => {};
+  private _onChange = (value: T | string| boolean | number): void => {};
   // eslint-disable-next-line no-empty-function
   private _touchFn = (): void => {};
+
+  private _listenInputAutocomplete(): void {
+    this.autocomplete.valueChanges
+      .pipe(
+        debounceTime(300),
+        takeUntil(this._destroy),
+      )
+      .subscribe((value: string | null) => {
+        this.filterData.emit(value);
+      });
+  }
 
 }

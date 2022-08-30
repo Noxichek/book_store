@@ -21,10 +21,18 @@
       [options]="filteredAuthors"
       [required]="true"
       [disabled]="false"
+      key="id"
       placeholder="Pick one..."
       formControlName="authorFilter"
       (filterData)="filterData($event)"
-    ></app-authors-filter>
+    >
+      <ng-template
+        appAutocompleteOption
+        let-option="option"
+      >
+        <h1>{{ displayWithFn(option) }}</h1>
+      </ng-template>
+    </app-authors-filter>
   </mat-form-field>
 
   <ng-container formGroupName="price">

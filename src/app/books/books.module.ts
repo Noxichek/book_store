@@ -30,6 +30,7 @@ import { FiltersComponent } from './components/filters/filters.component';
 import { DateFiltersComponent } from './components/date-filters/date-filters.component';
 import { LoadFileComponent } from './components/load-file/load-file.component';
 import { AuthorsFilterComponent } from './components/authors-filter/authors-filter.component';
+import { AutocompleteOptionDirective } from './directives/autocomplete-option.directive';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import { AuthorsFilterComponent } from './components/authors-filter/authors-filt
     DateFiltersComponent,
     LoadFileComponent,
     AuthorsFilterComponent,
+    AutocompleteOptionDirective,
   ],
   imports: [
     CommonModule,
