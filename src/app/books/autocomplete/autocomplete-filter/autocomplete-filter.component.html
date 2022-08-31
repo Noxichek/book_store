@@ -13,9 +13,6 @@
     <section
       *ngFor="let option of options"
     >
-      <ng-container *ngIf="options.length===0">
-        <ng-container *ngTemplateOutlet="noResult"></ng-container>
-      </ng-container>
       <mat-option
         class="current-option"
         (click)="setValueIntoInput(option)"
@@ -24,12 +21,16 @@
           <ng-container *ngTemplateOutlet="autocompleteOptions; context: { option: option }">
           </ng-container>
         </ng-container>
+
         <ng-template #defaultTemplate>
           {{ displayWith(option) }}
         </ng-template>
-        <ng-template
-          #noResult>{{autocomplete.value}} not found</ng-template>
       </mat-option>
     </section>
   </section>
+  <ng-template
+    #noResult>{{autocomplete.value}} not found</ng-template>
+  <ng-container *ngIf="options.length===0 && autocomplete.touched">
+    <ng-container *ngTemplateOutlet="noResult"></ng-container>
+  </ng-container>
 </section>

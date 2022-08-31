@@ -20,20 +20,20 @@ import { AutocompleteOptionDirective } from '../../directives/autocomplete-optio
 
 
 @Component({
-  selector: 'app-authors-filter',
-  templateUrl: './authors-filter.component.html',
-  styleUrls: ['./authors-filter.component.scss'],
+  selector: 'app-autocomplete-filter',
+  templateUrl: './autocomplete-filter.component.html',
+  styleUrls: ['./autocomplete-filter.component.scss'],
   providers: [
     {
       provide: MatFormFieldControl,
-      useExisting: AuthorsFilterComponent,
+      useExisting: AutocompleteFilterComponent,
     },
   ],
   host: {
     '(document:click)': 'onClick($event)',
   },
 })
-export class AuthorsFilterComponent<T = any> implements
+export class AutocompleteFilterComponent<T = any> implements
   OnInit,
   OnDestroy,
   ControlValueAccessor,
@@ -73,7 +73,7 @@ export class AuthorsFilterComponent<T = any> implements
   @Output()
   public filterData = new EventEmitter<string | null>;
   @HostBinding()
-  public id = `filter-id-${AuthorsFilterComponent._nextId++}`;
+  public id = `filter-id-${AutocompleteFilterComponent._nextId++}`;
   @HostBinding('class.floated')
 
   public stateChanges = new Subject<void>();

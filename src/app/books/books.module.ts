@@ -28,10 +28,8 @@ import { PriceComponent } from './components/price/price.component';
 import { BooksRoutingModule } from './books-routing.module';
 import { FiltersComponent } from './components/filters/filters.component';
 import { DateFiltersComponent } from './components/date-filters/date-filters.component';
+import { AutocompleteModule } from './autocomplete/autocomplete.module';
 import { LoadFileComponent } from './components/load-file/load-file.component';
-import { AuthorsFilterComponent } from './components/authors-filter/authors-filter.component';
-import { AutocompleteOptionDirective } from './directives/autocomplete-option.directive';
-
 
 @NgModule({
   declarations: [
@@ -45,8 +43,6 @@ import { AutocompleteOptionDirective } from './directives/autocomplete-option.di
     FiltersComponent,
     DateFiltersComponent,
     LoadFileComponent,
-    AuthorsFilterComponent,
-    AutocompleteOptionDirective,
   ],
   imports: [
     CommonModule,
@@ -68,6 +64,7 @@ import { AutocompleteOptionDirective } from './directives/autocomplete-option.di
     BookModule,
     ScrollingModule,
     FormsModule,
+    AutocompleteModule,
     FontAwesomeModule,
     MatProgressBarModule,
   ],

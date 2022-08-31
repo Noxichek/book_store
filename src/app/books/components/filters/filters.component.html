@@ -16,7 +16,7 @@
 
   <mat-form-field class="example-full-width" appearance="fill">
     <mat-label>Author</mat-label>
-    <app-authors-filter
+    <app-autocomplete-filter
       [displayWith]="displayWithFn"
       [options]="filteredAuthors"
       [required]="true"
@@ -32,7 +32,7 @@
       >
         <h1>{{ displayWithFn(option) }}</h1>
       </ng-template>
-    </app-authors-filter>
+    </app-autocomplete-filter>
   </mat-form-field>
 
   <ng-container formGroupName="price">
