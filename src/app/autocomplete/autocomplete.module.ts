@@ -5,14 +5,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatOptionModule } from '@angular/material/core';
 import { MatInputModule } from '@angular/material/input';
 
-import { AutocompleteOptionDirective } from '../directives/autocomplete-option.directive';
-
-import { AutocompleteFilterComponent } from './autocomplete-filter/autocomplete-filter.component';
+import { AutocompleteOptionDirective } from './directives/autocomplete-option.directive';
+import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
+import { AutocompleteNoResultDirective } from './directives/autocomplete-no-result.directive';
 
 @NgModule({
   declarations: [
-    AutocompleteFilterComponent,
+    AutocompleteComponent,
     AutocompleteOptionDirective,
+    AutocompleteNoResultDirective,
   ],
   imports: [
     CommonModule,
@@ -21,8 +22,9 @@ import { AutocompleteFilterComponent } from './autocomplete-filter/autocomplete-
     MatInputModule,
   ],
   exports: [
-    AutocompleteFilterComponent,
+    AutocompleteComponent,
     AutocompleteOptionDirective,
+    AutocompleteNoResultDirective,
   ],
 })
 export class AutocompleteModule {}

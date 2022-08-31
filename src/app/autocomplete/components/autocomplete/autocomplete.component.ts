@@ -17,23 +17,24 @@ import { MatFormFieldControl } from '@angular/material/form-field';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 
 import { AutocompleteOptionDirective } from '../../directives/autocomplete-option.directive';
+import { AutocompleteNoResultDirective } from '../../directives/autocomplete-no-result.directive';
 
 
 @Component({
-  selector: 'app-autocomplete-filter',
-  templateUrl: './autocomplete-filter.component.html',
-  styleUrls: ['./autocomplete-filter.component.scss'],
+  selector: 'app-autocomplete',
+  templateUrl: './autocomplete.component.html',
+  styleUrls: ['./autocomplete.component.scss'],
   providers: [
     {
       provide: MatFormFieldControl,
-      useExisting: AutocompleteFilterComponent,
+      useExisting: AutocompleteComponent,
     },
   ],
   host: {
     '(document:click)': 'onClick($event)',
   },
 })
-export class AutocompleteFilterComponent<T = any> implements
+export class AutocompleteComponent<T = any> implements
   OnInit,
   OnDestroy,
   ControlValueAccessor,
@@ -43,6 +44,9 @@ export class AutocompleteFilterComponent<T = any> implements
 
   @ContentChild(AutocompleteOptionDirective, { static: true, read: TemplateRef })
   public autocompleteOptions?: TemplateRef<AutocompleteOptionDirective>;
+
+  @ContentChild(AutocompleteNoResultDirective, { static : true, read: TemplateRef })
+  public autocompleteNoResult?: TemplateRef<AutocompleteNoResultDirective>;
 
   @Input()
   public key?: string;
@@ -73,7 +77,7 @@ export class AutocompleteFilterComponent<T = any> implements
   @Output()
   public filterData = new EventEmitter<string | null>;
   @HostBinding()
-  public id = `filter-id-${AutocompleteFilterComponent._nextId++}`;
+  public id = `filter-id-${AutocompleteComponent._nextId++}`;
   @HostBinding('class.floated')
 
   public stateChanges = new Subject<void>();
