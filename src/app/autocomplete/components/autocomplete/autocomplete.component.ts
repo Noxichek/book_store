@@ -11,13 +11,15 @@ import {
   Self, TemplateRef,
 } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormControl, NgControl } from '@angular/forms';
-
 import { MatFormFieldControl } from '@angular/material/form-field';
 
-import { debounceTime, Subject, takeUntil } from 'rxjs';
+import {debounceTime, pluck, Subject, takeUntil} from 'rxjs';
 
 import { AutocompleteOptionDirective } from '../../directives/autocomplete-option.directive';
 import { AutocompleteNoResultDirective } from '../../directives/autocomplete-no-result.directive';
+import {AuthorService} from "../../../authors/services/author.service";
+import {IAddAuthor} from "../../../authors/interfaces/add-author.interface";
+import {IAuthor} from "../../../authors/interfaces/author.interface";
 
 
 @Component({
@@ -48,6 +50,8 @@ export class AutocompleteComponent<T = any> implements
   @ContentChild(AutocompleteNoResultDirective, { static : true, read: TemplateRef })
   public autocompleteNoResult?: TemplateRef<AutocompleteNoResultDirective>;
 
+  @Input()
+  public withCreate?: boolean;
   @Input()
   public key?: string;
   @Input()
@@ -86,6 +90,7 @@ export class AutocompleteComponent<T = any> implements
   public focused: boolean = false;
   public autocomplete = new FormControl('');
   public isDropDownOpen = false;
+  public isAddOptionFormOpen = false;
 
   private _value!: T[];
   private _placeholder!: string;
@@ -95,6 +100,7 @@ export class AutocompleteComponent<T = any> implements
     @Optional() @Self() public ngControl: NgControl,
     private readonly _formBuilder: FormBuilder,
     private readonly _elementRef: ElementRef,
+    private readonly _authorService: AuthorService,
   ) {
     if(this.ngControl !== null) {
       this.ngControl.valueAccessor = this;
@@ -162,6 +168,22 @@ export class AutocompleteComponent<T = any> implements
     this.autocomplete.setValue(displayedValue);
     this._onChange(value);
     this.isDropDownOpen = false;
+  }
+
+  public openOptionForm(): void {
+    this.isAddOptionFormOpen = true;
+  }
+
+  public saveOption($event: IAddAuthor): void {
+    console.log($event);
+    this.autocomplete.setValue(`${$event.first_name} ${$event.last_name}`)
+    this._authorService.addNewAuthor($event)
+      .pipe(
+        takeUntil(this._destroy),
+      )
+      .subscribe();
+
+    this.isAddOptionFormOpen = false;
   }
 
   // eslint-disable-next-line no-empty-function

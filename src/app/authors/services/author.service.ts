@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { IAuthor } from '../interfaces/author.interface';
 import { IPaginatedAuthor, IPaginatedBooks } from '../../../libs/pagination';
+import { IAddAuthor } from '../interfaces/add-author.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -37,5 +38,9 @@ export class AuthorService {
     return this._httpClient.get<IPaginatedAuthor>('api/authors', {
       params: parameters,
     });
+  }
+
+  public addNewAuthor(data: IAddAuthor): Observable<IAddAuthor> {
+    return this._httpClient.post<IAddAuthor>('api/authors', data);
   }
 }

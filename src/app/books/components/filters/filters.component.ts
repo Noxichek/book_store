@@ -151,7 +151,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
   }
 
   private _getAllAuthors(): void {
-    this._authorService.getAllAuthors().pipe(
+    this._authorService.getAuthorsFromPageNumber(1, 100).pipe(
       pluck('authors'),
       tap((authors: IAuthor[]) => {
         this.authors = authors;

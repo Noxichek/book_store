@@ -25,20 +25,25 @@
       placeholder="Pick one..."
       formControlName="authorFilter"
       (filterData)="filterData($event)"
+      [withCreate]="true"
     >
       <ng-template
         appAutocompleteOption
         let-option="option"
       >
-        <h1>{{ displayWithFn(option) }}</h1>
+        {{ displayWithFn(option) }}
       </ng-template>
 
       <ng-template
         appAutocompleteNoResult
         let-noResultValue="noResultValue"
       >
-        {{ noResultValue }} not found
+        <app-author-no-result
+          [inputValue]="noResultValue"
+        ></app-author-no-result>
       </ng-template>
+
+
     </app-autocomplete>
   </mat-form-field>
 
