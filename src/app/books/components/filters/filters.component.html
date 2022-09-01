@@ -16,15 +16,30 @@
 
   <mat-form-field class="example-full-width" appearance="fill">
     <mat-label>Author</mat-label>
-    <app-authors-filter
+    <app-autocomplete
       [displayWith]="displayWithFn"
       [options]="filteredAuthors"
       [required]="true"
       [disabled]="false"
+      key="id"
       placeholder="Pick one..."
       formControlName="authorFilter"
       (filterData)="filterData($event)"
-    ></app-authors-filter>
+    >
+      <ng-template
+        appAutocompleteOption
+        let-option="option"
+      >
+        <h1>{{ displayWithFn(option) }}</h1>
+      </ng-template>
+
+      <ng-template
+        appAutocompleteNoResult
+        let-noResultValue="noResultValue"
+      >
+        {{ noResultValue }} not found
+      </ng-template>
+    </app-autocomplete>
   </mat-form-field>
 
   <ng-container formGroupName="price">
@@ -57,8 +72,7 @@
       <span matSuffix>₽&nbsp;</span>
     </mat-form-field>
     <mat-error
-      *ngIf="priceControl.hasError('minPriceGreaterMaxPrice') && (minPriceControl.touched && maxPriceControl.touched)">Min
-      greater max
+      *ngIf="priceControl.hasError('minPriceGreaterMaxPrice') && (minPriceControl.touched && maxPriceControl.touched)">Min greater max
     </mat-error>
   </ng-container>
 

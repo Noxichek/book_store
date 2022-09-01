@@ -1,0 +1,32 @@
+<section class="container">
+  <input type="text"
+         [placeholder]="placeholder"
+         matInput
+         [formControl]="autocomplete"
+         autocomplete="off"
+         (focus)="onFocus()"
+  >
+  <section
+    class="options"
+    *ngIf="isDropDownOpen">
+    <section
+      *ngFor="let option of options"
+    >
+      <mat-option
+        class="current-option"
+        (click)="setValueIntoInput(option)"
+      >
+        <ng-container *ngIf="autocompleteOptions; else defaultTemplate">
+          <ng-container *ngTemplateOutlet="autocompleteOptions; context: { option: option }">
+          </ng-container>
+        </ng-container>
+        <ng-template #defaultTemplate>
+          {{ displayWith(option) }}
+        </ng-template>
+      </mat-option>
+    </section>
+  </section>
+    <mat-option class="current-option" disabled="true" *ngIf="autocompleteNoResult && options.length === 0 && autocomplete.dirty">
+      <ng-container *ngTemplateOutlet="autocompleteNoResult; context: { noResultValue: autocomplete.value}"></ng-container>
+    </mat-option>
+</section>

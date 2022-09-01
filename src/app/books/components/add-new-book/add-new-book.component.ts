@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
@@ -17,6 +16,10 @@ import { IAuthor } from '../../../authors/interfaces/author.interface';
 import { ICreateBookData } from '../../interfaces/create-book-data-interface';
 import { compareDateValidator } from '../../validators/compare-date-validator';
 import { MyErrorStateMatcher } from '../../validators/error-state-matcher';
+import { fileSizeValidator } from '../../validators/file-size-validator';
+import { fileFormatValidator } from '../../validators/file-format-validator';
+import { FireStorageService } from '../../services/fire-storage.service';
+import { ImageFormats } from '../../interfaces/image-formats-enum';
 
 
 @Component({
@@ -49,6 +52,7 @@ export class AddNewBookComponent implements OnInit, OnDestroy {
     private readonly _formBuilder: FormBuilder,
     private readonly _genreService: GenreService,
     private readonly _toastrService: ToastrService,
+    private readonly _fireStorageService: FireStorageService,
   ) {
     this.form = this._initForm();
   }
@@ -89,12 +93,18 @@ export class AddNewBookComponent implements OnInit, OnDestroy {
   }
 
   public addNewBook(): void {
-    const id = this.form.value.author.id;
+    const id = this.form.value.author?.id;
     const data = this._getFormData();
+    const image = this.form.get('downloadImage')?.value;
 
     if (this.form.invalid) {
       return;
     }
+
+    if (image) {
+      this._fireStorageService.pushFileToStorage(image);
+    }
+
     this._bookService.createBook(id, data)
       .pipe(takeUntil(this._destroy$))
       .subscribe(() => this._toastrService.success('Successful added'));
@@ -116,13 +126,18 @@ export class AddNewBookComponent implements OnInit, OnDestroy {
 
   private _initForm(): FormGroup {
     return this._formBuilder.group({
-      title: ['', Validators.required],
-      description: [''],
-      price: ['', Validators.required],
-      author: ['', Validators.required],
-      genres: [''],
-      writingDate: [''],
-      releaseDate: [''],
+      title: [null, Validators.required],
+      description: [null],
+      price: [null, Validators.required],
+      author: [null, Validators.required],
+      genres: [null],
+      writingDate: [null],
+      releaseDate: [null],
+      downloadImage: [null,
+        [
+          fileSizeValidator(2),
+          fileFormatValidator([ImageFormats.jpg, ImageFormats.png, ImageFormats.jpeg]),
+        ]],
     }, { validators: compareDateValidator('writingDate', 'releaseDate') });
   }
 
