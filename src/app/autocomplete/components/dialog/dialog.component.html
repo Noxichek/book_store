@@ -1,0 +1,18 @@
+<div mat-dialog-content [formGroup]="dialogForm">
+  <mat-form-field appearance="fill">
+    <mat-label>First name</mat-label>
+    <input matInput formControlName="firstName">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Last name</mat-label>
+    <input matInput formControlName="lastName">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button
+    mat-button
+    (click)="addAuthor()"
+    [mat-dialog-close]="firstName"
+    cdkFocusInitial>Add author</button>
+</div>

@@ -1,5 +1,5 @@
 import {
-  ChangeDetectionStrategy,
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   EventEmitter,
   OnDestroy,
@@ -19,6 +19,7 @@ import { ISearchBookData } from '../../interfaces/search-book-data-interface';
 import { filterPriceValidator } from '../../validators/filter-price-validator';
 import { Utils } from '../../../core/utils/utils';
 import { IQueryParameters } from '../../interfaces/query-parameters-interface';
+import { IAddAuthor } from '../../../authors/interfaces/add-author.interface';
 
 @Component({
   selector: 'app-filters',
@@ -49,6 +50,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
     private readonly _formBuilder: FormBuilder,
     private readonly _activatedRoute: ActivatedRoute,
     private readonly _router: Router,
+    private readonly _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.formFilter = this._initFilterForm();
   }
@@ -105,6 +107,20 @@ export class FiltersComponent implements OnInit, OnDestroy {
         return Utils.getFullName(author).toLowerCase().includes(value.toLowerCase());
       })
       : [...this.authors];
+  }
+
+  public getAuthorData(data: IAddAuthor): void {
+    this.authorControl.setValue(`${data.first_name} ${data.last_name}`);
+
+    this._authorService.addNewAuthor(data)
+      .pipe(
+        takeUntil(this._destroy$),
+      )
+      .subscribe((response: any) => {
+        this.authors.push(response);
+        this.authors = [...this.authors];
+        this._changeDetectorRef.markForCheck();
+      });
   }
 
   public displayWithFn(option: IAuthor): string {

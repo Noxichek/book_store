@@ -39,6 +39,7 @@
         let-noResultValue="noResultValue"
       >
         <app-author-no-result
+          (authorData)="getAuthorData($event)"
           [inputValue]="noResultValue"
         ></app-author-no-result>
       </ng-template>

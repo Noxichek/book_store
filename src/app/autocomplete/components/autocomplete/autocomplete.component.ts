@@ -126,8 +126,8 @@ export class AutocompleteComponent<T = any> implements
     this._destroy.complete();
   }
 
-  public writeValue(value: T[]): void {
-    this._value = value;
+  public writeValue(value: string): void {
+    this.autocomplete.setValue(value);
   }
   public registerOnChange(onChange: (value: T | string| boolean | number) => void): void {
     this._onChange = onChange;
@@ -176,7 +176,7 @@ export class AutocompleteComponent<T = any> implements
 
   public saveOption($event: IAddAuthor): void {
     console.log($event);
-    this.autocomplete.setValue(`${$event.first_name} ${$event.last_name}`)
+    this.autocomplete.setValue(`${$event.first_name} ${$event.last_name}`);
     this._authorService.addNewAuthor($event)
       .pipe(
         takeUntil(this._destroy),

@@ -11,6 +11,8 @@ import { AutocompleteNoResultDirective } from './directives/autocomplete-no-resu
 import {MatButtonModule} from "@angular/material/button";
 import { CreateOptionFormComponent } from './components/create-option-form/create-option-form.component';
 import { AuthorNoResultComponent } from './components/author-no-result/author-no-result.component';
+import { DialogComponent } from './components/dialog/dialog.component';
+import {MatDialogModule} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -19,14 +21,16 @@ import { AuthorNoResultComponent } from './components/author-no-result/author-no
     AutocompleteNoResultDirective,
     CreateOptionFormComponent,
     AuthorNoResultComponent,
+    DialogComponent,
   ],
-    imports: [
-        CommonModule,
-        ReactiveFormsModule,
-        MatOptionModule,
-        MatInputModule,
-        MatButtonModule,
-    ],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatOptionModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDialogModule,
+  ],
     exports: [
         AutocompleteComponent,
         AutocompleteOptionDirective,
