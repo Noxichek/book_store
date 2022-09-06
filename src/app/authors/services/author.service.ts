@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
-
-import { HttpClient } from '@angular/common/http';
 
 import { IAuthor } from '../interfaces/author.interface';
 import { IPaginatedAuthor, IPaginatedBooks } from '../../../libs/pagination';

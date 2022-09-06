@@ -10,7 +10,7 @@
     class="options"
     *ngIf="isDropDownOpen">
     <section
-      *ngFor="let option of options"
+      *ngFor="let option of options | async"
     >
       <mat-option
         class="current-option"
@@ -27,7 +27,7 @@
     </section>
   </section>
   <section class="options">
-    <ng-container *ngIf="!options.length && autocomplete.dirty">
+    <ng-container *ngIf="autocomplete.dirty && !options.getValue().length">
       <ng-container *ngIf="!isAddOptionFormOpen">
         <ng-container disabled="true" *ngIf="autocompleteNoResult">
           <ng-container *ngTemplateOutlet="autocompleteNoResult; context: { noResultValue: autocomplete.value}"></ng-container>

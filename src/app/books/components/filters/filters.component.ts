@@ -9,7 +9,7 @@ import {
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
-import { pluck, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import {BehaviorSubject, map, pluck, Subject, switchMap, takeUntil, tap} from 'rxjs';
 
 import { AuthorService } from '../../../authors/services/author.service';
 import { IAuthor } from '../../../authors/interfaces/author.interface';
@@ -37,7 +37,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
 
   public readonly formFilter!: FormGroup;
   public authors: IAuthor[] = [];
-  public filteredAuthors: IAuthor[] = [];
+  public filteredAuthors = new BehaviorSubject<IAuthor[]>([]);
 
   public matchersMapPriceFilter: { minPriceGreaterMaxPrice: MyErrorStateMatcher } = {
     minPriceGreaterMaxPrice: new MyErrorStateMatcher('minPriceGreaterMaxPrice', 'price'),
@@ -102,11 +102,11 @@ export class FiltersComponent implements OnInit, OnDestroy {
   }
 
   public filterData(value: string | null) {
-    this.filteredAuthors = !!value
+    this.filteredAuthors.next(!!value
       ? this.authors.filter((author: IAuthor) => {
         return Utils.getFullName(author).toLowerCase().includes(value.toLowerCase());
       })
-      : [...this.authors];
+      : [...this.authors]);
   }
 
   public getAuthorData(data: IAddAuthor): void {
@@ -114,13 +114,13 @@ export class FiltersComponent implements OnInit, OnDestroy {
 
     this._authorService.addNewAuthor(data)
       .pipe(
+        map((value: IAddAuthor) => {
+          this.authors.push(value as unknown as IAuthor);
+          this.authors = [...this.authors];
+        }),
         takeUntil(this._destroy$),
       )
-      .subscribe((response: any) => {
-        this.authors.push(response);
-        this.authors = [...this.authors];
-        this._changeDetectorRef.markForCheck();
-      });
+      .subscribe();
   }
 
   public displayWithFn(option: IAuthor): string {
@@ -171,23 +171,27 @@ export class FiltersComponent implements OnInit, OnDestroy {
       pluck('authors'),
       tap((authors: IAuthor[]) => {
         this.authors = authors;
-        this.filteredAuthors = [...authors];
+        this.filteredAuthors.next([...authors]);
       }),
       switchMap(() => this._activatedRoute.queryParams),
       pluck('author'),
       takeUntil(this._destroy$),
     )
       .subscribe((authorLastName: string) => {
-        const currentAuthor = this.authors.find((author: IAuthor) => {
-          return author.lastName === authorLastName;
-        });
-        if (currentAuthor) {
-          this.formFilter.get('authorFilter')?.setValue(Utils.getFullName(currentAuthor));
-        }
-        if(this.formFilter.valid) {
-          this.searchByAuthor.emit(this._getFormData());
-        }
+        this._filterAuthorsByLastName(authorLastName);
       });
+  }
+
+  private _filterAuthorsByLastName(authorLastName: string): void {
+    const currentAuthor = this.authors.find((author: IAuthor) => {
+      return author.lastName === authorLastName;
+    });
+    if (currentAuthor) {
+      this.formFilter.get('authorFilter')?.setValue(Utils.getFullName(currentAuthor));
+    }
+    if(this.formFilter.valid) {
+      this.searchByAuthor.emit(this._getFormData());
+    }
   }
 
   private _initFilterForm(): FormGroup {

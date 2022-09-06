@@ -13,13 +13,12 @@ import {
 import { ControlValueAccessor, FormBuilder, FormControl, NgControl } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
 
-import {debounceTime, pluck, Subject, takeUntil} from 'rxjs';
+import { BehaviorSubject, debounceTime, Subject, takeUntil } from 'rxjs';
 
 import { AutocompleteOptionDirective } from '../../directives/autocomplete-option.directive';
 import { AutocompleteNoResultDirective } from '../../directives/autocomplete-no-result.directive';
-import {AuthorService} from "../../../authors/services/author.service";
-import {IAddAuthor} from "../../../authors/interfaces/add-author.interface";
-import {IAuthor} from "../../../authors/interfaces/author.interface";
+import { AuthorService } from '../../../authors/services/author.service';
+import { IAddAuthor } from '../../../authors/interfaces/add-author.interface';
 
 
 @Component({
@@ -36,8 +35,7 @@ import {IAuthor} from "../../../authors/interfaces/author.interface";
     '(document:click)': 'onClick($event)',
   },
 })
-export class AutocompleteComponent<T = any> implements
-  OnInit,
+export class AutocompleteComponent<T = any> implements OnInit,
   OnDestroy,
   ControlValueAccessor,
   MatFormFieldControl<T[]> {
@@ -47,37 +45,44 @@ export class AutocompleteComponent<T = any> implements
   @ContentChild(AutocompleteOptionDirective, { static: true, read: TemplateRef })
   public autocompleteOptions?: TemplateRef<AutocompleteOptionDirective>;
 
-  @ContentChild(AutocompleteNoResultDirective, { static : true, read: TemplateRef })
+  @ContentChild(AutocompleteNoResultDirective, { static: true, read: TemplateRef })
   public autocompleteNoResult?: TemplateRef<AutocompleteNoResultDirective>;
 
   @Input()
   public withCreate?: boolean;
   @Input()
   public key?: string;
+  // @Input()
+  // public options: T[] = [];
   @Input()
-  public options: T[] = [];
+  public options = new BehaviorSubject<T[]>([]);
   @Input()
   public displayWith!: (option: T) => string;
   @Input()
   public required!: boolean;
   @Input()
   public disabled!: boolean;
+
   @Input()
   public set value(value: T[]) {
     this._value = value;
     this.stateChanges.next();
   }
+
   public get value(): T[] {
     return this._value;
   }
+
   @Input()
   public set placeholder(value: string) {
     this._placeholder = value;
     this.stateChanges.next();
   }
+
   public get placeholder(): string {
     return this._placeholder;
   }
+
   @Output()
   public filterData = new EventEmitter<string | null>;
   @HostBinding()
@@ -102,7 +107,7 @@ export class AutocompleteComponent<T = any> implements
     private readonly _elementRef: ElementRef,
     private readonly _authorService: AuthorService,
   ) {
-    if(this.ngControl !== null) {
+    if (this.ngControl !== null) {
       this.ngControl.valueAccessor = this;
     }
   }
@@ -129,9 +134,11 @@ export class AutocompleteComponent<T = any> implements
   public writeValue(value: string): void {
     this.autocomplete.setValue(value);
   }
-  public registerOnChange(onChange: (value: T | string| boolean | number) => void): void {
+
+  public registerOnChange(onChange: (value: T | string | boolean | number) => void): void {
     this._onChange = onChange;
   }
+
   public registerOnTouched(onTouched: () => void): void {
     this._touchFn = onTouched;
   }
@@ -160,7 +167,7 @@ export class AutocompleteComponent<T = any> implements
 
   public setValueIntoInput(option: T): void {
     const displayedValue = this.displayWith(option);
-    const value: T | string| boolean | number = !!this.key
+    const value: T | string | boolean | number = !!this.key
       // @ts-ignore
       ? option[this.key]
       : option;
@@ -187,7 +194,7 @@ export class AutocompleteComponent<T = any> implements
   }
 
   // eslint-disable-next-line no-empty-function
-  private _onChange = (value: T | string| boolean | number): void => {};
+  private _onChange = (value: T | string | boolean | number): void => {};
   // eslint-disable-next-line no-empty-function
   private _touchFn = (): void => {};
 
