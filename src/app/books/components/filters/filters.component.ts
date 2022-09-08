@@ -187,10 +187,10 @@ export class FiltersComponent implements OnInit, OnDestroy {
     });
   }
 
-  private _getFilteredAuthors() {
+  private _getFilteredAuthors(): Observable<IAuthor[]> {
     return this._authorQueryChange$
       .pipe(
-        startWith(null),
+        startWith(''),
         switchMap((query: string | null) => {
 
           return this.authors$

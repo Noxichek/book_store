@@ -1,23 +1,24 @@
 import {
   Component,
-  ContentChild,
-  ElementRef,
-  EventEmitter,
-  HostBinding,
-  Input,
+  OnChanges,
   OnDestroy,
   OnInit,
-  Optional,
+  Input,
   Output,
+  ContentChild,
+  HostBinding,
+  ElementRef,
+  EventEmitter,
+  Optional,
   Self,
+  SimpleChanges,
   TemplateRef,
 } from '@angular/core';
-import { ControlValueAccessor, FormBuilder, FormControl, NgControl } from '@angular/forms';
+import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
 
-import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { debounceTime, first, Subject, takeUntil } from 'rxjs';
 
-import { AuthorService } from '../../../authors/services/author.service';
 import { AutocompleteOptionDirective } from '../../directives/autocomplete-option.directive';
 import { AutocompleteNoResultDirective } from '../../directives/autocomplete-no-result.directive';
 
@@ -32,22 +33,14 @@ import { AutocompleteNoResultDirective } from '../../directives/autocomplete-no-
       useExisting: AutocompleteComponent,
     },
   ],
-  host: {
-    '(document:click)': 'onClick($event)',
-  },
 })
-export class AutocompleteComponent<T = any> implements OnInit,
+export class AutocompleteComponent<T = any> implements OnChanges,
+  OnInit,
   OnDestroy,
   ControlValueAccessor,
   MatFormFieldControl<T[]> {
 
   private static _nextId = 0;
-
-  @ContentChild(AutocompleteOptionDirective, { static: true, read: TemplateRef })
-  public autocompleteOptions?: TemplateRef<AutocompleteOptionDirective>;
-
-  @ContentChild(AutocompleteNoResultDirective, { static: true, read: TemplateRef })
-  public autocompleteNoResult?: TemplateRef<AutocompleteNoResultDirective>;
 
   @Input()
   public withCreate?: boolean;
@@ -61,11 +54,13 @@ export class AutocompleteComponent<T = any> implements OnInit,
   public required!: boolean;
   @Input()
   public disabled!: boolean;
+
   @Input()
   public set value(value: T[]) {
     this._value = value;
     this.stateChanges.next();
   }
+
   public get value(): T[] {
     return this._value;
   }
@@ -75,32 +70,39 @@ export class AutocompleteComponent<T = any> implements OnInit,
     this._placeholder = value;
     this.stateChanges.next();
   }
+
   public get placeholder(): string {
     return this._placeholder;
   }
 
   @Output()
-  public filterData = new EventEmitter<string | null>;
+  public filterData = new EventEmitter<string | null>();
+
+  @ContentChild(AutocompleteOptionDirective, { static: true, read: TemplateRef })
+  public autocompleteOptions?: TemplateRef<AutocompleteOptionDirective>;
+
+  @ContentChild(AutocompleteNoResultDirective, { static: true, read: TemplateRef })
+  public autocompleteNoResult?: TemplateRef<AutocompleteNoResultDirective>;
+
   @HostBinding()
   public id = `filter-id-${AutocompleteComponent._nextId++}`;
 
   public focused: boolean = false;
   public isDropDownOpen = false;
   public errorState = false;
-  public autocomplete = new FormControl('');
+  public inputAutocomplete = new FormControl('');
   public stateChanges = new Subject<void>();
   public controlType = 'autocomplete';
 
   private _destroy = new Subject<void>();
+  private _optionsChange$ = new Subject<void>();
   private _placeholder!: string;
   private _value!: T[];
 
   constructor(
     @Optional() @Self()
     public ngControl: NgControl,
-    private readonly _formBuilder: FormBuilder,
     private readonly _elementRef: ElementRef,
-    private readonly _authorService: AuthorService,
   ) {
     if (this.ngControl !== null) {
       this.ngControl.valueAccessor = this;
@@ -115,6 +117,12 @@ export class AutocompleteComponent<T = any> implements OnInit,
     return true;
   }
 
+  public ngOnChanges(changes: SimpleChanges): void {
+    if (!changes['options'].isFirstChange()) {
+      this._optionsChange$.next();
+    }
+  }
+
   public ngOnInit(): void {
     this._listenInputAutocomplete();
   }
@@ -126,8 +134,36 @@ export class AutocompleteComponent<T = any> implements OnInit,
     this._destroy.complete();
   }
 
-  public writeValue(value: string): void {
-    this.autocomplete.setValue(value, { emitEvent: false });
+  public writeValue(value: T | string | boolean | number): void {
+    if (!value) {
+      this.inputAutocomplete.reset();
+    }
+
+    if (this.key) {
+      this.filterData.emit('');
+
+      this._optionsChange$
+        .pipe(
+          first(),
+          takeUntil(this._destroy),
+        )
+        .subscribe(() => {
+          const currentOption: T | undefined = this.options?.find((option: T) => {
+            // @ts-ignore
+            return option[this.key] === value;
+          });
+          if (currentOption) {
+            this.inputAutocomplete.setValue(this.displayWith(currentOption));
+          }
+        });
+
+    } else if (
+      typeof value !== 'string'
+      && typeof value !== 'boolean'
+      && typeof value !== 'number'
+    ) {
+      this.inputAutocomplete.setValue(this.displayWith(value), { emitEvent: false });
+    }
   }
 
   public registerOnChange(onChange: (value: T | string | boolean | number) => void): void {
@@ -146,17 +182,17 @@ export class AutocompleteComponent<T = any> implements OnInit,
     // throw new Error('Method not implemented.');
   }
 
-  public onFocus(): void {
-    this.isDropDownOpen = true;
+  public onFocusIn(event: FocusEvent) {
+    if (!this.focused) {
+      this.focused = true;
+      this.stateChanges.next();
+    }
   }
 
-  public onBlur(): void {
-    this.isDropDownOpen = false;
-  }
-
-  public onClick(event: any): void {
-    if (!this._elementRef.nativeElement.contains(event.target)) {
-      this.onBlur();
+  public onFocusOut(event: FocusEvent) {
+    if (!this._elementRef.nativeElement.contains(event.relatedTarget as Element)) {
+      this.focused = false;
+      this.stateChanges.next();
     }
   }
 
@@ -167,7 +203,7 @@ export class AutocompleteComponent<T = any> implements OnInit,
       ? option[this.key]
       : option;
 
-    this.autocomplete.setValue(displayedValue);
+    this.inputAutocomplete.setValue(displayedValue);
     this._onChange(value);
     this.isDropDownOpen = false;
   }
@@ -178,7 +214,7 @@ export class AutocompleteComponent<T = any> implements OnInit,
   private _touchFn = (): void => {};
 
   private _listenInputAutocomplete(): void {
-    this.autocomplete.valueChanges
+    this.inputAutocomplete.valueChanges
       .pipe(
         debounceTime(300),
         takeUntil(this._destroy),

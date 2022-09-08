@@ -1,14 +1,15 @@
 <section class="container">
   <input type="text"
-         [placeholder]="placeholder"
-         matInput
-         [formControl]="autocomplete"
          autocomplete="off"
-         (focus)="onFocus()"
+         matInput
+         [placeholder]="placeholder"
+         [formControl]="inputAutocomplete"
+         (focus)="onFocusIn($event)"
+         (focusout)="onFocusOut($event)"
   >
   <section
     class="options"
-    *ngIf="isDropDownOpen">
+    *ngIf="focused">
     <section
       *ngFor="let option of options ?? []"
     >
@@ -27,9 +28,9 @@
     </section>
   </section>
   <section class="options">
-    <ng-container *ngIf="autocomplete.dirty && !options?.length">
+    <ng-container *ngIf="inputAutocomplete.dirty && !options?.length">
         <ng-container disabled="true" *ngIf="autocompleteNoResult">
-          <ng-container *ngTemplateOutlet="autocompleteNoResult; context: { noResultValue: autocomplete.value}"></ng-container>
+          <ng-container *ngTemplateOutlet="autocompleteNoResult; context: { noResultValue: inputAutocomplete.value}"></ng-container>
         </ng-container>
     </ng-container>
   </section>
