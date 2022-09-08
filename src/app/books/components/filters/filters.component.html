@@ -1,24 +1,9 @@
 <form [formGroup]="formFilter" class="example-form">
-<!--  <mat-form-field class="example-full-width" appearance="fill">-->
-<!--    <mat-label>Author</mat-label>-->
-<!--    <input type="text"-->
-<!--           placeholder="Pick one"-->
-<!--           aria-label="Author"-->
-<!--           matInput-->
-<!--           formControlName="authorFilter"-->
-<!--           [matAutocomplete]="auto">-->
-<!--    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">-->
-<!--      <mat-option *ngFor="let author of authors" [value]="author | authorFullName">-->
-<!--        {{author | authorFullName}}-->
-<!--      </mat-option>-->
-<!--    </mat-autocomplete>-->
-<!--  </mat-form-field>-->
-
   <mat-form-field class="example-full-width" appearance="fill">
     <mat-label>Author</mat-label>
     <app-autocomplete
       [displayWith]="displayWithFn"
-      [options]="filteredAuthors"
+      [options]="filteredAuthors$ | async"
       [required]="true"
       [disabled]="false"
       key="id"
@@ -59,7 +44,8 @@
         formControlName="minPriceFilter"
         autocomplete="off"
       >
-      <mat-error *ngIf="minPriceControl.invalid && (minPriceControl.touched || minPriceControl.dirty)">Wrong price</mat-error>
+      <mat-error *ngIf="minPriceControl?.invalid && (minPriceControl?.touched || minPriceControl?.dirty)">Wrong price
+      </mat-error>
       <span matSuffix>₽&nbsp;</span>
     </mat-form-field>
 
@@ -78,13 +64,15 @@
       <span matSuffix>₽&nbsp;</span>
     </mat-form-field>
     <mat-error
-      *ngIf="priceControl.hasError('minPriceGreaterMaxPrice') && (minPriceControl.touched && maxPriceControl.touched)">Min greater max
+      *ngIf="priceControl?.hasError('minPriceGreaterMaxPrice') && (minPriceControl?.touched && maxPriceControl?.touched)">
+      Min greater max
     </mat-error>
   </ng-container>
 
-    <app-date-filters formControlName="date"></app-date-filters>
-    <mat-error *ngIf="formFilter.get('date')?.hasError('comparedDate')">Writing date cannot be greater than release date</mat-error>
-    <mat-error *ngIf="formFilter.get('date')?.hasError('releaseDate')">Release date cannot be greater than now</mat-error>
+  <app-date-filters formControlName="date"></app-date-filters>
+  <mat-error *ngIf="formFilter.get('date')?.hasError('comparedDate')">Writing date cannot be greater than release date
+  </mat-error>
+  <mat-error *ngIf="formFilter.get('date')?.hasError('releaseDate')">Release date cannot be greater than now</mat-error>
 
   <mat-form-field class="example-full-width" appearance="fill">
     <mat-label>Title</mat-label>

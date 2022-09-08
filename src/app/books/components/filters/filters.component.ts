@@ -1,25 +1,25 @@
 import {
-  ChangeDetectionStrategy, ChangeDetectorRef,
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   OnDestroy,
   OnInit,
   Output,
 } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 
-import {BehaviorSubject, map, pluck, Subject, switchMap, takeUntil, tap} from 'rxjs';
+import { map, Observable, pluck, share, startWith, Subject, switchMap, takeUntil } from 'rxjs';
 
 import { AuthorService } from '../../../authors/services/author.service';
-import { IAuthor } from '../../../authors/interfaces/author.interface';
 import { MyErrorStateMatcher } from '../../validators/error-state-matcher';
 import { disabledDateValidator } from '../../validators/disabled-date-validator';
-import { ISearchBookData } from '../../interfaces/search-book-data-interface';
 import { filterPriceValidator } from '../../validators/filter-price-validator';
-import { Utils } from '../../../core/utils/utils';
+import { ISearchBookData } from '../../interfaces/search-book-data-interface';
 import { IQueryParameters } from '../../interfaces/query-parameters-interface';
 import { IAddAuthor } from '../../../authors/interfaces/add-author.interface';
+import { IAuthor } from '../../../authors/interfaces/author.interface';
+import { Utils } from '../../../core/utils/utils';
 
 @Component({
   selector: 'app-filters',
@@ -36,47 +36,51 @@ export class FiltersComponent implements OnInit, OnDestroy {
   public clearFilters = new EventEmitter<void>;
 
   public readonly formFilter!: FormGroup;
-  public authors: IAuthor[] = [];
-  public filteredAuthors = new BehaviorSubject<IAuthor[]>([]);
+  public authors$!: Observable<IAuthor[]>;
+  public filteredAuthors$!: Observable<IAuthor[]>;
 
   public matchersMapPriceFilter: { minPriceGreaterMaxPrice: MyErrorStateMatcher } = {
     minPriceGreaterMaxPrice: new MyErrorStateMatcher('minPriceGreaterMaxPrice', 'price'),
   };
 
+  private readonly _authorQueryChange$ = new Subject<string | null>();
   private _destroy$ = new Subject<void>();
 
   constructor(
+    private readonly _activatedRoute: ActivatedRoute,
     private readonly _authorService: AuthorService,
     private readonly _formBuilder: FormBuilder,
-    private readonly _activatedRoute: ActivatedRoute,
     private readonly _router: Router,
-    private readonly _changeDetectorRef: ChangeDetectorRef,
   ) {
     this.formFilter = this._initFilterForm();
+    this.authors$ = this._getAllAuthors()
+      .pipe(
+        share(),
+      );
+    this.filteredAuthors$ = this._getFilteredAuthors();
   }
 
-  public get minPriceControl(): FormControl {
-    return this.formFilter.get('price')?.get('minPriceFilter') as FormControl;
+  public get minPriceControl(): AbstractControl | null {
+    return this.formFilter.get('price')!.get('minPriceFilter');
   }
 
-  public get maxPriceControl(): FormControl {
-    return this.formFilter.get('price')?.get('maxPriceFilter') as FormControl;
+  public get maxPriceControl(): AbstractControl | null {
+    return this.formFilter.get('price')!.get('maxPriceFilter');
   }
 
-  public get priceControl(): FormControl {
-    return this.formFilter.get('price') as FormControl;
+  public get priceControl(): AbstractControl | null {
+    return this.formFilter.get('price');
   }
 
-  public get titleControl(): FormControl {
-    return this.formFilter.get('titleFilter') as FormControl;
+  public get titleControl(): AbstractControl | null {
+    return this.formFilter.get('titleFilter');
   }
 
-  public get authorControl(): FormControl {
-    return this.formFilter.get('authorFilter') as FormControl;
+  public get authorControl(): AbstractControl | null {
+    return this.formFilter.get('authorFilter');
   }
 
   public ngOnInit(): void {
-    this._getAllAuthors();
     this._getQueryParams();
   }
 
@@ -102,25 +106,18 @@ export class FiltersComponent implements OnInit, OnDestroy {
   }
 
   public filterData(value: string | null) {
-    this.filteredAuthors.next(!!value
-      ? this.authors.filter((author: IAuthor) => {
-        return Utils.getFullName(author).toLowerCase().includes(value.toLowerCase());
-      })
-      : [...this.authors]);
+    this._authorQueryChange$.next(value);
   }
 
   public getAuthorData(data: IAddAuthor): void {
-    this.authorControl.setValue(`${data.first_name} ${data.last_name}`);
-
     this._authorService.addNewAuthor(data)
       .pipe(
-        map((value: IAddAuthor) => {
-          this.authors.push(value as unknown as IAuthor);
-          this.authors = [...this.authors];
-        }),
         takeUntil(this._destroy$),
       )
-      .subscribe();
+      .subscribe((author: IAuthor) => {
+        this.filterData(author.lastName);
+        this.authorControl?.setValue(Utils.getFullName(author));
+      });
   }
 
   public displayWithFn(option: IAuthor): string {
@@ -153,7 +150,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
     let authorLastName;
 
     if (this.formFilter.value.authorFilter !== '' && this.formFilter.value.authorFilter !== null) {
-      [,authorLastName] = this.formFilter.value.authorFilter.split(' ');
+      [, authorLastName] = this.formFilter.value.authorFilter.split(' ');
     }
 
     return {
@@ -166,32 +163,11 @@ export class FiltersComponent implements OnInit, OnDestroy {
     };
   }
 
-  private _getAllAuthors(): void {
-    this._authorService.getAuthorsFromPageNumber(1, 100).pipe(
-      pluck('authors'),
-      tap((authors: IAuthor[]) => {
-        this.authors = authors;
-        this.filteredAuthors.next([...authors]);
-      }),
-      switchMap(() => this._activatedRoute.queryParams),
-      pluck('author'),
-      takeUntil(this._destroy$),
-    )
-      .subscribe((authorLastName: string) => {
-        this._filterAuthorsByLastName(authorLastName);
-      });
-  }
-
-  private _filterAuthorsByLastName(authorLastName: string): void {
-    const currentAuthor = this.authors.find((author: IAuthor) => {
-      return author.lastName === authorLastName;
-    });
-    if (currentAuthor) {
-      this.formFilter.get('authorFilter')?.setValue(Utils.getFullName(currentAuthor));
-    }
-    if(this.formFilter.valid) {
-      this.searchByAuthor.emit(this._getFormData());
-    }
+  private _getAllAuthors(): Observable<IAuthor[]> {
+    return this._authorService.getAuthorsFromPageNumber(1, 100)
+      .pipe(
+        pluck('authors'),
+      );
   }
 
   private _initFilterForm(): FormGroup {
@@ -211,4 +187,25 @@ export class FiltersComponent implements OnInit, OnDestroy {
     });
   }
 
+  private _getFilteredAuthors() {
+    return this._authorQueryChange$
+      .pipe(
+        startWith(null),
+        switchMap((query: string | null) => {
+
+          return this.authors$
+            .pipe(
+              map((authors: IAuthor[]) => {
+                if (query) {
+                  return authors.filter((author: IAuthor) => {
+                    return Utils.getFullName(author).toLowerCase().includes(query.toLowerCase());
+                  });
+                }
+
+                return [...authors];
+              }),
+            );
+        }),
+      );
+  }
 }

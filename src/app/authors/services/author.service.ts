@@ -39,7 +39,7 @@ export class AuthorService {
     });
   }
 
-  public addNewAuthor(data: IAddAuthor): Observable<IAddAuthor> {
-    return this._httpClient.post<IAddAuthor>('api/authors', data);
+  public addNewAuthor(data: IAddAuthor): Observable<IAuthor> {
+    return this._httpClient.post<IAuthor>('api/authors', data);
   }
 }

@@ -1,5 +1,6 @@
 import {
-  Component, ContentChild,
+  Component,
+  ContentChild,
   ElementRef,
   EventEmitter,
   HostBinding,
@@ -8,17 +9,17 @@ import {
   OnInit,
   Optional,
   Output,
-  Self, TemplateRef,
+  Self,
+  TemplateRef,
 } from '@angular/core';
 import { ControlValueAccessor, FormBuilder, FormControl, NgControl } from '@angular/forms';
 import { MatFormFieldControl } from '@angular/material/form-field';
 
-import { BehaviorSubject, debounceTime, Subject, takeUntil } from 'rxjs';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 
+import { AuthorService } from '../../../authors/services/author.service';
 import { AutocompleteOptionDirective } from '../../directives/autocomplete-option.directive';
 import { AutocompleteNoResultDirective } from '../../directives/autocomplete-no-result.directive';
-import { AuthorService } from '../../../authors/services/author.service';
-import { IAddAuthor } from '../../../authors/interfaces/add-author.interface';
 
 
 @Component({
@@ -52,23 +53,19 @@ export class AutocompleteComponent<T = any> implements OnInit,
   public withCreate?: boolean;
   @Input()
   public key?: string;
-  // @Input()
-  // public options: T[] = [];
   @Input()
-  public options = new BehaviorSubject<T[]>([]);
+  public options!: T[] | null;
   @Input()
   public displayWith!: (option: T) => string;
   @Input()
   public required!: boolean;
   @Input()
   public disabled!: boolean;
-
   @Input()
   public set value(value: T[]) {
     this._value = value;
     this.stateChanges.next();
   }
-
   public get value(): T[] {
     return this._value;
   }
@@ -78,7 +75,6 @@ export class AutocompleteComponent<T = any> implements OnInit,
     this._placeholder = value;
     this.stateChanges.next();
   }
-
   public get placeholder(): string {
     return this._placeholder;
   }
@@ -87,22 +83,21 @@ export class AutocompleteComponent<T = any> implements OnInit,
   public filterData = new EventEmitter<string | null>;
   @HostBinding()
   public id = `filter-id-${AutocompleteComponent._nextId++}`;
-  @HostBinding('class.floated')
 
-  public stateChanges = new Subject<void>();
-  public errorState = false;
-  public controlType = 'autocomplete';
   public focused: boolean = false;
-  public autocomplete = new FormControl('');
   public isDropDownOpen = false;
-  public isAddOptionFormOpen = false;
+  public errorState = false;
+  public autocomplete = new FormControl('');
+  public stateChanges = new Subject<void>();
+  public controlType = 'autocomplete';
 
-  private _value!: T[];
-  private _placeholder!: string;
   private _destroy = new Subject<void>();
+  private _placeholder!: string;
+  private _value!: T[];
 
   constructor(
-    @Optional() @Self() public ngControl: NgControl,
+    @Optional() @Self()
+    public ngControl: NgControl,
     private readonly _formBuilder: FormBuilder,
     private readonly _elementRef: ElementRef,
     private readonly _authorService: AuthorService,
@@ -132,7 +127,7 @@ export class AutocompleteComponent<T = any> implements OnInit,
   }
 
   public writeValue(value: string): void {
-    this.autocomplete.setValue(value);
+    this.autocomplete.setValue(value, { emitEvent: false });
   }
 
   public registerOnChange(onChange: (value: T | string | boolean | number) => void): void {
@@ -175,22 +170,6 @@ export class AutocompleteComponent<T = any> implements OnInit,
     this.autocomplete.setValue(displayedValue);
     this._onChange(value);
     this.isDropDownOpen = false;
-  }
-
-  public openOptionForm(): void {
-    this.isAddOptionFormOpen = true;
-  }
-
-  public saveOption($event: IAddAuthor): void {
-    console.log($event);
-    this.autocomplete.setValue(`${$event.first_name} ${$event.last_name}`);
-    this._authorService.addNewAuthor($event)
-      .pipe(
-        takeUntil(this._destroy),
-      )
-      .subscribe();
-
-    this.isAddOptionFormOpen = false;
   }
 
   // eslint-disable-next-line no-empty-function
