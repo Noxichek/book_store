@@ -17,6 +17,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { BookModule } from '../../libs/book';
+import { AutocompleteModule } from '../autocomplete';
 
 import { BookListComponent } from './components/book-list/book-list.component';
 import { BookInfoComponent } from './components/book-info/book-info.component';
@@ -28,6 +29,7 @@ import { PriceComponent } from './components/price/price.component';
 import { BooksRoutingModule } from './books-routing.module';
 import { FiltersComponent } from './components/filters/filters.component';
 import { DateFiltersComponent } from './components/date-filters/date-filters.component';
+import { AuthorsFilterComponent } from './components/authors-filter/authors-filter.component';
 import { LoadFileComponent } from './components/load-file/load-file.component';
 
 @NgModule({
@@ -41,6 +43,7 @@ import { LoadFileComponent } from './components/load-file/load-file.component';
     PriceComponent,
     FiltersComponent,
     DateFiltersComponent,
+    AuthorsFilterComponent,
     LoadFileComponent,
   ],
   imports: [
@@ -63,6 +66,7 @@ import { LoadFileComponent } from './components/load-file/load-file.component';
     BookModule,
     ScrollingModule,
     FormsModule,
+    AutocompleteModule,
     FontAwesomeModule,
     MatProgressBarModule,
   ],

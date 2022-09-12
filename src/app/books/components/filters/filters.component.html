@@ -1,17 +1,36 @@
 <form [formGroup]="formFilter" class="example-form">
   <mat-form-field class="example-full-width" appearance="fill">
     <mat-label>Author</mat-label>
-    <input type="text"
-           placeholder="Pick one"
-           aria-label="Author"
-           matInput
-           formControlName="authorFilter"
-           [matAutocomplete]="auto">
-    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-      <mat-option *ngFor="let author of authors" [value]="author | authorFullName">
-        {{author | authorFullName}}
-      </mat-option>
-    </mat-autocomplete>
+    <app-autocomplete
+      [displayWith]="displayWithFn"
+      [options]="filteredAuthors$ | async"
+      [required]="true"
+      [disabled]="false"
+      key="id"
+      placeholder="Pick one..."
+      formControlName="authorFilter"
+      (filterData)="filterData($event)"
+      [withCreate]="true"
+    >
+      <ng-template
+        appAutocompleteOption
+        let-option="option"
+      >
+        {{ displayWithFn(option) }}
+      </ng-template>
+
+      <ng-template
+        appAutocompleteNoResult
+        let-noResultValue="noResultValue"
+      >
+        <app-author-no-result
+          (authorData)="getAuthorData($event)"
+          [inputValue]="noResultValue"
+        ></app-author-no-result>
+      </ng-template>
+
+
+    </app-autocomplete>
   </mat-form-field>
 
   <ng-container formGroupName="price">
@@ -23,8 +42,10 @@
         class="example-right-align"
         placeholder="0"
         formControlName="minPriceFilter"
+        autocomplete="off"
       >
-      <mat-error *ngIf="minPriceControl.invalid && (minPriceControl.touched || minPriceControl.dirty)">Wrong price</mat-error>
+      <mat-error *ngIf="minPriceControl?.invalid && (minPriceControl?.touched || minPriceControl?.dirty)">Wrong price
+      </mat-error>
       <span matSuffix>₽&nbsp;</span>
     </mat-form-field>
 
@@ -36,20 +57,22 @@
         class="example-right-align"
         placeholder="0"
         formControlName="maxPriceFilter"
+        autocomplete="off"
         [errorStateMatcher]="matchersMapPriceFilter.minPriceGreaterMaxPrice"
       >
       <mat-error>Wrong price</mat-error>
       <span matSuffix>₽&nbsp;</span>
     </mat-form-field>
     <mat-error
-      *ngIf="priceControl.hasError('minPriceGreaterMaxPrice') && (minPriceControl.touched && maxPriceControl.touched)">Min
-      greater max
+      *ngIf="priceControl?.hasError('minPriceGreaterMaxPrice') && (minPriceControl?.touched && maxPriceControl?.touched)">
+      Min greater max
     </mat-error>
   </ng-container>
 
-    <app-date-filters formControlName="date"></app-date-filters>
-    <mat-error *ngIf="formFilter.get('date')?.hasError('comparedDate')">Writing date cannot be greater than release date</mat-error>
-    <mat-error *ngIf="formFilter.get('date')?.hasError('releaseDate')">Release date cannot be greater than now</mat-error>
+  <app-date-filters formControlName="date"></app-date-filters>
+  <mat-error *ngIf="formFilter.get('date')?.hasError('comparedDate')">Writing date cannot be greater than release date
+  </mat-error>
+  <mat-error *ngIf="formFilter.get('date')?.hasError('releaseDate')">Release date cannot be greater than now</mat-error>
 
   <mat-form-field class="example-full-width" appearance="fill">
     <mat-label>Title</mat-label>
@@ -58,6 +81,7 @@
       matInput
       placeholder="Title..."
       formControlName="titleFilter"
+      autocomplete="off"
     >
   </mat-form-field>
 </form>
