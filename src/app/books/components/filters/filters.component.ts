@@ -172,7 +172,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
 
   private _initFilterForm(): FormGroup {
     return this._formBuilder.group({
-      authorFilter: [null],
+      authorFilter: null,
       price: this._formBuilder.group({
         minPriceFilter: [null, Validators.min(0)],
         maxPriceFilter: [null, Validators.min(0)],

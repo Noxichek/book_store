@@ -84,10 +84,10 @@ export class AutocompleteComponent<T = any> implements OnChanges,
   @ContentChild(AutocompleteNoResultDirective, { static: true, read: TemplateRef })
   public autocompleteNoResult?: TemplateRef<AutocompleteNoResultDirective>;
 
-  @HostBinding()
+  @HostBinding('id')
   public id = `filter-id-${AutocompleteComponent._nextId++}`;
 
-  public focused: boolean = false;
+  public focused = false;
   public isDropDownOpen = false;
   public errorState = false;
   public inputAutocomplete = new FormControl('');
@@ -153,7 +153,7 @@ export class AutocompleteComponent<T = any> implements OnChanges,
             return option[this.key] === value;
           });
           if (currentOption) {
-            this.inputAutocomplete.setValue(this.displayWith(currentOption));
+            this.inputAutocomplete.setValue(this.displayWith(currentOption), { emitEvent: false });
           }
         });
 
