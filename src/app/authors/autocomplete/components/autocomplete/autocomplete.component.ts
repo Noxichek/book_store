@@ -182,14 +182,14 @@ export class AutocompleteComponent<T = any> implements OnChanges,
     // throw new Error('Method not implemented.');
   }
 
-  public onFocusIn(event: FocusEvent) {
+  public onFocusIn(event: FocusEvent): void {
     if (!this.focused) {
       this.focused = true;
       this.stateChanges.next();
     }
   }
 
-  public onFocusOut(event: FocusEvent) {
+  public onFocusOut(event: FocusEvent): void {
     if (!this._elementRef.nativeElement.contains(event.relatedTarget as Element)) {
       this.focused = false;
       this.stateChanges.next();

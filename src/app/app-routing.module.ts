@@ -14,6 +14,9 @@ const routes: Routes = [
     // eslint-disable-next-line @typescript-eslint/typedef
     loadChildren: () => import('./login/login.module').then((x) => x.LoginModule),
   },
+  { path: 'table',
+    // eslint-disable-next-line @typescript-eslint/typedef
+    loadChildren: () => import('./table/table.module').then((x) => x.TableModule) },
   { path: '', redirectTo: 'books', pathMatch: 'full' },
 ];
 

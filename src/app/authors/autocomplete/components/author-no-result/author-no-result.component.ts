@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Subject, takeUntil } from 'rxjs';
 
 import { DialogComponent } from '../dialog/dialog.component';
-import { IAddAuthor } from '../../../authors/interfaces/add-author.interface';
+import { IAddAuthor } from '../../../interfaces/add-author.interface';
 
 @Component({
   selector: 'app-author-no-result',

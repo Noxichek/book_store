@@ -1,0 +1,13 @@
+<section class="author-table-header">
+  <td *ngFor="let value of displayedColumns ?? []">
+    <ng-container *ngTemplateOutlet="headerList; context: { value: value }"></ng-container>
+  </td>
+</section>
+
+<table class="author-table">
+  <tr *ngFor="let author of result">
+    <td *ngFor="let item of list?.toArray() ?? []">
+      <ng-container *ngTemplateOutlet="item; context: author"></ng-container>
+    </td>
+  </tr>
+</table>

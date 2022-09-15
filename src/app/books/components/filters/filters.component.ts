@@ -105,7 +105,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
     this.searchByAuthor.emit(this._getFormData());
   }
 
-  public filterData(value: string | null) {
+  public filterData(value: string | null): void {
     this._authorQueryChange$.next(value);
   }
 
@@ -198,7 +198,10 @@ export class FiltersComponent implements OnInit, OnDestroy {
               map((authors: IAuthor[]) => {
                 if (query) {
                   return authors.filter((author: IAuthor) => {
-                    return Utils.getFullName(author).toLowerCase().includes(query.toLowerCase());
+                    const isAuthorExist = Utils.getFullName(author).toLowerCase()
+                      .includes(query.toLowerCase());
+
+                    return isAuthorExist;
                   });
                 }
 

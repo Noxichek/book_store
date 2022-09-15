@@ -1,0 +1,14 @@
+<app-authors-table [result]="authors">
+  <ng-template appTableHeader let-value="value">
+    {{ value }}
+  </ng-template>
+  <ng-template appTable let-id="id">
+    {{ id }}
+  </ng-template>
+  <ng-template appTable let-firstName="firstName">
+    {{ firstName }}
+  </ng-template>
+  <ng-template appTable let-lastName="lastName">
+    {{ lastName }}
+  </ng-template>
+</app-authors-table>
