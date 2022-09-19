@@ -1,43 +1,36 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ContentChild,
+  ContentChildren,
+  Input,
+  QueryList,
+  TemplateRef,
+} from '@angular/core';
 
-import { pluck, Subject, takeUntil } from 'rxjs';
-
-import { AuthorService } from '../../../authors/services/author.service';
 import { IAuthor } from '../../../authors/interfaces/author.interface';
-
+import { TableCellDirective } from '../../directives/table-cell.directive';
+import { TableHeaderDirective } from '../../directives/table-header.directive';
 
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TableComponent implements OnInit, OnDestroy {
 
-  public authors: IAuthor[] = [];
-  private _destroy$ = new Subject<void>();
+export class TableComponent {
 
-  constructor(
-    private _authorService: AuthorService,
-  ) {}
+  @ContentChildren(TableCellDirective, { read: TemplateRef })
+  public list!: QueryList<TemplateRef<TableCellDirective>>;
 
-  public ngOnInit(): void {
-    this._getAllAuthors();
-  }
+  @ContentChild(TableHeaderDirective, { static: true, read: TemplateRef })
+  public headerList!: TemplateRef<TableHeaderDirective>;
 
-  public ngOnDestroy(): void {
-    this._destroy$.next();
-    this._destroy$.complete();
-  }
+  @Input()
+  public result!: IAuthor[] | null;
 
-  private _getAllAuthors(): void {
-    this._authorService.getAllAuthors()
-      .pipe(
-        pluck('authors'),
-        takeUntil(this._destroy$),
-      )
-      .subscribe((authors: IAuthor[]) => {
-        this.authors = authors;
-      });
-  }
+  @Input()
+  public displayedColumns: string[] = [];
 
 }

@@ -1,9 +1,9 @@
 import { Directive } from '@angular/core';
 
 @Directive({
-  selector: '[appTable]',
+  selector: '[appTableCell]',
 })
-export class TableDirective {
+export class TableCellDirective {
 
   constructor() {}
 

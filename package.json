@@ -29,6 +29,8 @@
     "lodash": "^4.17.21",
     "lodash-es": "^4.17.21",
     "ngx-toastr": "^14.3.0",
+    "primeicons": "^5.0.0",
+    "primeng": "^14.1.1",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
