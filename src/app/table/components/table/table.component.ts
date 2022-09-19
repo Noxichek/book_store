@@ -21,16 +21,18 @@ import { TableHeaderDirective } from '../../directives/table-header.directive';
 
 export class TableComponent {
 
-  @ContentChildren(TableCellDirective, { read: TemplateRef })
-  public list!: QueryList<TemplateRef<TableCellDirective>>;
-
-  @ContentChild(TableHeaderDirective, { static: true, read: TemplateRef })
-  public headerList!: TemplateRef<TableHeaderDirective>;
-
   @Input()
   public result!: IAuthor[] | null;
 
   @Input()
   public displayedColumns: string[] = [];
 
+  @Input()
+  public isPagination!: boolean;
+
+  @ContentChildren(TableCellDirective, { read: TemplateRef })
+  public list!: QueryList<TemplateRef<TableCellDirective>>;
+
+  @ContentChild(TableHeaderDirective, { static: true, read: TemplateRef })
+  public headerList!: TemplateRef<TableHeaderDirective>;
 }

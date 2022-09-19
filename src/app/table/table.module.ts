@@ -6,6 +6,8 @@ import { AuthorsTableComponent } from './components/authors-table/authors-table.
 import { TableComponent } from './components/table/table.component';
 import { TableCellDirective } from './directives/table-cell.directive';
 import { TableHeaderDirective } from './directives/table-header.directive';
+import { PaginatorComponent } from './components/paginator/paginator.component';
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 @NgModule({
   declarations: [
@@ -13,10 +15,12 @@ import { TableHeaderDirective } from './directives/table-header.directive';
     AuthorsTableComponent,
     TableCellDirective,
     TableHeaderDirective,
+    PaginatorComponent,
   ],
   imports: [
     CommonModule,
     TableRoutingModule,
+    MatPaginatorModule,
   ],
 })
 export class TableModule {}
