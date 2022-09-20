@@ -1,10 +1,10 @@
 <table class="table">
   <thead>
-  <tr>
-    <th *ngFor="let value of displayedColumns ?? []">
-      <ng-container *ngTemplateOutlet="headerList; context: { value: value }"></ng-container>
-    </th>
-  </tr>
+    <tr>
+      <th *ngFor="let value of headerList.toArray() ?? []">
+        <ng-container *ngTemplateOutlet="value"></ng-container>
+      </th>
+    </tr>
   </thead>
   <tbody>
     <tr *ngFor="let value of result ?? []">

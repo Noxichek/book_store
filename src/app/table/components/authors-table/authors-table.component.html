@@ -1,16 +1,23 @@
 <app-table
   [result]="authors$ | async"
-  [displayedColumns]="columns"
   [isPagination]="true"
 >
-  <ng-template appTableHeader let-value="value">
-    {{ value }}
+  <ng-template appTableHeader>
+    ID
   </ng-template>
   <ng-template appTableCell let-id="id">
     {{ id }}
   </ng-template>
+
+  <ng-template appTableHeader>
+    First Name
+  </ng-template>
   <ng-template appTableCell let-firstName="firstName">
     {{ firstName }}
+  </ng-template>
+
+  <ng-template appTableHeader>
+    Last Name
   </ng-template>
   <ng-template appTableCell let-lastName="lastName">
     {{ lastName }}

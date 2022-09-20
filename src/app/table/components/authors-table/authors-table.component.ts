@@ -15,7 +15,6 @@ import { IAuthor } from '../../../authors/interfaces/author.interface';
 export class AuthorsTableComponent implements OnInit{
 
   public authors$!: Observable<IAuthor[]>;
-  public columns: string[] = ['ID', 'First Name', 'Last Name'];
 
   constructor(
     private _authorService: AuthorService,

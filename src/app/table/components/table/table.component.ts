@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ContentChild,
   ContentChildren,
   Input,
   QueryList,
@@ -25,14 +24,12 @@ export class TableComponent {
   public result!: IAuthor[] | null;
 
   @Input()
-  public displayedColumns: string[] = [];
-
-  @Input()
   public isPagination!: boolean;
 
   @ContentChildren(TableCellDirective, { read: TemplateRef })
   public list!: QueryList<TemplateRef<TableCellDirective>>;
 
-  @ContentChild(TableHeaderDirective, { static: true, read: TemplateRef })
-  public headerList!: TemplateRef<TableHeaderDirective>;
+  @ContentChildren(TableHeaderDirective, { read: TemplateRef })
+  public headerList!: QueryList<TemplateRef<TableHeaderDirective>>;
+
 }
