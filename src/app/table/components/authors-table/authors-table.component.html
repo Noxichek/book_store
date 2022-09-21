@@ -1,6 +1,7 @@
 <app-table
   [result]="authors$ | async"
   [isPagination]="true"
+  [total]="totalAuthors$ | async"
 >
   <ng-template appTableHeader>
     ID

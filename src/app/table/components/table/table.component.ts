@@ -26,6 +26,9 @@ export class TableComponent {
   @Input()
   public isPagination!: boolean;
 
+  @Input()
+  public total?: any;
+
   @ContentChildren(TableCellDirective, { read: TemplateRef })
   public list!: QueryList<TemplateRef<TableCellDirective>>;
 

@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
-import { Observable, pluck } from 'rxjs';
+import { Observable, pluck, Subject, tap } from 'rxjs';
 
 import { AuthorService } from '../../../authors/services/author.service';
 import { IAuthor } from '../../../authors/interfaces/author.interface';
+import { IPaginatedAuthor } from '../../../../libs/pagination';
 
 
 @Component({
@@ -15,6 +16,7 @@ import { IAuthor } from '../../../authors/interfaces/author.interface';
 export class AuthorsTableComponent implements OnInit{
 
   public authors$!: Observable<IAuthor[]>;
+  public totalAuthors$ = new Subject<number | null>();
 
   constructor(
     private _authorService: AuthorService,
@@ -27,6 +29,9 @@ export class AuthorsTableComponent implements OnInit{
   private _getAllAuthors(): void {
     this.authors$ = this._authorService.getAllAuthors()
       .pipe(
+        tap((response: IPaginatedAuthor) => {
+          this.totalAuthors$.next(response.meta.records);
+        }),
         pluck('authors'),
       );
   }
