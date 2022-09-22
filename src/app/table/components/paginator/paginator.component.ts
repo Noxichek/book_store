@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 
 import { IMeta } from '../../../../libs/pagination';
+import { IPaginatedMeta } from '../../interfaces/paginated-meta.interface';
 
 @Component({
   selector: 'app-paginator',
@@ -26,35 +27,49 @@ export class PaginatorComponent {
   }
 
   @Output()
-  public goTo: EventEmitter<number> = new EventEmitter<number>();
+  public goTo: EventEmitter<IPaginatedMeta> = new EventEmitter<IPaginatedMeta>();
   @Output()
-  public next: EventEmitter<number> = new EventEmitter<number>();
+  public next: EventEmitter<IPaginatedMeta> = new EventEmitter<IPaginatedMeta>();
   @Output()
-  public previous: EventEmitter<number> = new EventEmitter<number>();
+  public previous: EventEmitter<IPaginatedMeta> = new EventEmitter<IPaginatedMeta>();
+  @Output()
+  public changeElements: EventEmitter<IPaginatedMeta> = new EventEmitter<IPaginatedMeta>();
 
   public elementsPerPage = 5;
-  public metaData: IMeta = {} as IMeta;
   public options: number[] = [5, 10, 25, 50];
   public pages: number[] = [];
   public current = 1;
 
   public onGoTo(page: number): void {
+    this.pages = [];
     if (this.current !== page) {
-      this.goTo.emit(page);
+      const meta = { page: page, elementsPerPage: this.elementsPerPage };
+
+      this.goTo.emit(meta);
       this.current = page;
     }
   }
   public onNext(): void {
+    const meta = { page: this.current, elementsPerPage: this.elementsPerPage };
+
+    this.pages = [];
     this.current++;
-    this.next.emit(this.current);
+    this.next.emit(meta);
   }
   public onPrevious(): void {
+    const meta = { page: this.current, elementsPerPage: this.elementsPerPage };
+
+    this.pages = [];
     this.current--;
-    this.previous.next(this.current);
+    this.previous.next(meta);
   }
 
-  public changeElementsPerPage(elementsPerPage: number) : void {
+  public changeElementsPerPage(elementsPerPage: string) : void {
+    const meta = { page: this.current, elementsPerPage: this.elementsPerPage };
 
+    this.pages = [];
+    this.elementsPerPage = Number(elementsPerPage);
+    this.changeElements.emit(meta);
   }
 
 }

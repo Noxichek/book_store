@@ -23,7 +23,7 @@
       <button
         mat-raised-button
         color="primary"
-        [disabled]="current === metaData?.pages"
+        [disabled]="current === pages[pages.length-1]"
         (click)="onNext()"
       >
         Next
@@ -33,10 +33,13 @@
   <section class="select">
     <mat-form-field appearance="fill">
       <mat-label>Elements per page</mat-label>
-      <select matNativeControl required>
+      <select
+        #select
+        (change)="changeElementsPerPage(select.value)"
+        matNativeControl required>
         <option
           *ngFor="let option of options"
-          (click)="changeElementsPerPage(option)"
+          [value]="option"
         >{{ option }}</option>
       </select>
     </mat-form-field>

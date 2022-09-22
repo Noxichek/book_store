@@ -7,10 +7,11 @@ import {
   TemplateRef,
 } from '@angular/core';
 
-import { IAuthor } from '../../../authors/interfaces/author.interface';
 import { TableCellDirective } from '../../directives/table-cell.directive';
 import { TableHeaderDirective } from '../../directives/table-header.directive';
+import { IAuthor } from '../../../authors/interfaces/author.interface';
 import { IMeta } from '../../../../libs/pagination';
+import { IPaginatedMeta } from '../../interfaces/paginated-meta.interface';
 
 @Component({
   selector: 'app-table',
@@ -31,13 +32,16 @@ export class TableComponent {
   public total?: IMeta | null | undefined;
 
   @Output()
-  public goToPage: EventEmitter<number> = new EventEmitter<number>();
+  public goToPage: EventEmitter<IPaginatedMeta> = new EventEmitter<IPaginatedMeta>();
 
   @Output()
-  public goToNextPage: EventEmitter<number> = new EventEmitter<number>();
+  public goToNextPage: EventEmitter<IPaginatedMeta> = new EventEmitter<IPaginatedMeta>();
 
   @Output()
-  public goToPreviousPage: EventEmitter<number> = new EventEmitter<number>();
+  public goToPreviousPage: EventEmitter<IPaginatedMeta> = new EventEmitter<IPaginatedMeta>();
+
+  @Output()
+  public changeElementsPerPage: EventEmitter<IPaginatedMeta> = new EventEmitter<IPaginatedMeta>();
 
   @ContentChildren(TableCellDirective, { read: TemplateRef })
   public list!: QueryList<TemplateRef<TableCellDirective>>;
@@ -45,15 +49,19 @@ export class TableComponent {
   @ContentChildren(TableHeaderDirective, { read: TemplateRef })
   public headerList!: QueryList<TemplateRef<TableHeaderDirective>>;
 
-  public goTo(pageNumber: number): void {
-    this.goToPage.emit(pageNumber);
+  public goTo($event: IPaginatedMeta): void {
+    this.goToPage.emit($event);
   }
 
-  public next(pageNumber: number): void {
-    this.goToNextPage.emit(pageNumber);
+  public next($event: IPaginatedMeta): void {
+    this.goToNextPage.emit($event);
   }
 
-  public previous(pageNumber: number): void {
+  public previous(pageNumber: IPaginatedMeta): void {
     this.goToPreviousPage.emit(pageNumber);
+  }
+
+  public changeElements($event: IPaginatedMeta): void {
+    this.changeElementsPerPage.emit($event);
   }
 }
