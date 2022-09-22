@@ -65,10 +65,11 @@ export class PaginatorComponent {
   }
 
   public changeElementsPerPage(elementsPerPage: string) : void {
+    this.elementsPerPage = Number(elementsPerPage);
+
     const meta = { page: this.current, elementsPerPage: this.elementsPerPage };
 
     this.pages = [];
-    this.elementsPerPage = Number(elementsPerPage);
     this.changeElements.emit(meta);
   }
 
