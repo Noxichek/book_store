@@ -16,5 +16,8 @@
 </table>
 
 <app-paginator
-  [total]="total"
+  [meta]="total"
+  (goTo)="goTo($event)"
+  (next)="next($event)"
+  (previous)="previous($event)"
 ></app-paginator>

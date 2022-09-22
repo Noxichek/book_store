@@ -4,7 +4,7 @@ import { Observable, pluck, Subject, tap } from 'rxjs';
 
 import { AuthorService } from '../../../authors/services/author.service';
 import { IAuthor } from '../../../authors/interfaces/author.interface';
-import { IPaginatedAuthor } from '../../../../libs/pagination';
+import { IMeta, IPaginatedAuthor } from '../../../../libs/pagination';
 
 
 @Component({
@@ -16,21 +16,28 @@ import { IPaginatedAuthor } from '../../../../libs/pagination';
 export class AuthorsTableComponent implements OnInit{
 
   public authors$!: Observable<IAuthor[]>;
-  public totalAuthors$ = new Subject<number | null>();
+  public totalAuthors$ = new Subject<IMeta | null>();
 
   constructor(
     private _authorService: AuthorService,
   ) {}
 
   public ngOnInit(): void {
-    this._getAllAuthors();
+    this._getAllAuthorsFromFirstPage();
   }
 
-  private _getAllAuthors(): void {
-    this.authors$ = this._authorService.getAllAuthors()
+  public goToPage(pageNumber: number): void {
+    this.authors$ = this._authorService.getAuthorsFromPageNumber(pageNumber, 10)
+      .pipe(
+        pluck('authors'),
+      );
+  }
+
+  private _getAllAuthorsFromFirstPage(): void {
+    this.authors$ = this._authorService.getAuthorsFromPageNumber(1, 10)
       .pipe(
         tap((response: IPaginatedAuthor) => {
-          this.totalAuthors$.next(response.meta.records);
+          this.totalAuthors$.next(response.meta);
         }),
         pluck('authors'),
       );

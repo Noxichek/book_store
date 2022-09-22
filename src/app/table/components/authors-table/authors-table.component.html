@@ -2,6 +2,9 @@
   [result]="authors$ | async"
   [isPagination]="true"
   [total]="totalAuthors$ | async"
+  (goToPage)="goToPage($event)"
+  (goToNextPage)="goToPage($event)"
+  (goToPreviousPage)="goToPage($event)"
 >
   <ng-template appTableHeader>
     ID

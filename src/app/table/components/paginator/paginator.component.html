@@ -1,8 +1,9 @@
-<nav aria-label="pagination">
+<nav>
   <ul>
     <li>
       <button
-        aria-label="Go To Previous Page"
+        mat-raised-button
+        color="primary"
         [attr.aria-disabled]="current === 1"
         [disabled]="current === 1"
         (click)="onPrevious()"
@@ -12,27 +13,33 @@
     </li>
     <li *ngFor="let page of pages;">
       <a
-        [attr.aria-current]="page === current ? 'page' : null"
-        [attr.aria-label]="
-          page === current ? 'Current Page, Page ' + page : 'Go to Page ' + page
-        "
         [class.current]="page === current"
-        tabindex="0"
         (click)="onGoTo(page)"
-        (keyup.enter)="onGoTo(page)"
       >
-        {{ page }}</a
-      >
+        {{ page }}
+      </a>
     </li>
     <li>
       <button
-        aria-label="Go To Next Page"
-        [attr.aria-disabled]="current === total"
-        [disabled]="current === total"
+        mat-raised-button
+        color="primary"
+        [disabled]="current === metaData?.pages"
         (click)="onNext()"
       >
         Next
       </button>
     </li>
   </ul>
+  <section class="select">
+    <mat-form-field appearance="fill">
+      <mat-label>Elements per page</mat-label>
+      <select matNativeControl required>
+        <option
+          *ngFor="let option of options"
+          (click)="changeElementsPerPage(option)"
+        >{{ option }}</option>
+      </select>
+    </mat-form-field>
+  </section>
 </nav>
+

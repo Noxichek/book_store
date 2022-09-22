@@ -1,18 +1,29 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 
-import { Subject, takeUntil } from 'rxjs';
+import { IMeta } from '../../../../libs/pagination';
 
 @Component({
   selector: 'app-paginator',
   templateUrl: './paginator.component.html',
   styleUrls: ['./paginator.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PaginatorComponent implements OnInit, OnDestroy {
+export class PaginatorComponent {
 
   @Input()
-  public current: number = 0;
-  @Input()
-  public total: number = 0;
+  public set meta(meta: IMeta | null | undefined) {
+    if (meta) {
+      for (let value = 1; value <= meta.pages; value++) {
+        this.pages.push(value);
+      }
+    }
+  }
 
   @Output()
   public goTo: EventEmitter<number> = new EventEmitter<number>();
@@ -21,40 +32,29 @@ export class PaginatorComponent implements OnInit, OnDestroy {
   @Output()
   public previous: EventEmitter<number> = new EventEmitter<number>();
 
+  public elementsPerPage = 5;
+  public metaData: IMeta = {} as IMeta;
+  public options: number[] = [5, 10, 25, 50];
   public pages: number[] = [];
-  public $totalStream$?: Subject<number>;
-
-  private _destroy$ = new Subject<void>();
-
-  constructor() {}
-
-  public ngOnInit(): void {
-    this.$totalStream$?.next(this.total);
-    this.calcPages();
-  }
-
-  public ngOnDestroy(): void {
-    this._destroy$.next();
-    this._destroy$.complete();
-  }
+  public current = 1;
 
   public onGoTo(page: number): void {
-    this.goTo.emit(page);
+    if (this.current !== page) {
+      this.goTo.emit(page);
+      this.current = page;
+    }
   }
   public onNext(): void {
+    this.current++;
     this.next.emit(this.current);
   }
   public onPrevious(): void {
+    this.current--;
     this.previous.next(this.current);
   }
 
-  public calcPages(): void {
-    this.$totalStream$?.pipe(
-      takeUntil(this._destroy$),
-    )
-      .subscribe(() => {
-        console.log(this.total);
-      });
+  public changeElementsPerPage(elementsPerPage: number) : void {
+
   }
 
 }
