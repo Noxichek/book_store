@@ -12,7 +12,7 @@ import { TableCellDirective } from './directives/table-cell.directive';
 import { TableHeaderDirective } from './directives/table-header.directive';
 import { PaginatorComponent } from './components/paginator/paginator.component';
 import { SortByPipe } from './pipes/sort-by.pipe';
-import { TableHeaderComponent } from './components/table-header/table-header.component';
+import { SortableHeaderComponent } from './components/table-header/sortable-header.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +22,7 @@ import { TableHeaderComponent } from './components/table-header/table-header.com
     TableHeaderDirective,
     PaginatorComponent,
     SortByPipe,
-    TableHeaderComponent,
+    SortableHeaderComponent,
   ],
   imports: [
     CommonModule,

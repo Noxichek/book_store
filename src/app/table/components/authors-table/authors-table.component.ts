@@ -1,11 +1,13 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 
-import { Observable, pluck, Subject, tap } from 'rxjs';
+import { Observable, pluck, Subject, takeUntil, tap } from 'rxjs';
 
 import { AuthorService } from '../../../authors/services/author.service';
 import { IAuthor } from '../../../authors/interfaces/author.interface';
 import { IMeta, IPaginatedAuthor } from '../../../../libs/pagination';
 import { IPaginatedMeta } from '../../interfaces/paginated-meta.interface';
+import { DataSourceService } from '../../services/data-source.service';
+import { IOrdering } from '../../interfaces/ordering.interface';
 
 
 @Component({
@@ -14,17 +16,32 @@ import { IPaginatedMeta } from '../../interfaces/paginated-meta.interface';
   styleUrls: ['./authors-table.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuthorsTableComponent implements OnInit {
+export class AuthorsTableComponent implements OnInit, OnDestroy {
 
   public authors$!: Observable<IAuthor[]>;
   public totalAuthors$ = new Subject<IMeta | null>();
 
+  private _destroy$: Subject<void> = new Subject<void>();
+
   constructor(
     private _authorService: AuthorService,
+    private _dataSourceService: DataSourceService,
   ) {}
 
   public ngOnInit(): void {
     this._getAllAuthorsFromFirstPage();
+    this._dataSourceService.order$
+      .pipe(
+        takeUntil(this._destroy$),
+      )
+      .subscribe((response: IOrdering) => {
+        console.log(response);
+      });
+  }
+
+  public ngOnDestroy(): void {
+    this._destroy$.next();
+    this._destroy$.complete();
   }
 
   public goToPage($event: IPaginatedMeta): void {

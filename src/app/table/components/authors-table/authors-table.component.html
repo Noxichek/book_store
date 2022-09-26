@@ -8,17 +8,26 @@
   (changeElementsPerPage)="goToPage($event)"
 >
   <ng-template appTableHeader field="id">
-    <app-sortable-header>
+    <app-sortable-header
+      field="id"
+      direction="ask"
+    >
       ID
     </app-sortable-header>
   </ng-template>
   <ng-template appTableHeader field="firstName">
-    <app-sortable-header>
+    <app-sortable-header
+      field="firstName"
+      direction="desc"
+    >
       First Name
     </app-sortable-header>
   </ng-template>
   <ng-template appTableHeader field="lastName">
-    <app-sortable-header>
+    <app-sortable-header
+      field="lastName"
+      direction="ask"
+    >
       Last Name
     </app-sortable-header>
   </ng-template>

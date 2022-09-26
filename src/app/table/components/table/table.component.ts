@@ -1,11 +1,12 @@
 import {
-  AfterContentInit, AfterViewInit,
   ChangeDetectionStrategy,
-  Component, ComponentRef,
-  ContentChildren, EventEmitter,
-  Input, Output,
+  Component,
+  ContentChildren,
+  EventEmitter,
+  Input,
+  Output,
   QueryList,
-  TemplateRef, ViewChildren,
+  TemplateRef,
 } from '@angular/core';
 
 import { TableCellDirective } from '../../directives/table-cell.directive';
@@ -13,7 +14,6 @@ import { TableHeaderDirective } from '../../directives/table-header.directive';
 import { IAuthor } from '../../../authors/interfaces/author.interface';
 import { IMeta } from '../../../../libs/pagination';
 import { IPaginatedMeta } from '../../interfaces/paginated-meta.interface';
-import {TableHeaderComponent} from "../table-header/table-header.component";
 
 @Component({
   selector: 'app-table',
