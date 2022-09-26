@@ -1,10 +1,21 @@
-import { Directive } from '@angular/core';
+import {Directive, ElementRef, Input, OnChanges} from '@angular/core';
 
 @Directive({
   selector: '[appTableHeader]',
 })
-export class TableHeaderDirective {
+export class TableHeaderDirective implements  OnChanges {
 
-  constructor() {}
+  @Input()
+  public field!: string;
+
+  constructor() {
+  }
+
+  public ngOnChanges() {
+    debugger
+    if (this.field) {
+      console.log(this.field);
+    }
+  }
 
 }

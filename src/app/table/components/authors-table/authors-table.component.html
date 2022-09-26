@@ -7,22 +7,36 @@
   (goToPreviousPage)="goToPage($event)"
   (changeElementsPerPage)="goToPage($event)"
 >
-  <ng-template appTableHeader>
-    ID
+  <ng-template appTableHeader field="id">
+    <app-sortable-header>
+      ID
+    </app-sortable-header>
   </ng-template>
+  <ng-template appTableHeader field="firstName">
+    <app-sortable-header>
+      First Name
+    </app-sortable-header>
+  </ng-template>
+  <ng-template appTableHeader field="lastName">
+    <app-sortable-header>
+      Last Name
+    </app-sortable-header>
+  </ng-template>
+<!--  <app-table-header>-->
+<!--    ID-->
+<!--  </app-table-header>-->
+<!--  <app-table-header>-->
+<!--    First Name-->
+<!--  </app-table-header>-->
+<!--  <app-table-header>-->
+<!--    Last Name-->
+<!--  </app-table-header>-->
+
   <ng-template appTableCell let-id="id">
     {{ id }}
   </ng-template>
-
-  <ng-template appTableHeader>
-    First Name
-  </ng-template>
   <ng-template appTableCell let-firstName="firstName">
     {{ firstName }}
-  </ng-template>
-
-  <ng-template appTableHeader>
-    Last Name
   </ng-template>
   <ng-template appTableCell let-lastName="lastName">
     {{ lastName }}

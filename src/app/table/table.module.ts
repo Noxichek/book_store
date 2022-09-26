@@ -11,6 +11,8 @@ import { TableComponent } from './components/table/table.component';
 import { TableCellDirective } from './directives/table-cell.directive';
 import { TableHeaderDirective } from './directives/table-header.directive';
 import { PaginatorComponent } from './components/paginator/paginator.component';
+import { SortByPipe } from './pipes/sort-by.pipe';
+import { TableHeaderComponent } from './components/table-header/table-header.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { PaginatorComponent } from './components/paginator/paginator.component';
     TableCellDirective,
     TableHeaderDirective,
     PaginatorComponent,
+    SortByPipe,
+    TableHeaderComponent,
   ],
   imports: [
     CommonModule,
