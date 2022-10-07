@@ -6,8 +6,10 @@
   (goToNextPage)="goToPage($event)"
   (goToPreviousPage)="goToPage($event)"
   (changeElementsPerPage)="goToPage($event)"
+  [sortable]="true"
+  direction="ask"
 >
-  <ng-template appTableHeader field="id">
+  <ng-template appTableHeader>
     <app-sortable-header
       field="id"
       direction="ask"
@@ -15,7 +17,7 @@
       ID
     </app-sortable-header>
   </ng-template>
-  <ng-template appTableHeader field="firstName">
+  <ng-template appTableHeader>
     <app-sortable-header
       field="firstName"
       direction="desc"
@@ -23,7 +25,7 @@
       First Name
     </app-sortable-header>
   </ng-template>
-  <ng-template appTableHeader field="lastName">
+  <ng-template appTableHeader>
     <app-sortable-header
       field="lastName"
       direction="ask"
@@ -31,15 +33,7 @@
       Last Name
     </app-sortable-header>
   </ng-template>
-<!--  <app-table-header>-->
-<!--    ID-->
-<!--  </app-table-header>-->
-<!--  <app-table-header>-->
-<!--    First Name-->
-<!--  </app-table-header>-->
-<!--  <app-table-header>-->
-<!--    Last Name-->
-<!--  </app-table-header>-->
+
 
   <ng-template appTableCell let-id="id">
     {{ id }}

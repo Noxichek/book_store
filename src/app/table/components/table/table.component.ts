@@ -3,7 +3,7 @@ import {
   Component,
   ContentChildren,
   EventEmitter,
-  Input,
+  Input, OnInit,
   Output,
   QueryList,
   TemplateRef,
@@ -14,6 +14,7 @@ import { TableHeaderDirective } from '../../directives/table-header.directive';
 import { IAuthor } from '../../../authors/interfaces/author.interface';
 import { IMeta } from '../../../../libs/pagination';
 import { IPaginatedMeta } from '../../interfaces/paginated-meta.interface';
+import { DataSourceService } from '../../services/data-source.service';
 
 @Component({
   selector: 'app-table',
@@ -22,7 +23,7 @@ import { IPaginatedMeta } from '../../interfaces/paginated-meta.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 
-export class TableComponent {
+export class TableComponent implements OnInit {
 
   @Input()
   public result!: IAuthor[] | null;
@@ -32,6 +33,15 @@ export class TableComponent {
 
   @Input()
   public total?: IMeta | null | undefined;
+
+  @Input()
+  public sortable?: boolean;
+
+  @Input()
+  public field?: string;
+
+  @Input()
+  public direction?: string;
 
   @Output()
   public goToPage: EventEmitter<IPaginatedMeta> = new EventEmitter<IPaginatedMeta>();
@@ -50,6 +60,15 @@ export class TableComponent {
 
   @ContentChildren(TableHeaderDirective, { read: TemplateRef })
   public headerList!: QueryList<TemplateRef<TableHeaderDirective>>;
+
+  constructor(private _dataSourceService: DataSourceService) {}
+
+  public ngOnInit(): void {
+    if (this.sortable && this.direction) {
+      this._dataSourceService.isSortable$
+        .next({ sortable: this.sortable, direction: this.direction });
+    }
+  }
 
   public goTo($event: IPaginatedMeta): void {
     this.goToPage.emit($event);
