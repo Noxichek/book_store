@@ -11,7 +11,7 @@
         Previous
       </button>
     </li>
-    <li *ngFor="let page of pages;">
+    <li *ngFor="let page of pages | pages:current">
       <a
         [class.current]="page === current"
         (click)="onGoTo(page)"

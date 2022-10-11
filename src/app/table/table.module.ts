@@ -13,6 +13,7 @@ import { TableHeaderDirective } from './directives/table-header.directive';
 import { PaginatorComponent } from './components/paginator/paginator.component';
 import { SortByPipe } from './pipes/sort-by.pipe';
 import { SortableHeaderComponent } from './components/table-header/sortable-header.component';
+import { PagesPipe } from './pipes/pages.pipe';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { SortableHeaderComponent } from './components/table-header/sortable-head
     PaginatorComponent,
     SortByPipe,
     SortableHeaderComponent,
+    PagesPipe,
   ],
   imports: [
     CommonModule,

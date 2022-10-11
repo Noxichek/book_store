@@ -50,17 +50,19 @@ export class PaginatorComponent {
     }
   }
   public onNext(): void {
+    this.current++;
+
     const meta = { page: this.current, elementsPerPage: this.elementsPerPage };
 
     this.pages = [];
-    this.current++;
     this.next.emit(meta);
   }
   public onPrevious(): void {
+    this.current--;
+
     const meta = { page: this.current, elementsPerPage: this.elementsPerPage };
 
     this.pages = [];
-    this.current--;
     this.previous.next(meta);
   }
 

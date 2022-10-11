@@ -30,13 +30,7 @@ export class AuthorsTableComponent implements OnInit, OnDestroy {
 
   public ngOnInit(): void {
     this._getAllAuthorsFromFirstPage();
-    this._dataSourceService.order$
-      .pipe(
-        takeUntil(this._destroy$),
-      )
-      .subscribe((response: IOrdering) => {
-        console.log(response);
-      });
+    this._listenDataSource();
   }
 
   public ngOnDestroy(): void {
@@ -61,6 +55,16 @@ export class AuthorsTableComponent implements OnInit, OnDestroy {
         }),
         pluck('authors'),
       );
+  }
+
+  private _listenDataSource(): void {
+    this._dataSourceService.order$
+      .pipe(
+        takeUntil(this._destroy$),
+      )
+      .subscribe((response: IOrdering) => {
+        console.log(response);
+      });
   }
 
 }

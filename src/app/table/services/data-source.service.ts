@@ -14,4 +14,7 @@ export class DataSourceService {
   public isSortable$: BehaviorSubject<ISortable> = new BehaviorSubject<ISortable>({} as ISortable);
 
   constructor() {}
+
+  public changeOrder(field: string, direction: string): void {
+  }
 }
