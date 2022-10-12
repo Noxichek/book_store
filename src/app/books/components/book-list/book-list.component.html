@@ -1,7 +1,10 @@
-<section>
-  <cdk-virtual-scroll-viewport appendOnly itemSize="50" class="scroll-viewport">
-    <app-book-card *cdkVirtualFor="let book of books; trackBy: trackBy" [book]="book"></app-book-card>
-  </cdk-virtual-scroll-viewport>
+<section class="container">
+<!--  <cdk-virtual-scroll-viewport appendOnly itemSize="50" class="scroll-viewport">-->
+<!--    <app-book-card *cdkVirtualFor="let book of books; trackBy: trackBy" [book]="book"></app-book-card>-->
+<!--  </cdk-virtual-scroll-viewport>-->
+<section class="books">
+  <app-book-card *ngFor="let book of books; trackBy: trackBy" [book]="book"></app-book-card>
+</section>
 
   <section class="add-book">
     <button mat-raised-button color="primary" routerLink="add/new-book">Add new book</button>

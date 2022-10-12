@@ -1,91 +1,96 @@
-<form [formGroup]="formFilter" class="example-form">
-  <mat-form-field class="example-full-width" appearance="fill">
-    <mat-label>Author</mat-label>
-    <app-autocomplete
-      [displayWith]="displayWithFn"
-      [options]="filteredAuthors$ | async"
-      [required]="true"
-      [disabled]="false"
-      key="id"
-      placeholder="Pick one..."
-      formControlName="authorFilter"
-      (filterData)="filterData($event)"
-      [withCreate]="true"
-    >
-      <ng-template
-        appAutocompleteOption
-        let-option="option"
+<section class="form-container">
+  <form [formGroup]="formFilter" class="example-form">
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Author</mat-label>
+      <app-autocomplete
+        [displayWith]="displayWithFn"
+        [options]="filteredAuthors$ | async"
+        [required]="true"
+        [disabled]="false"
+        key="id"
+        placeholder="Pick one..."
+        formControlName="authorFilter"
+        (filterData)="filterData($event)"
+        [withCreate]="true"
       >
-        {{ displayWithFn(option) }}
-      </ng-template>
+        <ng-template
+          appAutocompleteOption
+          let-option="option"
+        >
+          {{ displayWithFn(option) }}
+        </ng-template>
 
-      <ng-template
-        appAutocompleteNoResult
-        let-noResultValue="noResultValue"
-      >
-        <app-author-no-result
-          (authorData)="getAuthorData($event)"
-          [inputValue]="noResultValue"
-        ></app-author-no-result>
-      </ng-template>
+        <ng-template
+          appAutocompleteNoResult
+          let-noResultValue="noResultValue"
+        >
+          <app-author-no-result
+            (authorData)="getAuthorData($event)"
+            [inputValue]="noResultValue"
+          ></app-author-no-result>
+        </ng-template>
 
 
-    </app-autocomplete>
-  </mat-form-field>
+      </app-autocomplete>
+    </mat-form-field>
 
-  <ng-container formGroupName="price">
-    <mat-form-field appearance="fill" floatLabel="always">
-      <mat-label>Price min</mat-label>
-      <input
-        matInput
-        type="number"
-        class="example-right-align"
-        placeholder="0"
-        formControlName="minPriceFilter"
-        autocomplete="off"
-      >
-      <mat-error *ngIf="minPriceControl?.invalid && (minPriceControl?.touched || minPriceControl?.dirty)">Wrong price
+    <ng-container formGroupName="price">
+      <mat-form-field appearance="fill" floatLabel="always">
+        <mat-label>Price min</mat-label>
+        <input
+          matInput
+          type="number"
+          class="example-right-align"
+          placeholder="0"
+          formControlName="minPriceFilter"
+          autocomplete="off"
+        >
+        <mat-error *ngIf="minPriceControl?.invalid && (minPriceControl?.touched || minPriceControl?.dirty)">Wrong price
+        </mat-error>
+        <span matSuffix>₽&nbsp;</span>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" floatLabel="always">
+        <mat-label>Price max</mat-label>
+        <input
+          matInput
+          type="number"
+          class="example-right-align"
+          placeholder="0"
+          formControlName="maxPriceFilter"
+          autocomplete="off"
+          [errorStateMatcher]="matchersMapPriceFilter.minPriceGreaterMaxPrice"
+        >
+        <mat-error>Wrong price</mat-error>
+        <span matSuffix>₽&nbsp;</span>
+      </mat-form-field>
+      <mat-error
+        *ngIf="priceControl?.hasError('minPriceGreaterMaxPrice') && (minPriceControl?.touched && maxPriceControl?.touched)">
+        Min greater max
       </mat-error>
-      <span matSuffix>₽&nbsp;</span>
-    </mat-form-field>
+    </ng-container>
 
-    <mat-form-field appearance="fill" floatLabel="always">
-      <mat-label>Price max</mat-label>
-      <input
-        matInput
-        type="number"
-        class="example-right-align"
-        placeholder="0"
-        formControlName="maxPriceFilter"
-        autocomplete="off"
-        [errorStateMatcher]="matchersMapPriceFilter.minPriceGreaterMaxPrice"
-      >
-      <mat-error>Wrong price</mat-error>
-      <span matSuffix>₽&nbsp;</span>
-    </mat-form-field>
-    <mat-error
-      *ngIf="priceControl?.hasError('minPriceGreaterMaxPrice') && (minPriceControl?.touched && maxPriceControl?.touched)">
-      Min greater max
+    <app-date-filters formControlName="date"></app-date-filters>
+    <mat-error *ngIf="formFilter.get('date')?.hasError('comparedDate')">Writing date cannot be greater than release date
     </mat-error>
-  </ng-container>
+    <mat-error *ngIf="formFilter.get('date')?.hasError('releaseDate')">Release date cannot be greater than now
+    </mat-error>
 
-  <app-date-filters formControlName="date"></app-date-filters>
-  <mat-error *ngIf="formFilter.get('date')?.hasError('comparedDate')">Writing date cannot be greater than release date
-  </mat-error>
-  <mat-error *ngIf="formFilter.get('date')?.hasError('releaseDate')">Release date cannot be greater than now</mat-error>
+    <mat-form-field class="example-full-width" appearance="fill">
+      <mat-label>Title</mat-label>
+      <input
+        type="text"
+        matInput
+        placeholder="Title..."
+        formControlName="titleFilter"
+        autocomplete="off"
+      >
+    </mat-form-field>
+  </form>
 
-  <mat-form-field class="example-full-width" appearance="fill">
-    <mat-label>Title</mat-label>
-    <input
-      type="text"
-      matInput
-      placeholder="Title..."
-      formControlName="titleFilter"
-      autocomplete="off"
-    >
-  </mat-form-field>
-</form>
+  <section class="btn">
+    <button mat-raised-button color="primary" [disabled]="formFilter.invalid" (click)="filterSearch()">Search</button>
+    <button mat-raised-button color="primary" (click)="clearForm()">Clear</button>
+  </section>
 
-
-<button mat-raised-button color="primary" [disabled]="formFilter.invalid" (click)="filterSearch()">Search</button>
-<button mat-raised-button color="primary" (click)="clearForm()">Clear</button>
+</section>

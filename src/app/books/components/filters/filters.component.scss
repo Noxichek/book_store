@@ -1,4 +1,22 @@
 form {
   display: flex;
   flex-direction: column;
+  width: 30vw;
+}
+
+button {
+  margin: 0 20px 20px 0;
+  transition: 0.5s;
+}
+
+button:not([disabled]):hover {
+  scale: 1.1;
+}
+
+.form-container {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

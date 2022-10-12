@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 
 import { LocalStorageService } from '../../../../app/core/services/local-storage.service';
 import { IUserSession } from '../../../../app/core/interfaces/user-interface';
+import { IDashboardItem } from '../../interfaces/dashboard.item.interface';
+import { DASHBOARD_ITEMS } from '../../mocks/dashboard.items';
 
 
 @Component({
@@ -11,6 +13,8 @@ import { IUserSession } from '../../../../app/core/interfaces/user-interface';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent {
+
+  public dashboardItems = DASHBOARD_ITEMS;
 
   constructor(
     private _localStorageService: LocalStorageService,
@@ -26,6 +30,11 @@ export class DashboardComponent {
 
   public isSessionActive(): boolean {
     return !!this._localStorageService.getData<IUserSession>('currentSession').user?.email;
+  }
+
+  public changeActiveLink(item: IDashboardItem): void {
+    this.dashboardItems.forEach((element: IDashboardItem) => element.selected = false);
+    item.selected = true;
   }
 
 }

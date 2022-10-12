@@ -1,6 +1,7 @@
 nav {
   display: flex;
   align-items: center;
+  justify-content: space-between;
 }
 
 ul {
@@ -30,6 +31,7 @@ a {
   border-radius: 4px;
   text-align: center;
   font-size: 18px;
+  transition: 0.5s;
 }
 
 a.current,
@@ -55,6 +57,7 @@ button {
   border-radius: 4px;
   color: #007acc;
   padding: 8px 16px;
+  transition: 0.7s;
 }
 
 button[disabled] {
@@ -67,6 +70,7 @@ button:not([disabled]):hover {
   color: #fff;
   cursor: pointer;
   outline: none;
+  scale: 1.1;
 }
 
 .select {
