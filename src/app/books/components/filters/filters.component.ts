@@ -36,6 +36,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
   public clearFilters = new EventEmitter<void>;
 
   public readonly formFilter!: FormGroup;
+  public isFiltersOpen = false;
   public authors$!: Observable<IAuthor[]>;
   public filteredAuthors$!: Observable<IAuthor[]>;
 
@@ -122,6 +123,10 @@ export class FiltersComponent implements OnInit, OnDestroy {
 
   public displayWithFn(option: IAuthor): string {
     return Utils.getFullName(option);
+  }
+
+  public openFilters() {
+    this.isFiltersOpen = !this.isFiltersOpen;
   }
 
   private _getQueryParams(): void {

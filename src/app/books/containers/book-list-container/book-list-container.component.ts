@@ -24,7 +24,7 @@ export class BookListContainerComponent implements OnInit, OnDestroy {
 
   public books: IBook[] = [];
   public page = 1;
-  public pageSize = 3;
+  public pageSize = 9;
   public length!: number;
 
   private readonly _destroy$ = new Subject<void>();
@@ -76,7 +76,7 @@ export class BookListContainerComponent implements OnInit, OnDestroy {
   public clearFilters(): void {
     this._isFiltersClear = false;
 
-    this._bookService.getBooks(1, 3)
+    this._bookService.getBooks(1, 9)
       .pipe(
         tap((paginatedBooks: IPaginatedBooks) => {
           this.length = paginatedBooks.meta.records;
