@@ -24,13 +24,13 @@ export class DashboardComponent {
 
   public logout() {
     this._auth.signOut().then(() => {
-      this._authService.isSessionActive = false;
+      this._authService.currentUser = null;
       this._router.navigate(['login']);
     });
   }
 
   public isSessionActive(): boolean {
-    return this._authService.isSessionActive;
+    return this._authService.currentUser;
   }
 
   public changeActiveLink(item: IDashboardItem): void {

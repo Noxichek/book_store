@@ -1,5 +1,5 @@
 <form class="example-form" [formGroup]="loginForm">
-  <mat-form-field class="example-full-width" appearance="fill">
+  <mat-form-field class="example-full-width sign-input" appearance="fill">
     <mat-label>Email</mat-label>
     <input type="email" matInput formControlName="email" [errorStateMatcher]="matcher"
            placeholder="Ex. pat@example.com">
@@ -12,7 +12,7 @@
     </mat-error>
   </mat-form-field>
 
-  <mat-form-field class="example-full-width" appearance="fill">
+  <mat-form-field class="example-full-width sign-input" appearance="fill">
     <mat-label>Password</mat-label>
     <input type="password"
            matInput

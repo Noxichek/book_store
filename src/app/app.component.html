@@ -1,7 +1,7 @@
 <app-dashboard></app-dashboard>
 
-<section>
-  <router-outlet></router-outlet>
+<section [@slideInAnimation]="outlet.isActivated ? outlet.activatedRoute : ''">
+  <router-outlet #outlet="outlet"></router-outlet>
 </section>
 
 <button mat-raised-button color="primary" (click)="changeTheme()">Change style</button>
