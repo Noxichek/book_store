@@ -30,7 +30,7 @@ export class DashboardComponent {
   }
 
   public isSessionActive(): boolean {
-    return this._authService.currentUser;
+    return !!this._authService.currentUser;
   }
 
   public changeActiveLink(item: IDashboardItem): void {
