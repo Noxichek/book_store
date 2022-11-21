@@ -32,3 +32,11 @@ button:not([disabled]):hover {
 .btn-filters {
   margin-left: 2rem;
 }
+
+@media (max-width: 770px) {
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 70vw;
+  }
+}

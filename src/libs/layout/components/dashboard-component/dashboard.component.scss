@@ -80,3 +80,14 @@ nav {
 .active {
   visibility: hidden;
 }
+
+@media (max-width: 770px) {
+  nav {
+    width: 100vw;
+
+    .nav-btn {
+      width: 12vw;
+      font-size: 15px;
+    }
+  }
+}

@@ -4,7 +4,7 @@ section {
   justify-content: center;
 }
 
-button {
+.change-theme-btn {
   position: absolute;
   top: 0.5vh;
   right: 90vw;
@@ -14,4 +14,10 @@ button {
 
 button:hover {
   scale: 1.1;
+}
+
+@media (max-width: 770px) {
+  .change-theme-btn {
+    display: none;
+  }
 }

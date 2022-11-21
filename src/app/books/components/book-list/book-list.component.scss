@@ -32,3 +32,20 @@ button:hover {
 //  border: 1px solid black;
 //}
 
+@media (max-width: 770px) {
+  .books {
+    display: inline-grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    justify-items: center;
+    align-items: center;
+    justify-content: space-between;
+    align-content: center;
+    width: 80vw;
+
+  }
+
+  button {
+    display: none;
+  }
+}
