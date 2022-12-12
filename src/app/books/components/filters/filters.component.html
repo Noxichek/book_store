@@ -88,6 +88,28 @@
       >
     </mat-form-field>
   </form>
+    <mat-error
+      *ngIf="priceControl?.hasError('minPriceGreaterMaxPrice') && (minPriceControl?.touched && maxPriceControl?.touched)">
+      Min greater max
+    </mat-error>
+  </ng-container>
+
+  <app-date-filters formControlName="date"></app-date-filters>
+  <mat-error *ngIf="formFilter.get('date')?.hasError('comparedDate')">Writing date cannot be greater than release date
+  </mat-error>
+  <mat-error *ngIf="formFilter.get('date')?.hasError('releaseDate')">Release date cannot be greater than now</mat-error>
+
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Title</mat-label>
+    <input
+      type="text"
+      matInput
+      placeholder="Title..."
+      formControlName="titleFilter"
+      autocomplete="off"
+    >
+  </mat-form-field>
+</form>
 
   <section class="btn">
     <button mat-raised-button color="primary" [disabled]="formFilter.invalid" (click)="filterSearch()">Search</button>
