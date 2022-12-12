@@ -1,0 +1,47 @@
+<app-table
+  [result]="authors$ | async"
+  [isPagination]="true"
+  [total]="totalAuthors$ | async"
+  (goToPage)="goToPage($event)"
+  (goToNextPage)="goToPage($event)"
+  (goToPreviousPage)="goToPage($event)"
+  (changeElementsPerPage)="goToPage($event)"
+  [sortable]="true"
+  direction="ask"
+>
+  <ng-template appTableHeader>
+    <app-sortable-header
+      field="id"
+      direction="ask"
+    >
+      ID
+    </app-sortable-header>
+  </ng-template>
+  <ng-template appTableHeader>
+    <app-sortable-header
+      field="firstName"
+      direction="desc"
+    >
+      First Name
+    </app-sortable-header>
+  </ng-template>
+  <ng-template appTableHeader>
+    <app-sortable-header
+      field="lastName"
+      direction="ask"
+    >
+      Last Name
+    </app-sortable-header>
+  </ng-template>
+
+
+  <ng-template appTableCell let-id="id">
+    {{ id }}
+  </ng-template>
+  <ng-template appTableCell let-firstName="firstName">
+    {{ firstName }}
+  </ng-template>
+  <ng-template appTableCell let-lastName="lastName">
+    {{ lastName }}
+  </ng-template>
+</app-table>

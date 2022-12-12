@@ -1,17 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, OnInit, Output }
+  from '@angular/core';
 
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 
 import { IBook } from '../../../../libs/book';
 
@@ -31,11 +21,11 @@ export class BookListComponent implements OnInit, OnDestroy {
 
   private readonly _destroy$ = new Subject<void>();
 
-  @ViewChild(CdkVirtualScrollViewport, { static: true })
-  private _scroll!: CdkVirtualScrollViewport;
+  // @ViewChild(CdkVirtualScrollViewport, { static: true })
+  // private _scroll!: CdkVirtualScrollViewport;
 
   public ngOnInit(): void {
-    this._initScrollListener();
+    // this._initScrollListener();
   }
 
   public ngOnDestroy(): void {
@@ -47,16 +37,16 @@ export class BookListComponent implements OnInit, OnDestroy {
     return book.id!;
   }
 
-  private _initScrollListener(): void {
-    this._scroll.elementScrolled()
-      .pipe(
-        takeUntil(this._destroy$),
-      )
-      .subscribe(() => {
-        if (this._scroll.measureScrollOffset('bottom') === 0) {
-          this.scrolledToBottom.emit();
-        }
-      });
-  }
+  // private _initScrollListener(): void {
+  //   this._scroll.elementScrolled()
+  //     .pipe(
+  //       takeUntil(this._destroy$),
+  //     )
+  //     .subscribe(() => {
+  //       if (this._scroll.measureScrollOffset('bottom') === 0) {
+  //         this.scrolledToBottom.emit();
+  //       }
+  //     });
+  // }
 
 }

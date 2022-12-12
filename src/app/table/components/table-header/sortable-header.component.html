@@ -1,0 +1,15 @@
+<ng-content></ng-content>
+
+
+  <i
+    *ngIf="isSortable && !isSortDesc"
+    class="material-icons"
+    (click)="sortBy()"
+  >expand_less</i>
+
+  <i
+    *ngIf="isSortDesc && isSortable"
+    class="material-icons"
+    (click)="sortBy()"
+  >expand_more</i>
+

@@ -1,0 +1,48 @@
+<nav>
+  <ul>
+    <li>
+      <button
+        mat-raised-button
+        color="primary"
+        [attr.aria-disabled]="current === 1"
+        [disabled]="current === 1"
+        (click)="onPrevious()"
+      >
+        Previous
+      </button>
+    </li>
+    <li *ngFor="let page of pages | pages:current">
+      <a
+        [class.current]="page === current"
+        (click)="onGoTo(page)"
+      >
+        {{ page }}
+      </a>
+    </li>
+    <li>
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="current === pages[pages.length-1]"
+        (click)="onNext()"
+      >
+        Next
+      </button>
+    </li>
+  </ul>
+  <section class="select">
+    <mat-form-field appearance="fill">
+      <mat-label>Elements per page</mat-label>
+      <select
+        #select
+        (change)="changeElementsPerPage(select.value)"
+        matNativeControl required>
+        <option
+          *ngFor="let option of options"
+          [value]="option"
+        >{{ option }}</option>
+      </select>
+    </mat-form-field>
+  </section>
+</nav>
+

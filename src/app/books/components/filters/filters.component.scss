@@ -1,4 +1,42 @@
 form {
   display: flex;
   flex-direction: column;
+  width: 30vw;
+}
+
+button {
+  margin: 0 20px 20px 0;
+  transition: 0.5s;
+}
+
+button:not([disabled]):hover {
+  scale: 1.1;
+}
+
+.form-container {
+  width: 100vw;
+  height: 0;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s;
+}
+
+.open {
+  opacity: 1;
+  height: 500px;
+}
+
+.btn-filters {
+  margin-left: 2rem;
+}
+
+@media (max-width: 770px) {
+  form {
+    display: flex;
+    flex-direction: column;
+    width: 70vw;
+  }
 }

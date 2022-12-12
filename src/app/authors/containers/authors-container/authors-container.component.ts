@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-
 import { PageEvent } from '@angular/material/paginator';
 
 import { Observable, startWith, Subject, switchMap } from 'rxjs';

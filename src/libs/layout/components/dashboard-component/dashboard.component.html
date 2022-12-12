@@ -1,9 +1,16 @@
 <nav mat-tab-nav-bar>
-  <section>
-    <a mat-tab-link routerLink="/authors" label="Authors">Authors</a>
-    <a mat-tab-link routerLink="/books" label="Books">Books</a>
+  <section [ngClass]="{active: !isSessionActive()}">
+    <a
+      (click)="changeActiveLink(item)"
+      *ngFor="let item of dashboardItems"
+      [ngClass]="{'selected': item.selected}"
+      class="nav-btn"
+      routerLink='{{item.link}}'
+      label="Books">{{item.title}}
+    </a>
   </section>
   <button
+    class="login-btn"
     *ngIf="isSessionActive()"
     (click)="logout()"
     mat-raised-button
@@ -11,6 +18,7 @@
   >Logout
   </button>
   <button
+    class="login-btn"
     *ngIf="!isSessionActive()"
     mat-raised-button
     color="primary"

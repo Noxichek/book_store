@@ -1,6 +1,12 @@
 mat-list-item {
-  background-color: gray;
+  background-color: #00b894;
   span{
     cursor: pointer;
   }
+}
+
+mat-list {
+  background-color: #00b894;
+  border-radius: 10px;
+  padding: 8px;
 }

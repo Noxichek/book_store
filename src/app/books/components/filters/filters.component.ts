@@ -36,6 +36,9 @@ export class FiltersComponent implements OnInit, OnDestroy {
   public clearFilters = new EventEmitter<void>;
 
   public readonly formFilter!: FormGroup;
+
+  public isFiltersOpen = false;
+
   public authors$!: Observable<IAuthor[]>;
   public filteredAuthors$!: Observable<IAuthor[]>;
 
@@ -105,7 +108,8 @@ export class FiltersComponent implements OnInit, OnDestroy {
     this.searchByAuthor.emit(this._getFormData());
   }
 
-  public filterData(value: string | null) {
+  public filterData(value: string | null): void {
+
     this._authorQueryChange$.next(value);
   }
 
@@ -123,6 +127,11 @@ export class FiltersComponent implements OnInit, OnDestroy {
   public displayWithFn(option: IAuthor): string {
     return Utils.getFullName(option);
   }
+
+  public openFilters() {
+    this.isFiltersOpen = !this.isFiltersOpen;
+  }
+
 
   private _getQueryParams(): void {
     const queryParameters = this._activatedRoute.snapshot.queryParams;
@@ -198,7 +207,14 @@ export class FiltersComponent implements OnInit, OnDestroy {
               map((authors: IAuthor[]) => {
                 if (query) {
                   return authors.filter((author: IAuthor) => {
+
+                    const isAuthorExist = Utils.getFullName(author).toLowerCase()
+                      .includes(query.toLowerCase());
+
+                    return isAuthorExist;
+
                     return Utils.getFullName(author).toLowerCase().includes(query.toLowerCase());
+
                   });
                 }
 

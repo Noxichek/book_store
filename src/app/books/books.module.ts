@@ -17,7 +17,9 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { BookModule } from '../../libs/book';
-import { AutocompleteModule } from '../autocomplete';
+
+import { AutocompleteModule } from '../authors/autocomplete';
+
 
 import { BookListComponent } from './components/book-list/book-list.component';
 import { BookInfoComponent } from './components/book-info/book-info.component';

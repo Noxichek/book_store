@@ -1,0 +1,24 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th *ngFor="let value of headerList.toArray() ?? []">
+        <ng-container *ngTemplateOutlet="value"></ng-container>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let value of result ?? []">
+      <td *ngFor="let item of list?.toArray() ?? []">
+        <ng-container *ngTemplateOutlet="item; context: value"></ng-container>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<app-paginator
+  [meta]="total"
+  (goTo)="goTo($event)"
+  (next)="next($event)"
+  (previous)="previous($event)"
+  (changeElements)="changeElements($event)"
+></app-paginator>

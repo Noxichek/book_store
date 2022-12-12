@@ -6,7 +6,6 @@ import {
   OnChanges,
   Output,
 } from '@angular/core';
-
 import { PageEvent } from '@angular/material/paginator';
 
 import { IPaginatedAuthor } from '../../../../libs/pagination';

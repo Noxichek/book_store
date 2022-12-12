@@ -4,9 +4,20 @@ section {
   justify-content: center;
 }
 
-button  {
+.change-theme-btn {
   position: absolute;
   top: 0.5vh;
   right: 90vw;
   z-index: 2;
+  transition: 0.5s;
+}
+
+button:hover {
+  scale: 1.1;
+}
+
+@media (max-width: 770px) {
+  .change-theme-btn {
+    display: none;
+  }
 }
