@@ -1,0 +1,17 @@
+<form [formGroup]="addOptionForm">
+  <input
+    matInput
+    type="text"
+    autocomplete="off"
+    placeholder="First name"
+    formControlName="inputFirstName"
+  >
+  <input
+    matInput
+    type="text"
+    autocomplete="off"
+    placeholder="Last name"
+    formControlName="inputLastName"
+  >
+  <button type="button" (click)="emitValue()">Save</button>
+</form>

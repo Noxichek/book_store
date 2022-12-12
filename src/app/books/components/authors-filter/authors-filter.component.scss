@@ -1,0 +1,14 @@
+.container {
+  position: relative;
+}
+
+.options {
+  position: absolute;
+  z-index: 200;
+  opacity: 1;
+  background-color: lightgrey;
+  top: 26px;
+  width: 455px;
+  right: 0;
+  left: -10px;
+}

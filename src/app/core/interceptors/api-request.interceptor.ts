@@ -1,7 +1,4 @@
 import { Injectable } from '@angular/core';
-
-import { map, Observable } from 'rxjs';
-
 import {
   HttpRequest,
   HttpHandler,
@@ -9,6 +6,10 @@ import {
   HttpInterceptor,
   HttpResponse,
 } from '@angular/common/http';
+
+import { map, Observable } from 'rxjs';
+
+
 // @ts-ignore
 import { camelCase, mapKeys } from 'lodash';
 

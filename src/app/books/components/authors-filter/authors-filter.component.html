@@ -1,0 +1,24 @@
+<section class="container">
+  <input type="text"
+         [placeholder]="placeholder"
+         aria-label="Author"
+         matInput
+         [formControl]="authorFilter"
+         autocomplete="off"
+         (focus)="onFocus()"
+  >
+  <section
+    class="options"
+    *ngIf="isDropDownOpen">
+    <section
+      *ngFor="let option of options"
+    >
+      <mat-option
+        class="current-option"
+        (click)="setValueIntoInput(option)"
+      >
+        {{ displayWith(option) }}
+      </mat-option>
+    </section>
+  </section>
+</section>
